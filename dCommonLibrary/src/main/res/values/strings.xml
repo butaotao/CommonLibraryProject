@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">dCommonLibrary</string>
+    <string name="back_exit_tips">再按一次退出软件</string>
+    <string name="back_exit_bd_tips">再按一次退出软件</string>
+    <string name="common__confirm">确认</string>
+    <string name="common__cancel">取消</string>
+</resources>

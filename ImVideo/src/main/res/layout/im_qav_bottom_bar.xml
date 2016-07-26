@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qav_bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignWithParentIfMissing="true"
+    android:layout_marginBottom="20dp" >
+
+    <RelativeLayout
+        android:id="@+id/qav_bottombar_toplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/qav_bottombar_speaker"
+            style="@style/Icon"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:drawablePadding="5dp"
+            android:text="扬声器"
+            android:background="@null"
+            android:drawableTop="@drawable/im_selector_vchat_speaker"
+            />
+
+        <Button
+            android:id="@+id/qav_bottombar_camera"
+            style="@style/Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/qav_bottombar_speaker"
+            android:drawablePadding="5dp"
+            android:text="摄像头"
+            android:background="@null"
+            android:drawableTop="@drawable/im_selector_vchat_camera" />
+
+        <Button
+            android:id="@+id/qav_bottombar_mute"
+            style="@style/Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/qav_bottombar_speaker"
+            android:drawablePadding="5dp"
+            android:text="静音"
+            android:background="@null"
+            android:drawableTop="@drawable/im_selector_micphone_bg"
+            />
+
+        <Button
+            android:id="@+id/qav_bottombar_hangup"
+            style="@style/Icon"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/qav_bottombar_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/call_refuse" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

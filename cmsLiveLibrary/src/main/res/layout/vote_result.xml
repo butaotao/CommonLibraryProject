@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/vote_receiver_bottom_ly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vote_margin_hor"
+        android:paddingRight="@dimen/vote_margin_hor" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/questionSP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/vote_select_down"
+                android:textColor="@color/chat_system_message"
+                android:textSize="@dimen/vote_select_size_tv" />
+            <!-- android:singleLine="true" -->
+            <!-- android:ellipsize="end" -->
+            <!-- android:gravity="left|center_vertical" -->
+
+            <TextView
+                android:id="@+id/vote_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="共有2份"
+                android:textColor="@color/vote_count_tv"
+                android:textSize="@dimen/vote_select_size_tv" >
+            </TextView>
+        </LinearLayout>
+
+        <ExpandableListView
+            android:id="@+id/vote_receiver_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/vote_lv_ver"
+            android:layout_weight="1"
+            android:cacheColorHint="@android:color/transparent"
+            android:childDivider="@color/vote_lv_divide"
+            android:divider="@color/vote_lv_divide"
+            android:groupIndicator="@null" >
+        </ExpandableListView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlToast"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivLogo"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="还没有投票结果!"
+            android:textColor="#58B6C2"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

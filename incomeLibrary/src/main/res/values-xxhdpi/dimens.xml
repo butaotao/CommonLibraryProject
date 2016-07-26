@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    
+    <dimen name="BigTextSize">17.0dip</dimen>
+    <dimen name="NormalTextSize">16.0dip</dimen>
+    
+    <dimen name="SmallerTextSize">13.0dip</dimen>
+    
+    
+    
+    <dimen name="emotion_height">190dp</dimen>
+    <dimen name="padding">8dp</dimen>
+    
+    
+    
+      <!-- 结算方式 -->
+    <dimen name="empty_text_size">13sp</dimen>
+    
+    <dimen name="bank_name_size">16sp</dimen>
+    <dimen name="notice">12sp</dimen>
+    
+    <!--收入报表  -->
+    <dimen name="total_income_size">48sp</dimen>
+    <dimen name="wait_income">24sp</dimen>
+
+</resources>

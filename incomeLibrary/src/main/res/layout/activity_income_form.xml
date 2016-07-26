@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg_color"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/top"
+        style="@style/ActionBar_Container"
+        >
+
+        <TextView
+            android:id="@+id/back_btn"
+            style="@style/BackStyleIncome"
+
+            />
+
+        <TextView
+            style="@style/ActionBar_Title"
+            android:text="我的收入"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_right"
+            style="@style/ActionBar_RightBtn"
+            android:layout_marginRight="10dip"
+            android:text="银行卡"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/refreshScrollView"
+        xmlns:pull="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        pull:ptrAnimationStyle="flip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_color"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/action_bar_bg_color"
+                android:orientation="horizontal"
+                android:paddingBottom="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="25dp"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/income_balance_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/income_balance_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="账户余额（元）"
+                        android:textColor="#B3C0DD"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/income_balance_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/income_balance_title"
+                        android:layout_marginTop="12dp"
+                        android:text="0.00"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/arrow_right"/>
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="56dp"
+                        android:layout_alignParentRight="true"
+                        android:background="#365898"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/income_total_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="56dp"
+                        android:background="#8FA6D8"
+                        />
+
+                    <TextView
+                        android:id="@+id/income_total_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="总收入（元）"
+                        android:textColor="#B3C0DD"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/income_total_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/income_total_title"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="12dp"
+                        android:text="0.00"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrow_right"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/unfinished_order_income_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="18dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="18dp"
+                >
+
+                <TextView
+                    android:id="@+id/unfinished_order_income_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未完成订单金额（元）"
+                    android:textColor="#AAAAAA"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/unfinished_order_income_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/unfinished_order_income_title"
+                    android:layout_marginTop="12dp"
+                    android:text="0.00"
+                    android:textColor="@color/gray_333333"
+                    android:textSize="18sp"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="30dp"
+                android:background="@color/gray_d6d6d6"/>
+
+            <RelativeLayout
+                android:id="@+id/check_record_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="查看打款记录"
+                    android:textColor="@color/gray_666666"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:id="@+id/arrow_right"
+                    style="@style/Arrow_Item_right"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_right"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="15dp"
+                android:background="@color/gray_d6d6d6"/>
+
+            <RelativeLayout
+                android:id="@+id/income_rule_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="收入规则"
+                    android:textColor="@color/gray_666666"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    style="@style/Arrow_Item_right"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_right"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+
+</LinearLayout>

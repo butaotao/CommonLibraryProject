@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/qav_gaudio_bg">
+
+    <include
+        android:id="@+id/av_video_layer_ui"
+        layout="@layout/im_qav_video_layer_ui"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:id="@+id/v_btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/qav_tips_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="200dp"
+            android:maxLength="2000"
+            android:singleLine="false"
+            android:textSize="9sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/qav_show_tips"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/qav_gaudio_members_holder_height_two_line"
+            android:background="#00000000"
+            android:singleLine="false"
+            android:textSize="12sp"
+            android:visibility="gone"
+            />
+
+        <include
+            android:id="@+id/qav_bottom_bar"
+            layout="@layout/im_qav_bottom_bar"/>
+
+        <LinearLayout
+            android:id="@+id/ll_invite_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/time"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在等待:"
+                android:textColor="@color/white"/>
+
+            <com.dachen.imsdk.views.MarqueeTextView
+                android:id="@+id/tv_invite_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="接受邀请"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/qav_bottom_bar"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            tools:text="00:00"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_member_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/ll_invite_list"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"/>
+
+        <ImageButton
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6dp"
+            android:background="@null"
+            android:padding="10dp"
+            android:src="@drawable/vchat_add"/>
+
+        <ImageButton
+            android:id="@+id/hide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:background="@null"
+            android:padding="10dp"
+            android:src="@drawable/vchat_hide"/>
+    </RelativeLayout>
+
+
+
+    <!--  android:layout_alignParentBottom="true"-->
+
+    <!--<com.dachen.imsdk.vchat.MultiVideoMembersControlUI-->
+    <!--android:id="@+id/qav_gaudio_gridlayout"-->
+    <!--android:layout_above="@id/qav_bottom_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="150dp"-->
+    <!--/>-->
+
+    <LinearLayout
+        android:id="@+id/v_guide_cover"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:background="#99000000"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@drawable/vchat_guide"
+            android:layout_marginTop="64dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

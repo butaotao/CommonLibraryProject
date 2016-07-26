@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:nc="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+ 	 >
+    <ImageView
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:id="@+id/bank_header"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="centerCrop"
+        />
+    <RelativeLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/bank_header"
+        android:layout_marginLeft="15dp"
+        >
+       	<TextView 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:id="@+id/bank_name"
+        	android:textColor="#333333"
+        	android:textSize="18sp"
+        	/>
+  		<TextView 
+  	    	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:id="@+id/bank_desc"
+        	android:layout_alignLeft="@id/bank_name"
+        	android:layout_below="@id/bank_name"
+        	android:layout_marginTop="8dp"	 
+        	android:textColor="#AAAAAA"   
+        	android:textSize="@dimen/empty_text_size"
+  	    	/>   
+    </RelativeLayout>
+    
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/arrow_right"
+        android:layout_marginRight="10dp"
+		android:id="@+id/arrow_right"
+        />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/default_card"
+		android:textColor="#333333"
+		android:layout_toLeftOf="@+id/arrow_right"
+		android:text="默认"
+		android:layout_centerVertical="true"
+		android:textSize="14sp"
+		android:visibility="gone"
+
+		/>
+
+</RelativeLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IncomeLibrary</string>
+    <string name="group_notification">集团通知</string>
+    <string name="company_notification">公司通知</string>
+</resources>

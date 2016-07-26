@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/home_selector"
+            android:gravity="center_horizontal"
+            android:text="首页"
+            android:textColor="@color/bottom_menu_text"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/btnChat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/chat_selector"
+            android:gravity="center_horizontal"
+            android:text="聊天"
+            android:textColor="@color/bottom_menu_text"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/btnQuestion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/question_selector"
+            android:gravity="center_horizontal"
+            android:text="问答"
+            android:textColor="@color/bottom_menu_text"
+            android:textSize="12sp" />
+         <RadioButton
+            android:id="@+id/btnVote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/vote_selector"
+            android:gravity="center_horizontal"
+            android:text="投票"
+            android:textColor="@color/bottom_menu_text"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+</LinearLayout>

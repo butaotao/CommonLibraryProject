@@ -1,0 +1,20 @@
+include ':rTRoutineLib', ':cmsLiveLibrary', ':rtmpResourceLib'
+include ':vitamioLibrary'
+include ':numberPickerLibrary'
+include ':pickerView_Library'
+include ':pullToRefreshViewsLibrary'
+include ':actionSheetLibrary'
+include ':barcodeScannerCore', ':dCommonLibrary'
+include ':meidecineLibrary'
+include ':greendaogenerator'
+include ':incomeLibrary'
+include ':videoConferencingLibrary'
+include ':ImVideo'
+include ':ImSdk'
+include ':dCommonLibrary'
+include ':meidecineLibrary'
+
+project(':meidecineLibrary').projectDir = new File(rootDir, "../MedicineProject/meidecineLibrary")
+project(':ImSdk').projectDir = new File(rootDir, "../ImSdkProject/ImSdk")
+project(':dCommonLibrary').projectDir = new File(rootDir, "../CommonLibraryProject/dCommonLibrary")
+project(':meidecineLibrary').projectDir = new File(rootDir, "../MedicineProject/meidecineLibrary")

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bind_card_bg">
+    
+    <RelativeLayout style="@style/ActionBar_Container" 
+        android:id="@+id/top"
+        >
+        <TextView 
+            android:id="@+id/back"
+            style="@style/BackStyleIncome"
+            />
+		<TextView
+            style="@style/ActionBar_Title"
+            android:text="银行卡" />
+
+    </RelativeLayout>
+ 
+    <ListView
+        android:id="@+id/accountLV"
+        style="@style/CommList"
+        android:layout_below="@id/top"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+         >
+    </ListView>
+  	<TextView 
+        android:id="@+id/add_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/add_account_bg"
+        android:gravity="center"
+        android:text="添加账号"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:paddingTop="8dp"
+ 	    android:paddingBottom="8dp"
+        /> 
+</RelativeLayout>

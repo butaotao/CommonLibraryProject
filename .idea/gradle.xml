@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ImVideo" />
+            <option value="$PROJECT_DIR$/actionSheetLibrary" />
+            <option value="$PROJECT_DIR$/barcodeScannerCore" />
+            <option value="$PROJECT_DIR$/cmsLiveLibrary" />
+            <option value="$PROJECT_DIR$/dCommonLibrary" />
+            <option value="$PROJECT_DIR$/greendaogenerator" />
+            <option value="$PROJECT_DIR$/incomeLibrary" />
+            <option value="$PROJECT_DIR$/numberPickerLibrary" />
+            <option value="$PROJECT_DIR$/pickerView_Library" />
+            <option value="$PROJECT_DIR$/pullToRefreshViewsLibrary" />
+            <option value="$PROJECT_DIR$/rTRoutineLib" />
+            <option value="$PROJECT_DIR$/rtmpResourceLib" />
+            <option value="$PROJECT_DIR$/videoConferencingLibrary" />
+            <option value="$PROJECT_DIR$/vitamioLibrary" />
+            <option value="$PROJECT_DIR$/../ImSdkProject/ImSdk" />
+            <option value="$PROJECT_DIR$/../MedicineProject/meidecineLibrary" />
+          </set>
+        </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ImVideo" />
+            <option value="$PROJECT_DIR$/actionSheetLibrary" />
+            <option value="$PROJECT_DIR$/barcodeScannerCore" />
+            <option value="$PROJECT_DIR$/cmsLiveLibrary" />
+            <option value="$PROJECT_DIR$/dCommonLibrary" />
+            <option value="$PROJECT_DIR$/greendaogenerator" />
+            <option value="$PROJECT_DIR$/incomeLibrary" />
+            <option value="$PROJECT_DIR$/numberPickerLibrary" />
+            <option value="$PROJECT_DIR$/pickerView_Library" />
+            <option value="$PROJECT_DIR$/pullToRefreshViewsLibrary" />
+            <option value="$PROJECT_DIR$/rTRoutineLib" />
+            <option value="$PROJECT_DIR$/rtmpResourceLib" />
+            <option value="$PROJECT_DIR$/videoConferencingLibrary" />
+            <option value="$PROJECT_DIR$/vitamioLibrary" />
+            <option value="$PROJECT_DIR$/../ImSdkProject/ImSdk" />
+            <option value="$PROJECT_DIR$/../MedicineProject/meidecineLibrary" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <declare-styleable name="RatioRelativeLayout">
+        <attr name="ratio" format="float"/>
+    </declare-styleable>
+
+    <!--<declare-styleable name="nc">-->
+        <!--<attr name="roundRadius" format="dimension"/>-->
+        <!--<attr name="maxLength" format="integer"/>-->
+        <!--<attr name="centerAlign" format="string"/>-->
+        <!--<attr name="inputType" format="string"/>-->
+        <!--<attr name="scaleType" format="string"/>-->
+        <!--<attr name="drawableLeft" format="reference"/>-->
+        <!--<attr name="drawableEmpty" format="reference"/>-->
+    <!--</declare-styleable>-->
+    <declare-styleable name="nc">
+        <attr name="roundRadius" format="dimension"/>
+        <attr name="maxLength" format="integer"/>
+        <attr name="centerAlign" format="string"/>
+        <attr name="inputType" format="string"/>
+        <attr name="scaleType" format="string"/>
+        <attr name="drawableLeft" format="reference"/>
+        <attr name="drawableEmpty" format="reference"/>
+        <attr name="segement_tv1" format="string"/>
+        <attr name="segement_tv2" format="string"/>
+    </declare-styleable>
+    
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsTabTextColor" format="color" />
+        <attr name="pstsTabSelectTextColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsTabSelectBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+    
+    <declare-styleable name="SwitchButton">
+        <attr name="bmWidth" format="dimension"/>
+        <attr name="bmHeight" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="DonutProgress">
+        <attr name="donut_progress" format="integer"/>
+        <attr name="donut_max" format="integer"/>
+
+        <attr name="donut_unfinished_color" format="color"/>
+        <attr name="donut_finished_color" format="color"/>
+
+        <attr name="donut_finished_stroke_width" format="dimension"/>
+        <attr name="donut_unfinished_stroke_width" format="dimension"/>
+
+        <attr name="donut_text_size" format="dimension"/>
+        <attr name="donut_text_color" format="color"/>
+
+        <attr name="donut_prefix_text" format="string"/>
+        <attr name="donut_suffix_text" format="string"/>
+        <attr name="donut_text" format="string"/>
+
+        <attr name="donut_background_color" format="color"/>
+
+        <attr name="donut_inner_bottom_text" format="string"/>
+        <attr name="donut_inner_bottom_text_size" format="dimension"/>
+        <attr name="donut_inner_bottom_text_color" format="color"/>
+
+        <attr name="donut_circle_starting_degree" format="integer" />
+    </declare-styleable>
+</resources>

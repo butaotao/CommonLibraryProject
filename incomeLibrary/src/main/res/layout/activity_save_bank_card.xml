@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bind_card_bg">
+    
+    <RelativeLayout style="@style/ActionBar_Container" 
+        android:id="@+id/top"
+        >
+        <TextView 
+            android:id="@+id/back"
+            style="@style/BackStyleIncome"
+            />
+		<TextView
+            style="@style/ActionBar_Title"
+            android:text="绑定银行卡" />
+
+    </RelativeLayout>
+ 	<TextView 
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_below="@id/top"
+ 	    android:id="@+id/title"
+ 	    android:text="请绑定持卡人本人的银行卡"
+ 	    android:textSize="13sp"
+ 	    android:textColor="#AAAAAA"
+ 	    android:layout_marginLeft="10dp"
+ 	    android:layout_marginTop="20dp"
+ 	    />
+ 	<RelativeLayout
+ 	    android:layout_width="match_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:background="@color/white"
+ 	    android:layout_below="@id/title"
+ 	    android:layout_marginTop="10dp"
+ 	    android:paddingLeft="10dp"
+ 	    android:paddingRight="10dp"
+ 	    android:id="@+id/middle_layout"
+ 	     >
+
+		<RelativeLayout
+		    android:layout_width="match_parent"
+ 	    	android:layout_height="wrap_content"
+ 	    	android:id="@+id/owner_bank_layout"
+		     >
+		    <TextView
+	 	       android:layout_width="wrap_content"
+	 	       android:layout_height="wrap_content"
+	 	       android:layout_centerVertical="true"
+	 	       android:text="所属银行"
+	 	       android:textSize="@dimen/bank_name_size"
+	 	       android:textColor="#333333"
+	 	       android:id="@+id/owner_bank_textview"
+	 	       />
+
+
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:drawableRight="@drawable/arrow_right"
+				android:padding="4dp"
+				android:layout_centerVertical="true"
+				android:layout_alignParentRight="true"
+				android:id="@+id/arrow_right"
+				android:layout_marginRight="4dp"
+				/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="46dp"
+				android:id="@+id/ower_bank_edittext"
+				android:layout_toRightOf="@id/owner_bank_textview"
+				android:layout_toLeftOf="@id/arrow_right"
+				android:textColor="#333333"
+				android:background="@null"
+				android:singleLine="true"
+				android:gravity="center|right"
+				android:textSize="@dimen/bank_name_size"
+				/>
+
+ 	    	<View
+ 	       	android:layout_width="match_parent"
+ 	        android:layout_height="1px"
+ 	        android:layout_below="@id/ower_bank_edittext"
+ 	        android:background="@color/bind_card_bg"
+ 	        />
+		</RelativeLayout>
+
+
+
+	</RelativeLayout>
+
+
+
+	<TextView
+ 	    android:layout_width="match_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_below="@id/middle_layout"
+ 	    android:id="@+id/save"
+ 	    android:text="保存"
+ 	    android:textColor="@color/white"
+ 	    android:textSize="18sp"
+ 	    android:gravity="center"
+ 	    android:background="@drawable/button_green_bg"
+ 	    android:paddingTop="8dp"
+ 	    android:paddingBottom="8dp"
+ 	    android:layout_marginLeft="20dp"
+ 	    android:layout_marginRight="20dp"
+		android:layout_marginTop="20dp"
+ 	     />
+   
+</RelativeLayout>
