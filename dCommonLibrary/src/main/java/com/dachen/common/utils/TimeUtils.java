@@ -25,6 +25,7 @@ public class TimeUtils {
 	public static final SimpleDateFormat a_format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 	public static final SimpleDateFormat chat_time_format = new SimpleDateFormat("HH:mm", Locale.CHINA);
 	public static final SimpleDateFormat u_format = new SimpleDateFormat("yy/MM/dd", Locale.CHINA);
+	public static final SimpleDateFormat g_format = new SimpleDateFormat("yyyy/MM/dd",Locale.CHINA);
 
 	public static String getHourMinuteSecondStr(long milliseconds) {
 		final int S = 1000;
@@ -100,6 +101,10 @@ public class TimeUtils {
 
 	public static String f_long_3_str(long timestamp) {
 		return a_format.format(new Date(timestamp));
+	}
+
+	public static String g_long_3_str(long timestamp) {
+		return g_format.format(new Date(timestamp));
 	}
 
 	public static String a_chat_time_format(long timestamp) {
