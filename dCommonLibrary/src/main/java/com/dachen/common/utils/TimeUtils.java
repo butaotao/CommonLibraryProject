@@ -1145,14 +1145,15 @@ public class TimeUtils {
         target.setTimeInMillis(timeStamp);
         if(target.get(Calendar.YEAR)!=now.get(Calendar.YEAR)){
             return new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US).format(target.getTime());
-        }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)>=7){
-            return new SimpleDateFormat("MM-dd HH:mm",Locale.US).format(target.getTime());
-        }else if(now.get(Calendar.DAY_OF_YEAR)!=target.get(Calendar.DAY_OF_YEAR)){
-            int dayInWeek=target.get(Calendar.DAY_OF_WEEK);
-            return "周"+getWeekStr(dayInWeek)+new SimpleDateFormat(" HH:mm",Locale.US).format(target.getTime());
-        }else{
+        }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==0){
             return new SimpleDateFormat("HH:mm",Locale.US).format(target.getTime());
+        }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==1){
+            return new SimpleDateFormat("昨天 HH:mm",Locale.US).format(target.getTime());
+        }else{
+            return new SimpleDateFormat("MM-dd HH:mm",Locale.US).format(target.getTime());
         }
+        //            int dayInWeek=target.get(Calendar.DAY_OF_WEEK);
+//            return "周"+getWeekStr(dayInWeek)+new SimpleDateFormat(" HH:mm",Locale.US).format(target.getTime());
 	}
 
     public static String getWeekStr(int dayInWeek){
@@ -1174,5 +1175,19 @@ public class TimeUtils {
         }
         return "";
     }
-	
+
+	public static String getChatGroupTimeStr(long timeStamp){
+		Calendar now=Calendar.getInstance();
+		Calendar target=Calendar.getInstance();
+		target.setTimeInMillis(timeStamp);
+        if(target.get(Calendar.YEAR)!=now.get(Calendar.YEAR)){
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US).format(target.getTime());
+        }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==0){
+            return new SimpleDateFormat("HH:mm",Locale.US).format(target.getTime());
+        }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==1){
+            return new SimpleDateFormat("昨天",Locale.US).format(target.getTime());
+        }else{
+            return new SimpleDateFormat("MM-dd",Locale.US).format(target.getTime());
+        }
+	}
 }
