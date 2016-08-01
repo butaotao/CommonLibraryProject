@@ -24,6 +24,7 @@ public class TimeUtils {
 	public static final SimpleDateFormat f_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 	public static final SimpleDateFormat a_format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 	public static final SimpleDateFormat chat_time_format = new SimpleDateFormat("HH:mm", Locale.CHINA);
+	public static final SimpleDateFormat u_format = new SimpleDateFormat("yy/MM/dd", Locale.CHINA);
 
 	public static String getHourMinuteSecondStr(long milliseconds) {
 		final int S = 1000;
@@ -39,6 +40,10 @@ public class TimeUtils {
 		} else {
 			return String.format("%02d:%02d", minute, second);
 		}
+	}
+
+	public static String u_format(long timestamp) {
+		return u_format.format(new Date(timestamp));
 	}
 
 	public static long s_str_2_long(String dateString) {
@@ -445,7 +450,7 @@ public class TimeUtils {
 	 *            秒级别的时间戳
 	 * @return
 	 */
-	public static String getFriendlyTimeDesc(Context context, int time) {
+	public static String getFriendlyTimeDesc(Context context, long time) {
 		String desc = "";
 		Date timeDate = new Date(time * 1000L);
 		Date nowDate = new Date();
