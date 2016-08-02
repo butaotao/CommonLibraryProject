@@ -30,7 +30,7 @@ public class DoctorCompanyGenerator {
 
     public static void main(String[] args) throws Exception {
         Schema schema = new Schema(1, "db");
-		addCompanyContact(schema);//通讯录
+		addCompanyContact(schema);
         new DaoGenerator().generateAll(schema, "C:/Users/TianWei/Desktop/dataBase");
     }
 

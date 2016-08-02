@@ -1,11 +1,9 @@
 package com.dachen.common.utils;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.dachen.common.R;
-import com.dachen.medicine.entity.Result;
 
 public class ToastUtil {
 
@@ -50,15 +48,6 @@ public class ToastUtil {
 			return;
 		}
 		Toast.makeText(context, context.getString(resId), Toast.LENGTH_SHORT).show();
-	}
-	public static void showToast(Context context, Result result) {
-		if (context == null) {
-			return;
-		}
-		if (!TextUtils.isEmpty(result.resultMsg)){
-			Toast.makeText(context,  result.resultMsg, Toast.LENGTH_SHORT).show();
-		}
-
 	}
 
 }

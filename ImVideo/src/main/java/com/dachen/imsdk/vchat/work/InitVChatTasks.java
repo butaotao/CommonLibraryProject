@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.dachen.common.json.ResultTemplate;
 import com.dachen.common.toolbox.DCommonRequest;
 import com.dachen.common.utils.Logger;
 import com.dachen.common.utils.ToastUtil;
@@ -19,8 +20,6 @@ import com.dachen.imsdk.ImSdk;
 import com.dachen.imsdk.net.PollingURLs;
 import com.dachen.imsdk.vchat.ImVideo;
 import com.dachen.imsdk.vchat.VChatUtil;
-import com.dachen.medicine.entity.Result;
-import com.dachen.medicine.net.ObjectResult;
 import com.tencent.av.sdk.AVError;
 
 import java.util.HashMap;
@@ -77,13 +76,13 @@ public class InitVChatTasks {
 
     private void handleResponse(String response) {
 //        Logger.d(TAG, "response sign=" + response);
-        ObjectResult<String> result = JSON.parseObject(response, new TypeReference<ObjectResult<String>>() {
+        ResultTemplate<String> result = JSON.parseObject(response, new TypeReference<ResultTemplate<String>>() {
         });
-        if (result == null || result.getResultCode() != Result.CODE_SUCCESS || result.getData() == null) {
+        if (result == null || result.resultCode != 1 || result.data == null) {
             ToastUtil.showErrorNet(ImSdk.getInstance().context);
             return;
         }
-        String sign = result.getData();
+        String sign = result.data;
         ImVideo.getInstance().mQavsdkControl.startContext(userId, sign);
     }
 }

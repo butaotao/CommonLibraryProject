@@ -10,9 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.View;
 
-import com.dachen.common.utils.ToastUtil;
 import com.dachen.common.widget.dialog.MessageDialog;
-import com.dachen.medicine.common.utils.ToastUtils;
 
 /**
  * Created by Administrator on 2016/5/24.
