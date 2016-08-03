@@ -1149,7 +1149,7 @@ public class TimeUtils {
         Calendar target=Calendar.getInstance();
         target.setTimeInMillis(timeStamp);
         if(target.get(Calendar.YEAR)!=now.get(Calendar.YEAR)){
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US).format(target.getTime());
+            return new SimpleDateFormat("yy-MM-dd HH:mm",Locale.US).format(target.getTime());
         }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==0){
             return new SimpleDateFormat("HH:mm",Locale.US).format(target.getTime());
         }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==1){
@@ -1186,7 +1186,7 @@ public class TimeUtils {
 		Calendar target=Calendar.getInstance();
 		target.setTimeInMillis(timeStamp);
         if(target.get(Calendar.YEAR)!=now.get(Calendar.YEAR)){
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US).format(target.getTime());
+            return new SimpleDateFormat("yy-MM-dd HH:mm",Locale.US).format(target.getTime());
         }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==0){
             return new SimpleDateFormat("HH:mm",Locale.US).format(target.getTime());
         }else if(now.get(Calendar.DAY_OF_YEAR)-target.get(Calendar.DAY_OF_YEAR)==1){
