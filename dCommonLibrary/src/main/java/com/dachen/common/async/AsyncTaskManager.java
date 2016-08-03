@@ -21,7 +21,7 @@ import de.greenrobot1.event.EventBus;
  *
  * @author devin.hu
  * @version 1.0
- * @date 2013-9-24
+ * @since : 2013-9-24
  *
  **/
 public class AsyncTaskManager {

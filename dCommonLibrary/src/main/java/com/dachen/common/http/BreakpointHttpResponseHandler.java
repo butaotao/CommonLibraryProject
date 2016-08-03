@@ -20,7 +20,7 @@ import org.apache.http.client.HttpResponseException;
  * 
  * @author huxinwu
  * @version 1.0
- * @date 2014-3-12
+ * @since : 2014-3-12
  * 
  **/
 public class BreakpointHttpResponseHandler extends AsyncHttpResponseHandler {

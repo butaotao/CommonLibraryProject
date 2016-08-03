@@ -10,7 +10,7 @@ package com.dachen.common.async;
  * 
  * @author devin.hu
  * @version 1.0
- * @date 2013-9-29
+ * @since : 2013-9-29
  * 
  **/
 public class AsyncRequest {

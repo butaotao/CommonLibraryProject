@@ -7,11 +7,9 @@ import android.content.Context;
 import java.util.Stack;
 
 /**
- * 
-* @ClassName: AppManager 
-* @Description: TODO(应用程序Activity管理类：用于Activity管理和应用程序退出) 
+ * (应用程序Activity管理类：用于Activity管理和应用程序退出)
 * @author yehj  V1.1.0
-* @date 2015-7-30 下午5:21:26 
+* @since : 2015-7-30 下午5:21:26
 *
  */
 public class AppManager {

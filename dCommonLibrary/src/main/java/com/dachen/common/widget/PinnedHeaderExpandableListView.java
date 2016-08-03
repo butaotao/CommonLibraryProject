@@ -98,7 +98,7 @@ public class PinnedHeaderExpandableListView extends ExpandableListView implement
     /**
      * 给group添加点击事件监听
      * @param onGroupClickListener 监听
-     * @param isHeaderGroupClickable 表示header是否可点击<br/>
+     * @param isHeaderGroupClickable 表示header是否可点击
      * note : 当不想group可点击的时候，需要在OnGroupClickListener#onGroupClick中返回true，
      * 并将isHeaderGroupClickable设为false即可
      */

@@ -23,8 +23,6 @@ import android.widget.TextView;
  * 通用的ViewHolder，内部通过SparseArray保存ViewId-View键值对
  * 
  * @author gaozhuo
- * @date 2015年9月28日
- *
  */
 public class ViewHolder {
 	private static final String TAG = ViewHolder.class.getSimpleName();

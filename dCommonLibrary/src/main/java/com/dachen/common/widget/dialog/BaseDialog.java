@@ -19,7 +19,7 @@ import com.dachen.common.R;
  * [BaseDialog]
  * @author: devin.hu
  * @version: 1.0
- * @date:   Oct 17, 2013    
+ * @since :   Oct 17, 2013
  */
 public abstract class BaseDialog extends Dialog implements OnClickListener{
 	
@@ -186,7 +186,7 @@ public abstract class BaseDialog extends Dialog implements OnClickListener{
    /**
     * 
     *设置按钮1是否处于可点击状态
-    * @param enable
+    * @param enabled
     */
     public void setBtn1Enable(boolean enabled){
     	btn1.setEnabled(enabled);
@@ -195,7 +195,7 @@ public abstract class BaseDialog extends Dialog implements OnClickListener{
     /**
      * 
      *设置按钮2是否处于可点击状态
-     * @param enable
+     * @param enabled
      */
      public void setBtn2Enable(boolean enabled){
      	btn2.setEnabled(enabled);

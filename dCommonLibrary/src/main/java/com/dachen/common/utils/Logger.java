@@ -5,10 +5,8 @@ import android.util.Log;
 
 /**
  * 
- * @ClassName:  Logger   
- * @Description:TODO(日志规范)   
- * @author: yehj  
- * @date:   2015-8-14 下午3:20:45   
+ * @author : yehj
+ * @since :   2015-8-14 下午3:20:45
  * @version V1.0.0
  */
 

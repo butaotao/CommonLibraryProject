@@ -1,7 +1,5 @@
 package com.baoyz.swipemenulistview;
 
-import java.util.List;
-
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -10,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * 
  * @author baoyz
- * @date 2014-8-23
+ * @since  2014-8-23
  * 
  */
 public class SwipeMenuView extends LinearLayout implements OnClickListener {

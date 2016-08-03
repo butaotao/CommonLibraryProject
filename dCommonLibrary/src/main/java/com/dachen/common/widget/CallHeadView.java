@@ -16,7 +16,7 @@ import com.dachen.common.utils.DisplayUtil;
 /**
  * 
  * @author gaozhuo
- * @date 2015年12月23日
+ * @since : 2015年12月23日
  */
 public class CallHeadView extends RelativeLayout {
 	private Paint mPaint;

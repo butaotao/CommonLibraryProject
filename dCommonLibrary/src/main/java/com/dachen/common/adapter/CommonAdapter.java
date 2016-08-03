@@ -14,9 +14,6 @@ import java.util.List;
  * 通用适配器，适用于item为单一布局情况
  * 
  * @author gaozhuo
- * @date 2015年9月28日
- *
- * @param <T>
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
 	protected Context mContext;

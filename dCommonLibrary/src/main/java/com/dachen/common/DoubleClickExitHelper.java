@@ -11,10 +11,8 @@ import android.widget.Toast;
 
 /**
  * 
-* @ClassName: DoubleClickExitHelper 
-* @Description: TODO(双击退出) 
 * @author yehj
-* @date 2015-8-3 下午10:00:15 
+* @since : 2015-8-3 下午10:00:15
 * @version V1.0.0
  */
 public class DoubleClickExitHelper {

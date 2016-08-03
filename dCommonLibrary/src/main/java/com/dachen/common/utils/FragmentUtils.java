@@ -51,8 +51,6 @@ public class FragmentUtils {
 	 * Fragment的切换
 	 * 
 	 * @param fm
-	 * @param container
-	 *            容器的ID
 	 * @param fragments
 	 *            所有的Fragment
 	 * @param tagOfShow

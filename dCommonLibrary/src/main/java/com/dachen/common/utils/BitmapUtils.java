@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * 
  * @author gaozhuo
- * @date 2015年9月23日
+ * @since : 2015年9月23日
  *
  */
 public class BitmapUtils {

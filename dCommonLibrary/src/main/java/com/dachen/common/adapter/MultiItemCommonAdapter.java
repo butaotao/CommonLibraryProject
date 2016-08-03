@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 通用适配器，适用于item为多布局情况，比如聊天界面
  * @author gaozhuo
- * @date 2015年9月28日
+ * @since : 2015年9月28日
  *
  * @param <T>
  */

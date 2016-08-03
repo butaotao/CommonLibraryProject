@@ -14,7 +14,7 @@ import com.dachen.common.R;
  * [MessageDialog]
  * @author: devin.hu
  * @version: 1.0
- * @date:   Oct 17, 2013    
+ * @since :   Oct 17, 2013
  */
 public class MessageDialog extends BaseDialog {
 
@@ -48,7 +48,6 @@ public class MessageDialog extends BaseDialog {
 	/**
 	 * 可以取消的MessageDialog
 	 * @param context
-	 * @param
 	 * @param btnText1
 	 * @param btnText2
 	 * @param message
