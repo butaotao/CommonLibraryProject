@@ -15,66 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 封装Google Json解析库
- * 
- * 
- * com.google.gson包
- * 
- * Gson.class -> 
- * 		fromJson()将JsonText变成对象 toJson()将对象变成JsonText
- * 		toJsonTree()
- * GsonBuilder.class 创建Gson对象 -> Gson gson = new GsonBuilder().setVersion(1.0).create();
- * JsonArray.class 数组 -> 
- * JsonElement.class 元素 ->
- * 		(注：Google把key-value对应关系看作是一个一个的元素JsonElement.class)
- * 		isJsonArray() isJsonNull() isJsonObject() isJsonPrimitive()
- * JsonNull.class 空 ->
- * JsonObject.class 对象 ->
- * 		has(String) remove(String)
- * JsonParser.class 解析 -> 解析成JsonElement.class实例
- * 		JsonParser jsonParer = new JsonParser();
- *		通过jsonText和keyName得到JsonArray
- * 		JsonArray jsonArray = jsonParer.parse(jsonText).getAsJsonObject().getAsJsonArray("name");
- *		通过jsonText和keyName得到value值
- * 		String manager = jsonparer.parse(jsonText).getAsJsonObject().get("manager").getAsString();
- * JsonPrimitive.class 原始 ->
- * 		isBoolean() isNumber() isString()
- * JsonStreamParser.class 遍历 ->
- * 		hasNext() next() remove()
- * TypeAdapter.class 类型适配 ->
- * TypeAdapterFactory.class 类型适配工厂 ->
- * 
- * 
- *
- * com.google.gson.stream包
- * 
- * .stream.JsonReader.class 读/遍历 ->
- * 		nextInt() nextBoolean() nextDouble() hasNext() 
- * .stream.JsonScope.class 余地
- * .stream.JsonToken.class 记号
- * .stream.JsonWirter.class 写 ->
- * 
- * 
- * {"id":1001,"name":"张三"} 
- * 将JSON字符串转换为 JavaBean
- * User user2 = gson.fromJson(userString, User.class);
- * 
- *  
- *  .setVersion(1.0)    //有的字段不是一开始就有的,会随着版本的升级添加进来,
- *  那么在进行序列化和返序列化的时候就会根据版本号来选择是否要序列化.  
- * 
- * 
- *   // 带泛型的list转化为json
-        String s2 = gson.toJson(list);
- *
- * 
- * 
- * 转为Map<K, V>
- * 
- * 	Gson gson = new Gson();
- *  Map<String, String> map = gson.fromJson(string, new TypeToken<Map<String, String>>(){}.getType());
- *  
- * 
  * @author LMC
  *
  */
@@ -91,19 +31,6 @@ public class GJson {
 	private String jsonString = null;
 
 	/**
-	 * 仅支持{...}对象和[...]数组
-	 * 
-	 * 数组可能有如下情况：
-	 * [{...},{...}]
-	 * ["a","b","c"]
-	 * [true,false,true]
-	 * [34,45,56]
-	 * [56.98,0.988,78.09]
-	 * 
-	 * 下面不是数组：
-	 * ['a','b','c']
-	 * ["a":23,"b",45] >> isJson() == true
-	 * 
 	 * @param jsonObjectStringOrJsonArrayString
 	 */
 	public GJson(String jsonObjectStringOrJsonArrayString) {
@@ -182,7 +109,6 @@ public class GJson {
 	 * 将对象里的String属性删除两旁空格(测试通过)
 	 * 
 	 * @param <T>
-	 * @param object
 	 * @param clazz
 	 * @return
 	 */
@@ -749,12 +675,7 @@ public class GJson {
 	}
 
 	/**
-	 * 判断string是否为标准的JSON格式 (验证通过)
-	 * 
-	 * 采用isJson()方法判断[{...},[...]]字符串为真。
-	 * 
-	 * [{...},{...}] 也为JSON字符串吗？要验证一下 。答：为真。
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isJson() {
@@ -800,11 +721,7 @@ public class GJson {
 	}
 
 	/**
-	 * 将对象转换成Json字符串 (验证通过)
-	 * 
-	 * 将实例转成如下字符串：
-	 * {"name":"aaaa","id":11111}
-	 * 
+	 *
 	 * @param Object
 	 * @return
 	 */
@@ -816,31 +733,8 @@ public class GJson {
 		return gson.toJson(Object);
 	}
 
-	//	public static String toJsonString(Object Object, Type type) {
-	//		if (Object == null) {
-	//			return null;
-	//		}
-	//
-	//		if (type == null) {
-	//			return null;
-	//		}
-	//
-	//		Gson gson = new Gson();
-	//		return gson.toJson(Object, type);
-	//	}
-
 	/**
-	 * 将JsonElement转换成Json字符串(验证通过)
-	 * 
-	 * 如果JsonElement是Object类型，则得到{"name":"aaaa","id":11111}
-	 * 如果JsonElement是Array类型，则得到[{...},{...}]
-	 * 
-	 * 如果JsonElement是String类型，则得到"text.aaaa.bbbb"
-	 * 如果JsonElement是String类型，则得到""
-	 * 如果JsonElement是Null类型，则得到null
-	 * 如果JsonElement是Number类型，则得到-200
-	 * 如果JsonElement是Boolean类型，则得到true
-	 * 
+	 *
 	 * @param jsonElement
 	 * @return
 	 */
@@ -853,9 +747,6 @@ public class GJson {
 	}
 
 	/**
-	 * 由json字符串和json键名转成Class<T>实例，可选是否删除两旁空格(测试通过)
-	 * 
-	 * @param <T>
 	 * @param keyName
 	 * @param jsonObjectString
 	 * @param clszz
@@ -932,9 +823,7 @@ public class GJson {
 	}
 
 	/**
-	 * 由json字符串和json键名转成Class<T>实例(测试通过)
-	 *  
-	 * @param <T>
+	 *
 	 * @param jsonObjectString
 	 * @param keyName
 	 * @param clszz
@@ -945,9 +834,6 @@ public class GJson {
 	}
 
 	/**
-	 * 将{...}转成Class<T>，可选是否删除两旁空格(测试通过)
-	 * 
-	 * @param <T>
 	 * @param jsonObjectString
 	 * @param clszz
 	 * @param mode
@@ -1001,9 +887,6 @@ public class GJson {
 	}
 
 	/**
-	 * 将{...}转成Class<T>(测试通过)
-	 * 
-	 * @param <T>
 	 * @param jsonObjectString
 	 * @param clszz
 	 * @return
@@ -1013,9 +896,7 @@ public class GJson {
 	}
 
 	/**
-	 * 由json字符串和json键名转成List<T>实例，可选是否删除两旁空格(测试通过)
-	 * 
-	 * @param <T>
+	 *
 	 * @param jsonObjectString
 	 * @param keyName
 	 * @param clszz
@@ -1116,8 +997,7 @@ public class GJson {
 	}
 
 	/**
-	 * 由json字符串和json键名转成List<T>实例(测试通过)
-	 * 
+	 *
 	 * @param <T>
 	 * @param jsonObjectString
 	 * @param keyName
@@ -1129,28 +1009,7 @@ public class GJson {
 	}
 
 	/**
-	 * 将[...]转成List<T>，可选是否删除两旁空格(测试通过)
-	 * 
-	 * String jsonArrayString = "[56.98,0.988,78.09]";
-	 * 解析代码：
-	 * List<Double> list = GJson.parseArray(jsonArrayString, Double.class);
-	 * 
-	 * String jsonArrayString = "[34,45,56]";
-	 * 解析代码：
-	 * List<Integer> list = GJson.parseArray(jsonArrayString, Integer.class);
-	 * 
-	 * String jsonArrayString = "[true,false,true]";
-	 * 解析代码：
-	 * List<Boolean> list = GJson.parseArray(jsonArrayString, Boolean.class);
-	 * 
-	 * String jsonArrayString = "[\"a\",\"b\",\"c\"]";
-	 * 解析代码：
-	 * List<String> list = GJson.parseArray(jsonArrayString, String.class);
-	 * 
-	 * String jsonArrayString = "[{\"a\":\"ccc\",\"b\":34,\"c\":true},{\"a\":\"case\",\"b\":5998,\"c\":true}]";
-	 * 解析代码：
-	 * List<GJsonSub> list = GJson.parseArray(jsonArrayString, GJsonSub.class);
-	 * 
+	 *
 	 * @param <T>
 	 * @param jsonArrayString
 	 * @param clszz
@@ -1222,28 +1081,7 @@ public class GJson {
 	}
 
 	/**
-	 * 将[...]转成List<T>
-	 * 
-	 * String jsonArrayString = "[56.98,0.988,78.09]";
-	 * 解析代码：
-	 * List<Double> list = GJson.parseArray(jsonArrayString, Double.class);
-	 * 
-	 * String jsonArrayString = "[34,45,56]";
-	 * 解析代码：
-	 * List<Integer> list = GJson.parseArray(jsonArrayString, Integer.class);
-	 * 
-	 * String jsonArrayString = "[true,false,true]";
-	 * 解析代码：
-	 * List<Boolean> list = GJson.parseArray(jsonArrayString, Boolean.class);
-	 * 
-	 * String jsonArrayString = "[\"a\",\"b\",\"c\"]";
-	 * 解析代码：
-	 * List<String> list = GJson.parseArray(jsonArrayString, String.class);
-	 * 
-	 * String jsonArrayString = "[{\"a\":\"ccc\",\"b\":34,\"c\":true},{\"a\":\"case\",\"b\":5998,\"c\":true}]";
-	 * 解析代码：
-	 * List<GJsonSub> list = GJson.parseArray(jsonArrayString, GJsonSub.class);
-	 * 
+	 *
 	 * @param <T>
 	 * @param jsonArrayString
 	 * @param clszz
@@ -1254,10 +1092,6 @@ public class GJson {
 	}
 
 	/**
-	 * Arrays.asList(array)得到的List<T>不支持remove()方法操作，所以再创建new ArrayList<T>()一个包含起来
-	 * 
-	 * 常常使用Arrays.asLisvt()后调用add，remove这些method时出现java.lang.UnsupportedOperationException异常
-	 * 
 	 * @param array
 	 * @return
 	 */

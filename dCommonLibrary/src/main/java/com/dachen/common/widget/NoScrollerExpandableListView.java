@@ -9,7 +9,7 @@ import android.widget.ExpandableListView;
  * 
  * @author devin.hu
  * @version 1.0
- * @date 2014-1-20
+ * @since : 2014-1-20
  * 
  **/
 public class NoScrollerExpandableListView extends ExpandableListView {

@@ -9,7 +9,7 @@ import android.widget.ListView;
  * 
  * @author devin.hu
  * @version 1.0
- * @date 2014-1-20
+ * @since : 2014-1-20
  * 
  **/
 public class NoScrollerListView extends ListView {

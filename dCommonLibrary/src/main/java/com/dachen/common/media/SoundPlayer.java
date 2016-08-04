@@ -9,7 +9,7 @@ import android.net.Uri;
 /**
  * 
  * @author gaozhuo
- * @date 2015年12月2日
+ * @since : 2015年12月2日
  *
  */
 public class SoundPlayer {

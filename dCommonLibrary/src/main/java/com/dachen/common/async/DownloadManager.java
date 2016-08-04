@@ -22,33 +22,10 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * [下载器管理类，支持并发、暂停、继续、删除任务操作以及断点续传]
- * 
-	DownloadManager downloadMgr = DownloadManager.getInstance();
-	downloadMgr.setDownLoadCallback(new DownLoadCallback(){
-		
-		@Override
-		public void onLoading(String url, int bytesWritten, int totalSize) {
-			super.onLoading(url, bytesWritten, totalSize);
-		}
-		
-		@Override
-		public void onSuccess(String url) {
-			super.onSuccess(url);
-		}
-		
-		@Override
-		public void onFailure(String url, String strMsg) {
-			super.onFailure(url, strMsg);
-		}
-	});
-	
-	//添加下载任务
-	downloadMgr.addHandler(url);
- * 
+ *
  * @author huxinwu
  * @version 1.0
- * @date 2014-3-12
+ * @since : 2014-3-12
  * 
  **/
 public class DownloadManager extends Thread {
@@ -453,7 +430,7 @@ public class DownloadManager extends Thread {
 	 * 
 	 * @author huxinwu
 	 * @version 1.0
-	 * @date 2014-3-13
+	 * @since : 2014-3-13
 	 * 
 	 **/
 	private class HandlerQueue {

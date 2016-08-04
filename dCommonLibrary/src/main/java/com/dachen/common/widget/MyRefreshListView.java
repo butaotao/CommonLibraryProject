@@ -17,10 +17,8 @@ import com.handmark.pulltorefresh.library.extras.SoundPullEventListener;
 
 /**
  * 
-* @ClassName: MyRefreshListView 
-* @Description: TODO(扩展下拉刷新) 
 * @author yehj
-* @date 2015-8-6 上午12:28:17 
+* @since : 2015-8-6 上午12:28:17
 * @version V1.0.0
  */
 public class MyRefreshListView extends PullToRefreshListView {
@@ -64,15 +62,12 @@ public class MyRefreshListView extends PullToRefreshListView {
 	
 	
 	/**
-	 * 
-	* @date 2015-7-9
+	 * (设置刷新动画的声音)
+	* @since : 2015-7-9
 	* @version V1.3.0 
 	* @author yehj
-	* @Description: TODO(设置刷新动画的声音) 
-	* @param @param context
-	* @param @param resId    设定文件 
-	* @return void    返回类型 
-	* @throws
+	* @param  context
+	* @param  resId    设定文件
 	 */
 	public void  setSoundPullEventListener(Context context,State state ,int resId){
 		SoundPullEventListener  soundPullEventListener=new SoundPullEventListener(context);
@@ -98,7 +93,7 @@ public class MyRefreshListView extends PullToRefreshListView {
 	
 	/**
 	 * 手动清除加载提示
-	 * @desc  一般触屏上下拉请使用onRefreshComplete方法
+	 *  一般触屏上下拉请使用onRefreshComplete方法
 	 */
 	public void reset(){
 		super.onRefreshComplete();

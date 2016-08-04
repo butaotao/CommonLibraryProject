@@ -25,7 +25,7 @@ import java.io.StreamCorruptedException;
  * 
  * @author huxinwu
  * @version 1.0
- * @date 2014-3-5
+ * @since : 2014-3-5
  * 
  **/
 public class CacheManager {

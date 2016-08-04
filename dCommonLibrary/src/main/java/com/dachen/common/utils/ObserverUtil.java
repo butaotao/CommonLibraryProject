@@ -7,20 +7,6 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 管理者able
- * 
- * 观察者使用方式：
- * 第一步：
- * implements com.dachen.common.util.Observer
- * 第二步:
- * mObserverUtil.addObserver(UserTagManagerUI.class, this);
- * 第三步:
- * @Override
-	protected void onDestroy() {
-		mObserverUtil.removeObserver(UserTagManagerUI.class, this);
-		super.onDestroy();
-	}
-
  * @author lmc
  *
  */
@@ -72,7 +58,7 @@ public class ObserverUtil {
 	/**
 	 * 添加Observer
 	 * 
-	 * @param observerClass 被观察的Class<?>
+	 * @param observerClass 
 	 * @param observer 事件
 	 */
 	public void addObserver(Class<?> observerClass, Observer observer) {
@@ -163,7 +149,7 @@ public class ObserverUtil {
 	/**
 	 * 移除Observer
 	 * 
-	 * @param observerClass 被观察的Class<?>
+	 * @param observerClass 
 	 * @param observer
 	 */
 	public void removeObserver(Class<?> observerClass, Observer observer) {

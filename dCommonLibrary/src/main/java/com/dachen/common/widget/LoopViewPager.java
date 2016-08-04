@@ -33,11 +33,7 @@ import java.util.ArrayList;
 
 /**
  * A ViewPager subclass enabling infinte scrolling of the viewPager elements
- * 
- * When used for paginating views (in opposite to fragments), no code changes
- * should be needed only change xml's from <android.support.v4.view.ViewPager>
- * to <com.imbryk.viewPager.LoopViewPager>
- * 
+ *
  * If "blinking" can be seen when paginating to first or last view, simply call
  * seBoundaryCaching( true ), or change DEFAULT_BOUNDARY_CASHING to true
  * 
@@ -47,8 +43,12 @@ import java.util.ArrayList;
  * 
  * The original adapter creates 4 items: [0,1,2,3] The modified adapter will
  * have to create 6 items [0,1,2,3,4,5] with mapping
- * realPosition=(position-1)%count [0->3, 1->0, 2->1, 3->2, 4->3, 5->0]
+ * realPosition=(position-1)%count
  */
+//When used for paginating views (in opposite to fragments), no code changes
+//should be needed only change xml's from <android.support.v4.view.ViewPager>
+//to <com.imbryk.viewPager.LoopViewPager>
+//[0->3, 1->0, 2->1, 3->2, 4->3, 5->0]
 public class LoopViewPager extends ViewPager {
 
 	private static final boolean DEFAULT_BOUNDARY_CASHING = false;

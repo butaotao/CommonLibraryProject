@@ -12,7 +12,7 @@ import android.util.LruCache;
  * 
  * @author huxinwu
  * @version 1.0
- * @date 2014-11-6
+ * @since : 2014-11-6
  * 
  **/
 public class LruCacheManager {

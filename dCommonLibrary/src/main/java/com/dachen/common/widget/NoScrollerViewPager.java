@@ -15,7 +15,7 @@ import android.view.MotionEvent;
  * 
  * @author devin.hu
  * @version 1.0
- * @date 2014-11-17
+ * @since : 2014-11-17
  * 
  **/
 public class NoScrollerViewPager extends ViewPager {

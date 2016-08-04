@@ -17,9 +17,14 @@ android {
         }
     }
 }
-
+repositories {
+    maven {
+        url  "https://dl.bintray.com/mcp98252302/maven"
+    }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':ImSdk')
+//    compile 'com.dachen.library:ImSdk:1.0.0'
     compile project(':videoConferencingLibrary')
 }
