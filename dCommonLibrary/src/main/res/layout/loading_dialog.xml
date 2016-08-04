@@ -12,7 +12,7 @@
         android:id="@+id/img"  
         android:layout_width="wrap_content"   
         android:layout_height="wrap_content"   
-        android:background="@anim/login_loading"
+        android:background="@drawable/login_loading"
         android:layout_gravity="center" 
         />  
     <TextView   
