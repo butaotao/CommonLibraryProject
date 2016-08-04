@@ -13,6 +13,7 @@ include ':ImVideo'
 include ':ImSdk'
 include ':dCommonLibrary'
 include ':meidecineLibrary'
+include ':cordovaLib'
 
 project(':meidecineLibrary').projectDir = new File(rootDir, "../MedicineProject/meidecineLibrary")
 project(':ImSdk').projectDir = new File(rootDir, "../ImSdkProject/ImSdk")
