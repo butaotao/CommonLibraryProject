@@ -61,5 +61,10 @@ public class SoundPlayer {
 			mMediaPlayer = null;
 		}
 	}
-
+	public boolean isPlaying(){
+		if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+			return true;
+		}
+		return false;
+	}
 }
