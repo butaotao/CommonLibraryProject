@@ -1,10 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dachen.common">
+<manifest package="com.dachen.common"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
         android:label="@string/lib_name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        tools:replace="android:label"
+        >
 
     </application>
 
