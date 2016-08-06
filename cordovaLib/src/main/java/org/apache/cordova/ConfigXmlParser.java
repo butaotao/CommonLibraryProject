@@ -19,16 +19,17 @@
 
 package org.apache.cordova;
 
+import android.content.Context;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.content.Context;
 
 public class ConfigXmlParser {
     private static String TAG = "ConfigXmlParser";
@@ -60,7 +61,15 @@ public class ConfigXmlParser {
                 return;
             }
         }
-        parse(action.getResources().getXml(id));
+//        parse(action.getResources().getXml(id));
+        try {
+//            parse(action.getAssets().openXmlResourceParser("cordova_config.xml"));
+            XmlPullParser tParser=XmlPullParserFactory.newInstance().newPullParser();
+            tParser.setInput(action.getAssets().open("cordova_config.xml"),"UTF-8");
+            parse(tParser);
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     boolean insideFeature = false;
