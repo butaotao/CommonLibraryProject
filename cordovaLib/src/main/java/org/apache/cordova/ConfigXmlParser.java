@@ -52,15 +52,15 @@ public class ConfigXmlParser {
 
     public void parse(Context action) {
         // First checking the class namespace for config.xml
-        int id = action.getResources().getIdentifier("config", "xml", action.getClass().getPackage().getName());
-        if (id == 0) {
-            // If we couldn't find config.xml there, we'll look in the namespace from AndroidManifest.xml
-            id = action.getResources().getIdentifier("config", "xml", action.getPackageName());
-            if (id == 0) {
-                LOG.e(TAG, "res/xml/config.xml is missing!");
-                return;
-            }
-        }
+//        int id = action.getResources().getIdentifier("config", "xml", action.getClass().getPackage().getName());
+//        if (id == 0) {
+//            // If we couldn't find config.xml there, we'll look in the namespace from AndroidManifest.xml
+//            id = action.getResources().getIdentifier("config", "xml", action.getPackageName());
+//            if (id == 0) {
+//                LOG.e(TAG, "res/xml/config.xml is missing!");
+//                return;
+//            }
+//        }
 //        parse(action.getResources().getXml(id));
         try {
 //            parse(action.getAssets().openXmlResourceParser("cordova_config.xml"));
