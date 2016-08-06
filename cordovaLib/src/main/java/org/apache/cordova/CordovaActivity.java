@@ -19,7 +19,6 @@
 package org.apache.cordova;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +27,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,7 +75,7 @@ import java.util.Locale;
  * deprecated in favor of the config.xml file.
  *
  */
-public class CordovaActivity extends Activity {
+public class CordovaActivity extends FragmentActivity {
     public static String TAG = "CordovaActivity";
 
     // The webview for our app
