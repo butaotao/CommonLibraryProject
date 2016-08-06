@@ -3,6 +3,7 @@ package com.dachen.common.toolbox;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
@@ -64,19 +65,22 @@ public class DCommonRequest extends StringRequest{
             StringBuilder label = new StringBuilder();
             try {
                 PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                if(pInfo.packageName.equals("com.dachen.dgroupdoctor")){
-                    label.append("DGroupDoctor");
-                    label.append("/");
-                }else if(pInfo.packageName.equals("com.dachen.dgrouppatient")){
-                    label.append("DGroupPatient");
-                    label.append("/");
-                }else if(pInfo.packageName.equals("com.bestunimed.dgroupdoctor")){
-                    label.append("DGroupDoctor_BDJL");
-                    label.append("/");
-                }else if(pInfo.packageName.equals("com.bestunimed.dgrouppatient")){
-                    label.append("DGroupPatient_BDJL");
-                    label.append("/");
+                if(!TextUtils.isEmpty(DCommonSdk.reqLabel)){
+                    label.append(DCommonSdk.reqLabel).append("/");
                 }
+//                if(pInfo.packageName.equals("com.dachen.dgroupdoctor")){
+//                    label.append("DGroupDoctor");
+//                    label.append("/");
+//                }else if(pInfo.packageName.equals("com.dachen.dgrouppatient")){
+//                    label.append("DGroupPatient");
+//                    label.append("/");
+//                }else if(pInfo.packageName.equals("com.bestunimed.dgroupdoctor")){
+//                    label.append("DGroupDoctor_BDJL");
+//                    label.append("/");
+//                }else if(pInfo.packageName.equals("com.bestunimed.dgrouppatient")){
+//                    label.append("DGroupPatient_BDJL");
+//                    label.append("/");
+//                }
                 label.append(pInfo.versionName);
             } catch (PackageManager.NameNotFoundException e) {
             }
