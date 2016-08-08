@@ -85,4 +85,8 @@ public class SystemWebView extends WebView implements CordovaWebViewEngine.Engin
         }
         return super.dispatchKeyEvent(event);
     }
+
+    public SystemWebViewEngine getSystemWebViewEngine(){
+        return parentEngine;
+    }
 }

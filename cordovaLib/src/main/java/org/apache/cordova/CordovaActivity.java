@@ -150,6 +150,12 @@ public class CordovaActivity extends FragmentActivity {
         if ("media".equals(volumePref.toLowerCase(Locale.ENGLISH))) {
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
         }
+
+        inited();
+    }
+
+    protected void inited(){
+
     }
 
     @SuppressWarnings("deprecation")
