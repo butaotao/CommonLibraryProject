@@ -26,7 +26,7 @@ public class VolleyUtil {
 			synchronized (VolleyUtil.class) {
 				if (requestQueue == null) {
 					requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-//					requestQueue.start();
+					requestQueue.start();
 				}
 			}
 		}
