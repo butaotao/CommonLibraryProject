@@ -42,6 +42,12 @@ public class ViewHolder {
 		mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
 		mConvertView.setTag(this);
 	}
+	
+	public ViewHolder(Context context, View convertView) {
+		mContext = context;
+		this.mViews = new SparseArray<View>();
+		mConvertView =convertView;
+	}
 
 	public static ViewHolder get(Context context, View convertView, ViewGroup parent, int layoutId, int position) {
 		if (convertView == null) {
