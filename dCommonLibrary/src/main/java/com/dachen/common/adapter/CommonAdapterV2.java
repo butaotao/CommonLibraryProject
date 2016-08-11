@@ -13,6 +13,9 @@ public abstract class CommonAdapterV2<T> extends BaseAdapter {
     protected Context mContext;
     protected List<T> mData;
 
+    public CommonAdapterV2(Context mContext) {
+        this(mContext, null);
+    }
     public CommonAdapterV2(Context mContext, List<T> mData) {
         this.mContext = mContext;
         if(mData==null)
