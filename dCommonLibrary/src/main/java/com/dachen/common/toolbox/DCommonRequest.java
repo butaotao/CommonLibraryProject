@@ -41,7 +41,14 @@ public class DCommonRequest extends StringRequest{
 
     @Override
     protected void deliverResponse(String response) {
-        EmptyResult res= JSON.parseObject(response,EmptyResult.class);
+        EmptyResult res;
+        try {
+            res = JSON.parseObject(response,EmptyResult.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            super.deliverResponse(response);
+            return;
+        }
         boolean b=false;
         if(res!=null){
             if(res.resultCode== RequestConsts.ERROR_TOKEN_ERROR||res.resultCode== RequestConsts.ERROR_TOKEN_NONE){
