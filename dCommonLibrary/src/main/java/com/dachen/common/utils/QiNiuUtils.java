@@ -19,6 +19,8 @@ public class QiNiuUtils {
     public static final String BUCKET_DOCTOR="doctor";
     public static final String BUCKET_TEL_RECORD="telrecord";
     public static final String BUCKET_AVATAR="avatar";
+    public static final String BUCKET_MDT_AVATAR="mdtavatar";
+    public static final String BUCKET_MDT_CASE="mdtcase";
     public static final String BUCKET_RESOURCE="resource";
 
     public static final String SURFIX_SMALL="_small";
