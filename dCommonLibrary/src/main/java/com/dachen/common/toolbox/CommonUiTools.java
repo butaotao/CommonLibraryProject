@@ -16,10 +16,30 @@ import com.dachen.common.widget.dialog.MessageDialog;
  * Created by Administrator on 2016/5/24.
  */
 public class CommonUiTools {
-    public static void appVersionUpdate(final Context context, String resultMsg) {
+
+    public static CommonUiTools commonUiTools;
+    private  static MessageDialog messageDialog;
+    private CommonUiTools(){
+
+    }
+    public static CommonUiTools getInstance(){
+        if(commonUiTools == null){
+            synchronized (CommonUiTools.class){
+                commonUiTools=new CommonUiTools();
+            }
+        }
+        return commonUiTools;
+    }
+
+
+    public  void appVersionUpdate(final Context context, String resultMsg) {
 
         if(null!=context&&context instanceof  Activity){
-            final MessageDialog messageDialog = new MessageDialog(context, "忽略", "去下载", resultMsg);
+            if(messageDialog == null){
+                messageDialog = new MessageDialog(context, "忽略", "去下载", resultMsg);
+            }else{
+                messageDialog.setMessage(resultMsg);
+            }
             messageDialog.setBtn1ClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
