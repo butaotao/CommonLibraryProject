@@ -1,4 +1,4 @@
-include ':rTRoutineLib', ':cmsLiveLibrary', ':rtmpResourceLib'
+include ':rTRoutineLib', ':cmsLiveLibrary', ':rtmpResourceLib', ':teleconference'
 include ':vitamioLibrary'
 include ':numberPickerLibrary'
 include ':pickerView_Library'

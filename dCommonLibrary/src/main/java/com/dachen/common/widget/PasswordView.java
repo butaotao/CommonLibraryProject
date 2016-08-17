@@ -7,6 +7,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -61,7 +62,10 @@ public class PasswordView extends RelativeLayout implements View.OnClickListener
 
     public void setHint(String hint) {
         mClearEditText.setHint(hint);
+    }
 
+    public void setText(String text) {
+        mClearEditText.setText(text);
     }
 
     public void addTextChangedListener(TextWatcher textWatcher) {
@@ -101,5 +105,9 @@ public class PasswordView extends RelativeLayout implements View.OnClickListener
         } else {
             mShowPassWordIv.setVisibility(VISIBLE);
         }
+    }
+
+    public EditText getEditView(){
+        return mClearEditText;
     }
 }
