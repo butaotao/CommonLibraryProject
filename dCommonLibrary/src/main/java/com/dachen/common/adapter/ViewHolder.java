@@ -47,6 +47,7 @@ public class ViewHolder {
 		mContext = context;
 		this.mViews = new SparseArray<View>();
 		mConvertView =convertView;
+		mConvertView.setTag(this);
 	}
 
 	public static ViewHolder get(Context context, View convertView, ViewGroup parent, int layoutId, int position) {
@@ -55,6 +56,14 @@ public class ViewHolder {
 		} else {
 			ViewHolder holder = (ViewHolder) convertView.getTag();
 			holder.mPosition = position;
+			return holder;
+		}
+	}
+	public static ViewHolder get(Context context, View convertView) {
+		if (convertView.getTag() == null) {
+			return new ViewHolder(context, convertView);
+		} else {
+			ViewHolder holder = (ViewHolder) convertView.getTag();
 			return holder;
 		}
 	}
