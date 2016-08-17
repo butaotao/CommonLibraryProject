@@ -315,6 +315,25 @@ public class TimeUtils {
 	}
 
 	/**
+	 * 获取精简的日期
+	 *
+	 * @param time
+	 * @return
+	 */
+	public static String getSimpleDate1(String time) {
+		SimpleDateFormat formater = new SimpleDateFormat("MM-dd");
+		Date date = null;
+		try {
+			date = f_format.parse(time);
+			return formater.format(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+
+	/**
 	 * 
 	 * @param time
 	 * @return
