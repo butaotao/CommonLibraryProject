@@ -125,7 +125,7 @@ public class MessageDialog extends BaseDialog {
 	 * @param text 消息文本
 	 */
 	@SuppressWarnings("unused")
-	private void setMessage(String text) {
+	public void setMessage(String text) {
 		setMessage(text, false);
 	}
 
