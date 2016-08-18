@@ -314,24 +314,18 @@ public class TimeUtils {
 		}
 	}
 
+
 	/**
-	 * 获取精简的日期
+	 * 获取yyyy-MM-dd HH:mm格式的日期时间
 	 *
-	 * @param time
+	 * @param milliseconds
 	 * @return
 	 */
-	public static String getSimpleDate1(String time) {
-		SimpleDateFormat formater = new SimpleDateFormat("MM-dd");
-		Date date = null;
-		try {
-			date = f_format.parse(time);
-			return formater.format(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return "";
-		}
+	public static String getSimpleDate1(String milliseconds) {
+		SimpleDateFormat formater = new SimpleDateFormat("MM月dd日", Locale.CHINESE);
+		Date date = new Date(f_str_2_long(milliseconds));
+		return formater.format(date);
 	}
-
 
 	/**
 	 * 
