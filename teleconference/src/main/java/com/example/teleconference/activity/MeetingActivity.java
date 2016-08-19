@@ -7,6 +7,13 @@ import android.os.Bundle;
 import com.dachen.common.utils.Logger;
 import com.example.teleconference.AgoraManager;
 import com.example.teleconference.R;
+import com.example.teleconference.bean.User;
+import com.example.teleconference.views.RoomView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -26,6 +33,7 @@ public class MeetingActivity extends Activity {
     private AgoraManager mAgoraManager;
     private RtcEngine mRtcEngine;
     private RtcEngineEventHandler mRtcEngineEventHandler;
+    private RoomView mRoomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +42,30 @@ public class MeetingActivity extends Activity {
 
         initVariables();
 
+        initView();
+
         initRtcEngine();
 
         joinChannel();
+    }
+
+    private void initView() {
+        mRoomView = (RoomView) findViewById(R.id.roomView);
+
+        List<List<User>> data = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            List<User> userList = new ArrayList<>();
+            for(int j = 0; j < 10; j++){
+                User user = new User();
+                user.id = (i+ 1) *(j + 1) + "";
+                user.name = "王宝强 " + (i+ 1) *(j + 1);
+                user.head = "http://h.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=1904b984fdfaaf5190ee89eded3dff8b/aec379310a55b3193cdb93d743a98226cffc1775.jpg";
+                userList.add(user);
+            }
+            data.add(userList);
+        }
+
+        mRoomView.setData(data);
     }
 
     /**
@@ -52,6 +81,11 @@ public class MeetingActivity extends Activity {
         mDynamicKey = intent.getStringExtra("dynamic_key");
         mChannelId = intent.getStringExtra("channel_id");
         mUserId = intent.getStringExtra("user_id");
+
+        if (!ImageLoader.getInstance().isInited()) {
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
+            ImageLoader.getInstance().init(config);
+        }
     }
 
     private void initRtcEngine() {
