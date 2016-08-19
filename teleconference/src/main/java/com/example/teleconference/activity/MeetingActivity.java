@@ -3,11 +3,14 @@ package com.example.teleconference.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.dachen.common.utils.Logger;
 import com.example.teleconference.AgoraManager;
 import com.example.teleconference.R;
 import com.example.teleconference.bean.User;
+import com.example.teleconference.views.FloatingView;
 import com.example.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -34,6 +37,9 @@ public class MeetingActivity extends Activity {
     private RtcEngine mRtcEngine;
     private RtcEngineEventHandler mRtcEngineEventHandler;
     private RoomView mRoomView;
+    private TextView mLeftBtn;
+    private TextView mTitle;
+    private TextView mRightBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,19 @@ public class MeetingActivity extends Activity {
     }
 
     private void initView() {
+        mLeftBtn = (TextView) findViewById(R.id.left_btn);
+        mLeftBtn.setText("隐藏");
+        mLeftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hide();
+            }
+        });
+        mTitle = (TextView) findViewById(R.id.title);
+        mTitle.setText("电话会议");
+        mRightBtn = (TextView) findViewById(R.id.right_btn);
+        mRightBtn.setText("全部静音");
+
         mRoomView = (RoomView) findViewById(R.id.roomView);
 
         List<List<User>> data = new ArrayList<>();
@@ -66,6 +85,12 @@ public class MeetingActivity extends Activity {
         }
 
         mRoomView.setData(data);
+    }
+
+    private void hide() {
+        FloatingView floatingView = new FloatingView(this);
+        floatingView.show();
+
     }
 
     /**
