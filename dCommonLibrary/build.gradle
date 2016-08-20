@@ -24,6 +24,7 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     //    compile project(':meidecineLibrary')
     compile project(':pullToRefreshViewsLibrary')
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 //    compile 'com.dachen.library:pullToRefreshViewsLibrary:1.0.0'
 }
 
