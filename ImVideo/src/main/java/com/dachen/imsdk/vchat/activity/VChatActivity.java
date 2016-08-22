@@ -763,10 +763,8 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
 
 
         List<MemberInfo> memberList = ImVideo.getInstance().mQavsdkControl.getMemberList();
+
         if (memberList != null && memberList.size() == 1) {
-            //最后一个退出视频通话的人发送通话结束消息
-            sendTextMessage("本次视频通话已结束");
-            //当最后一个人退出房间时，对于已经收到邀请但还没有进来的人需要取消呼叫
             String toId = "";
             for (UserInfo u : VChatManager.getInstance().allUserList) {
                 if (ImUtils.getLoginUserId().equals(u.id)) {
@@ -774,7 +772,14 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
                 }
                 toId += u.id + "|";
             }
-            cancelCall(toId);
+            if(memberList.size()==1){
+                //最后一个退出视频通话的人发送通话结束消息
+                sendTextMessage("本次视频通话已结束");
+                //当最后一个人退出房间时，对于已经收到邀请但还没有进来的人需要取消呼叫
+                exitCall(toId,EventType.V_CHAT_CALLER_CANCEL);
+            }else{
+                exitCall(toId,EventType.V_CHAT_EXIT);
+            }
         }
 
 
@@ -785,7 +790,7 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
     /**
      * 取消呼叫
      */
-    private void cancelCall(String toIds) {
+    private void exitCall(String toIds,int eventId) {
         if(TextUtils.isEmpty(toIds)){
             return;
         }
@@ -796,7 +801,7 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
         p.roomId = VChatManager.getInstance().curRoomId;
         Map<String, String> map = new HashMap<>();
         map.put("invite", JSON.toJSONString(p));
-        EventSender.getInstance(this).sendEvent(EventType.V_CHAT_CALLER_CANCEL, toIds, map);
+        EventSender.getInstance(this).sendEvent(eventId, toIds, map);
     }
 
     private void updateTime() {
