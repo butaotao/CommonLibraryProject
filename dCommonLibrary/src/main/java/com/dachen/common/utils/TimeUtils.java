@@ -95,6 +95,12 @@ public class TimeUtils {
 		return s_format.format(new Date(timestamp));
 	}
 
+
+	public static String s_long_2_str1(long timestamp) {
+		SimpleDateFormat ss_format = new SimpleDateFormat("MM月dd日", Locale.CHINA);
+		return ss_format.format(new Date(timestamp));
+	}
+
 	public static String f_long_2_str(long timestamp) {
 		return f_format.format(new Date(timestamp));
 	}
