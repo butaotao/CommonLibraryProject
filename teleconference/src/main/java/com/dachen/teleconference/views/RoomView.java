@@ -1,4 +1,4 @@
-package com.example.teleconference.views;
+package com.dachen.teleconference.views;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.dachen.common.utils.DisplayUtil;
-import com.example.teleconference.R;
-import com.example.teleconference.adapter.RoomPagerAdapter;
-import com.example.teleconference.bean.User;
+import com.dachen.teleconference.adapter.RoomPagerAdapter;
+import com.dachen.teleconference.bean.User;
 
 import java.util.List;
+import com.dachen.teleconference.R;
 
 /**
  * @author gzhuo

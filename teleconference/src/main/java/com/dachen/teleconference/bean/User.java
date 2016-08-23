@@ -1,4 +1,4 @@
-package com.example.teleconference.bean;
+package com.dachen.teleconference.bean;
 
 /**
  * 电话会议用户信息

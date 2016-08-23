@@ -1,4 +1,4 @@
-package com.example.teleconference.adapter;
+package com.dachen.teleconference.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.teleconference.R;
-import com.example.teleconference.bean.User;
-import com.example.teleconference.constants.ImageLoaderConfig;
+import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.constants.ImageLoaderConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
+import com.dachen.teleconference.R;
 
 /**
  * @author gzhuo

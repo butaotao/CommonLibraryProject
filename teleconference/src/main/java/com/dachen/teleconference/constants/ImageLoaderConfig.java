@@ -1,10 +1,9 @@
-package com.example.teleconference.constants;
+package com.dachen.teleconference.constants;
 
 import android.graphics.Bitmap;
-
-import com.example.teleconference.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.dachen.teleconference.R;
 
 /**
  * @author gzhuo

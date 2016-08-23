@@ -1,4 +1,4 @@
-package com.example.teleconference.adapter;
+package com.dachen.teleconference.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.teleconference.bean.User;
+import com.dachen.teleconference.bean.User;
 
 import java.util.List;
 

@@ -1,17 +1,15 @@
-package com.example.teleconference.activity;
+package com.dachen.teleconference.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.dachen.common.utils.Logger;
-import com.example.teleconference.AgoraManager;
-import com.example.teleconference.R;
-import com.example.teleconference.bean.User;
-import com.example.teleconference.views.FloatingView;
-import com.example.teleconference.views.RoomView;
+import com.dachen.teleconference.AgoraManager;
+import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.views.FloatingView;
+import com.dachen.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -20,6 +18,7 @@ import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
+import com.dachen.teleconference.R;
 
 /**
  * 会议界面

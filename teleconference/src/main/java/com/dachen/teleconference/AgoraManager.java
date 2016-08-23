@@ -1,6 +1,8 @@
-package com.example.teleconference;
+package com.dachen.teleconference;
 
 import android.content.Context;
+
+import com.example.teleconference.RtcEngineEventHandlerMgr;
 
 import io.agora.rtc.RtcEngine;
 
@@ -24,7 +26,9 @@ public class AgoraManager {
 
     public static AgoraManager getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new AgoraManager(context);
+            synchronized (AgoraManager.class){
+                mInstance = new AgoraManager(context);
+            }
         }
         return mInstance;
     }

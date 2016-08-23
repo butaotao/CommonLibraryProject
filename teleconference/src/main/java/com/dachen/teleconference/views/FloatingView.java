@@ -1,4 +1,4 @@
-package com.example.teleconference.views;
+package com.dachen.teleconference.views;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.example.teleconference.R;
+import com.dachen.teleconference.R;
 
 
 /**

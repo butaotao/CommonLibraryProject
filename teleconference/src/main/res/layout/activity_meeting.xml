@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.example.teleconference.activity.MeetingActivity">
+    tools:context="com.dachen.teleconference.activity.MeetingActivity">
 
     <include
         android:id="@+id/header"
@@ -35,13 +35,13 @@
             android:layout_weight="2">
         </ListView>
 
-        <com.example.teleconference.views.RoomView
+        <com.dachen.teleconference.views.RoomView
             android:id="@+id/roomView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:background="#d2f1f2">
-        </com.example.teleconference.views.RoomView>
+        </com.dachen.teleconference.views.RoomView>
 
     </LinearLayout>
 
