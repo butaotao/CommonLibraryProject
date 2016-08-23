@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Teleconference</string>
+    <string name= "tele_incoming_tips">邀请您加入会议</string>
+    <string name="receive">接听</string>
+    <string name="refuse">拒接</string>
+
 </resources>

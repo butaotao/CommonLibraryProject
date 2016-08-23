@@ -8,6 +8,10 @@
         android:supportsRtl="true">
         <activity android:name=".activity.MeetingActivity">
         </activity>
+        <activity android:name=".activity.TeleIncomingActivity">
+        </activity>
+
+
     </application>
 
 </manifest>
