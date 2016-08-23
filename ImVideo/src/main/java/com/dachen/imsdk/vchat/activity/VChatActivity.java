@@ -764,7 +764,7 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
 
         List<MemberInfo> memberList = ImVideo.getInstance().mQavsdkControl.getMemberList();
 
-        if (memberList != null && memberList.size() == 1) {
+        if (memberList != null) {
             String toId = "";
             for (UserInfo u : VChatManager.getInstance().allUserList) {
                 if (ImUtils.getLoginUserId().equals(u.id)) {

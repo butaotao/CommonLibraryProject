@@ -65,4 +65,16 @@ public class VolleyUtil {
 			}
 		};
 	}
+
+	public static Map<String,String> makeParam(Map<String,? extends Object> m){
+		HashMap<String,String> res=new HashMap<>();
+		if(m==null)
+			return res;
+		for (Map.Entry<String, ? extends Object> entry:m.entrySet()) {
+			if(entry.getValue()!=null){
+				res.put(entry.getKey(),entry.getValue().toString());
+			}
+		}
+		return res;
+	}
 }
