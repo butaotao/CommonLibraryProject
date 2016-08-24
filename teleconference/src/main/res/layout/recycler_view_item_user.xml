@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:paddingBottom="25dp"
+              android:paddingRight="16dp">
 
-    <com.dachen.teleconference.views.SquareLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true">
+    <ImageView
+        android:id="@+id/headImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/avatar_normal"/>
 
-        <ImageView
-            android:id="@+id/headImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/avatar_normal"/>
-
-    </com.dachen.teleconference.views.SquareLayout>
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="7dp"
-        android:gravity="center"
+        android:layout_marginTop="8dp"
         android:singleLine="true"
         android:textColor="#666666"
         android:textSize="12sp"

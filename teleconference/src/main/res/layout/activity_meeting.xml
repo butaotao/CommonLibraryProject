@@ -27,8 +27,8 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:text="会议已进行05:15"
-            android:textSize="14sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
     </RelativeLayout>
 
 
@@ -42,16 +42,25 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:background="#eef0f0">
         </ListView>
 
-        <com.dachen.teleconference.views.RoomView
-            android:id="@+id/roomView"
+        <!--<com.dachen.teleconference.views.RoomView-->
+        <!--android:id="@+id/roomView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="3"-->
+        <!--android:background="#d2f1f2">-->
+        <!--</com.dachen.teleconference.views.RoomView>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/room_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:background="#d2f1f2">
-        </com.dachen.teleconference.views.RoomView>
+            android:paddingLeft="25dp"
+            android:paddingTop="15dp"></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 

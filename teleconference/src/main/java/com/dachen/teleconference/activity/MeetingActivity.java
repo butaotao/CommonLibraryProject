@@ -3,6 +3,9 @@ package com.dachen.teleconference.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +14,9 @@ import com.dachen.common.utils.Logger;
 import com.dachen.common.utils.ToastUtil;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
+import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
 import com.dachen.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -39,6 +44,7 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
     private RtcEngine mRtcEngine;
     private RtcEngineEventHandler mRtcEngineEventHandler;
     private RoomView mRoomView;
+    private RecyclerView mRecyclerView;
     private TextView mLeftBtn;
     private TextView mTitle;
     private TextView mRightBtn;
@@ -47,7 +53,7 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
     private ImageView mMutIv;
     private boolean isSpeakerOn = true;
     private boolean isMutOn = false;
-
+    private UserAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +75,11 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
         mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
         mHangIv = (ImageView) findViewById(R.id.hang_iv);
         mMutIv = (ImageView) findViewById(R.id.mut_iv);
-        mRoomView = (RoomView) findViewById(R.id.roomView);
+//        mRoomView = (RoomView) findViewById(R.id.roomView);
+        mRecyclerView  = (RecyclerView) findViewById(R.id.room_view);
+
+
+
 
         mLeftBtn.setText("隐藏");
         mTitle.setText("电话会议");
@@ -94,7 +104,30 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
             data.add(userList);
         }
 
-        mRoomView.setData(data);
+//        mRoomView.setData(data);
+
+        List<User> userList = new ArrayList<>();
+        for (int j = 0; j < 15; j++) {
+            User user = new User();
+            user.id = (j + 1) + "";
+            user.name = "王宝强 " + (j + 1);
+            user.head = "http://h.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=1904b984fdfaaf5190ee89eded3dff8b/aec379310a55b3193cdb93d743a98226cffc1775.jpg";
+            userList.add(user);
+        }
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 5));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
+        mAdapter = new UserAdapter(MeetingActivity.this, userList);
+        mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this);
+                callMeetingMemberDialog.show();
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     private void hide() {

@@ -43,7 +43,7 @@ public class RoomView extends RelativeLayout {
 
     private void init(Context context) {
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.room_view_layoyut, this, true);
+        LayoutInflater.from(context).inflate(R.layout.room_view_layout, this, true);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setOnPageChangeListener(mOnPageChangeListener);
         mDotContainer = (LinearLayout) findViewById(R.id.dot_container);
