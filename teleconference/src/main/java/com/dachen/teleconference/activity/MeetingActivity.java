@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.dachen.common.utils.Logger;
+import com.dachen.common.utils.ToastUtil;
 import com.dachen.teleconference.AgoraManager;
+import com.dachen.teleconference.R;
 import com.dachen.teleconference.bean.User;
 import com.dachen.teleconference.views.FloatingView;
 import com.dachen.teleconference.views.RoomView;
@@ -18,7 +22,6 @@ import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
-import com.dachen.teleconference.R;
 
 /**
  * 会议界面
@@ -26,7 +29,7 @@ import com.dachen.teleconference.R;
  * @author gzhuo
  * @date 2016/8/17
  */
-public class MeetingActivity extends Activity {
+public class MeetingActivity extends Activity implements View.OnClickListener {
     private static final String TAG = MeetingActivity.class.getSimpleName();
     private String mVendorKey;
     private String mDynamicKey;
@@ -39,6 +42,11 @@ public class MeetingActivity extends Activity {
     private TextView mLeftBtn;
     private TextView mTitle;
     private TextView mRightBtn;
+    private ImageView mSpeakerIv;
+    private ImageView mHangIv;
+    private ImageView mMutIv;
+    private boolean isSpeakerOn = true;
+    private boolean isMutOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,27 +64,30 @@ public class MeetingActivity extends Activity {
 
     private void initView() {
         mLeftBtn = (TextView) findViewById(R.id.left_btn);
-        mLeftBtn.setText("隐藏");
-        mLeftBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide();
-            }
-        });
         mTitle = (TextView) findViewById(R.id.title);
-        mTitle.setText("电话会议");
         mRightBtn = (TextView) findViewById(R.id.right_btn);
-        mRightBtn.setText("全部静音");
-
+        mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
+        mHangIv = (ImageView) findViewById(R.id.hang_iv);
+        mMutIv = (ImageView) findViewById(R.id.mut_iv);
         mRoomView = (RoomView) findViewById(R.id.roomView);
 
+        mLeftBtn.setText("隐藏");
+        mTitle.setText("电话会议");
+        mRightBtn.setText("全部静音");
+
+        mLeftBtn.setOnClickListener(this);
+        mRightBtn.setOnClickListener(this);
+        mSpeakerIv.setOnClickListener(this);
+        mHangIv.setOnClickListener(this);
+        mMutIv.setOnClickListener(this);
+
         List<List<User>> data = new ArrayList<>();
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             List<User> userList = new ArrayList<>();
-            for(int j = 0; j < 10; j++){
+            for (int j = 0; j < 10; j++) {
                 User user = new User();
-                user.id = (i+ 1) *(j + 1) + "";
-                user.name = "王宝强 " + (i+ 1) *(j + 1);
+                user.id = (i + 1) * (j + 1) + "";
+                user.name = "王宝强 " + (i + 1) * (j + 1);
                 user.head = "http://h.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=1904b984fdfaaf5190ee89eded3dff8b/aec379310a55b3193cdb93d743a98226cffc1775.jpg";
                 userList.add(user);
             }
@@ -118,6 +129,45 @@ public class MeetingActivity extends Activity {
         mRtcEngine = mAgoraManager.getRtcEngine();
         mRtcEngineEventHandler = new RtcEngineEventHandler();
         mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        int i = v.getId();
+        if (i == R.id.left_btn) {
+            hide();
+        } else if (i == R.id.right_btn) {
+            ToastUtil.showToast(MeetingActivity.this, "全部静音");
+        } else if (i == R.id.speaker_iv) {
+            setSpeaker();
+        } else if (i == R.id.hang_iv) {
+            finish();
+        } else if (i == R.id.mut_iv) {
+            setMut();
+        }
+
+    }
+
+    private void setSpeaker() {
+        if (isSpeakerOn) {
+            isSpeakerOn = false;
+            mSpeakerIv.setImageResource(R.drawable.speaker_close);
+        } else {
+            isSpeakerOn = true;
+            mSpeakerIv.setImageResource(R.drawable.speaker_on);
+        }
+    }
+
+    private void setMut() {
+        if (isMutOn) {
+            isMutOn = false;
+            mMutIv.setImageResource(R.drawable.mut_close);
+        } else {
+            isMutOn = true;
+            mMutIv.setImageResource(R.drawable.mut_on);
+        }
+
     }
 
     /**

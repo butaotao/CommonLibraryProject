@@ -10,6 +10,7 @@
     tools:showIn="@layout/activity_meeting">
 
     <ImageView
+        android:id="@+id/speaker_iv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -19,6 +20,7 @@
 
 
     <ImageView
+        android:id="@+id/hang_iv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -27,6 +29,7 @@
         />
 
     <ImageView
+        android:id="@+id/mut_iv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

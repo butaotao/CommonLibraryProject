@@ -27,6 +27,7 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:text="会议已进行05:15"
+            android:textSize="14sp"
             android:textColor="@color/white"/>
     </RelativeLayout>
 
