@@ -6,7 +6,7 @@
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
-    <com.example.teleconference.views.SquareLayout
+    <com.dachen.teleconference.views.SquareLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true">
@@ -19,7 +19,7 @@
             android:layout_marginTop="6dp"
             android:src="@drawable/avatar_normal"/>
 
-    </com.example.teleconference.views.SquareLayout>
+    </com.dachen.teleconference.views.SquareLayout>
 
     <TextView
         android:id="@+id/name"

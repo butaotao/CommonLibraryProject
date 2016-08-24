@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.dachen.common.utils.DisplayUtil;
+import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.RoomPagerAdapter;
 import com.dachen.teleconference.bean.User;
 
 import java.util.List;
-import com.dachen.teleconference.R;
 
 /**
  * @author gzhuo
@@ -83,9 +83,9 @@ public class RoomView extends RelativeLayout {
         for (int i = 0; i < childCount; i++) {
             View dot = mDotContainer.getChildAt(i);
             if (i == position) {
-                dot.setBackgroundResource(R.drawable.shape_blue_dot);
+                dot.setBackgroundResource(R.drawable.shape_gray_choice_dot);
             } else {
-                dot.setBackgroundResource(R.drawable.shape_white_dot);
+                dot.setBackgroundResource(R.drawable.shape_gray_bg_dot);
             }
         }
     }
@@ -98,11 +98,16 @@ public class RoomView extends RelativeLayout {
         mDotContainer.removeAllViews();
         for (int i = 0; i < pageCount; i++) {
             View dot = new View(mContext);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DisplayUtil.dip2px(mContext, 10), DisplayUtil.dip2px(mContext, 10));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DisplayUtil.dip2px(mContext, 6), DisplayUtil.dip2px
+                    (mContext, 6));
             lp.leftMargin = DisplayUtil.dip2px(mContext, 5);
             lp.rightMargin = DisplayUtil.dip2px(mContext, 5);
             dot.setLayoutParams(lp);
-            dot.setBackgroundResource(R.drawable.shape_white_dot);
+            if (i==0){
+                dot.setBackgroundResource(R.drawable.shape_gray_choice_dot);
+            }else {
+                dot.setBackgroundResource(R.drawable.shape_gray_bg_dot);
+            }
             mDotContainer.addView(dot);
         }
 

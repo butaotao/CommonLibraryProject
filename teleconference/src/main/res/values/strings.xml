@@ -3,5 +3,7 @@
     <string name= "tele_incoming_tips">邀请您加入会议</string>
     <string name="receive">接听</string>
     <string name="refuse">拒接</string>
+    <string name="dialog_phone_call">电话呼叫</string>
+    <string name="dialog_net_call">网络重播</string>
 
 </resources>
