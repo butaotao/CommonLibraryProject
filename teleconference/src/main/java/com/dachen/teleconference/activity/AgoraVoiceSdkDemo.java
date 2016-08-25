@@ -31,8 +31,6 @@ import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.GetSigningKeyResponse;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
-import com.example.teleconference.RtcEngineEventHandlerMgr;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
