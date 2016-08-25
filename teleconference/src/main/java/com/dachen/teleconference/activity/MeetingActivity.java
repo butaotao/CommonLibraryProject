@@ -1,6 +1,6 @@
 package com.dachen.teleconference.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import com.dachen.common.utils.Logger;
 import com.dachen.common.utils.ToastUtil;
+import com.dachen.imsdk.entity.GroupInfo2Bean;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
-import com.dachen.teleconference.bean.User;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
@@ -37,10 +37,12 @@ import io.agora.rtc.RtcEngine;
  */
 public class MeetingActivity extends BaseActivity implements View.OnClickListener  {
     private static final String TAG = MeetingActivity.class.getSimpleName();
+    private static final String INTENT_EXTRA_GROUP_USER_LIST = "user_list";
+    private static final String INTENT_EXTRA_USER_ID = "user_id";
+    private static final String INTENT_EXTRA_GROUP_ID = "group_id";
     private String mVendorKey;
     private String mDynamicKey;
     private String mChannelId;//房间号
-    private String mUserId;
     private AgoraManager mAgoraManager;
     private RtcEngine mRtcEngine;
     private RtcEngineEventHandler mRtcEngineEventHandler;
@@ -55,6 +57,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private boolean isSpeakerOn = true;
     private boolean isMutOn = false;
     private UserAdapter mAdapter;
+    private List<GroupInfo2Bean.Data.UserInfo> mUserInfos = new ArrayList<>();
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,35 +94,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mSpeakerIv.setOnClickListener(this);
         mHangIv.setOnClickListener(this);
         mMutIv.setOnClickListener(this);
-
-        List<List<User>> data = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            List<User> userList = new ArrayList<>();
-            for (int j = 0; j < 10; j++) {
-                User user = new User();
-                user.id = (i + 1) * (j + 1) + "";
-                user.name = "王宝强 " + (i + 1) * (j + 1);
-                user.head = "http://h.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=1904b984fdfaaf5190ee89eded3dff8b/aec379310a55b3193cdb93d743a98226cffc1775.jpg";
-                userList.add(user);
-            }
-            data.add(userList);
-        }
-
-        //        mRoomView.setData(data);
-
-        List<User> userList = new ArrayList<>();
-        for (int j = 0; j < 15; j++) {
-            User user = new User();
-            user.id = (j + 1) + "";
-            user.name = "王宝强 " + (j + 1);
-            user.head = "http://h.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=1904b984fdfaaf5190ee89eded3dff8b/aec379310a55b3193cdb93d743a98226cffc1775.jpg";
-            userList.add(user);
-        }
-
         mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 4));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
-        mAdapter = new UserAdapter(MeetingActivity.this, userList);
+
+        mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos,mUserId);
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -126,7 +106,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     ToastUtil.showToast(MeetingActivity.this, "添加成员");
                     return;
                 }
-                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this);
+                GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
+                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this, userInfo.name,
+                        userInfo.pic);
                 callMeetingMemberDialog.show();
             }
         });
@@ -144,7 +126,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 加入房间
      */
     private void joinChannel() {
-        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
+//        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
     }
 
     private void initVariables() {
@@ -152,8 +134,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mVendorKey = intent.getStringExtra("vendor_key");
         mDynamicKey = intent.getStringExtra("dynamic_key");
         mChannelId = intent.getStringExtra("channel_id");
-        mUserId = intent.getStringExtra("user_id");
+        List<GroupInfo2Bean.Data.UserInfo> userInfos = (List<GroupInfo2Bean.Data.UserInfo>) intent.getSerializableExtra(
+                INTENT_EXTRA_GROUP_USER_LIST);
 
+        mUserId = intent.getStringExtra(INTENT_EXTRA_USER_ID);
+        for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
+            if (info.id.equals(mUserId)) {
+                mUserInfos.clear();
+                mUserInfos.add(info);
+            }
+        }
+        for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
+            if (!info.id.equals(mUserId)) {
+                mUserInfos.add(info);
+            }
+        }
         if (!ImageLoader.getInstance().isInited()) {
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
             ImageLoader.getInstance().init(config);
@@ -227,4 +222,16 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             Logger.d(TAG, "onLeaveChannel");
         }
     }
+
+
+    public static void openUI(Context context, String userId, String groupId, ArrayList<GroupInfo2Bean.Data.UserInfo>
+            userList) {
+        Intent intent = new Intent(context, MeetingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(INTENT_EXTRA_USER_ID, userId);
+        intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
+        intent.putExtra(INTENT_EXTRA_GROUP_USER_LIST, userList);
+        context.startActivity(intent);
+    }
+
 }
