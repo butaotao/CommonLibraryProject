@@ -1,6 +1,5 @@
 package com.dachen.teleconference.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import com.dachen.imsdk.entity.GroupInfo2Bean;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
-import com.dachen.teleconference.bean.User;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
@@ -128,7 +126,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 加入房间
      */
     private void joinChannel() {
-        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
+//        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
     }
 
     private void initVariables() {
