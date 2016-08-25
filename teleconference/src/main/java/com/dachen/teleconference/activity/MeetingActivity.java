@@ -17,6 +17,8 @@ import com.dachen.imsdk.entity.GroupInfo2Bean;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
+import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
 import com.dachen.teleconference.views.RoomView;
@@ -35,7 +37,7 @@ import io.agora.rtc.RtcEngine;
  * @author gzhuo
  * @date 2016/8/17
  */
-public class MeetingActivity extends Activity implements View.OnClickListener {
+public class MeetingActivity extends BaseActivity implements View.OnClickListener  {
     private static final String TAG = MeetingActivity.class.getSimpleName();
     private static final String INTENT_EXTRA_GROUP_USER_LIST = "user_list";
     private static final String INTENT_EXTRA_USER_ID = "user_id";
@@ -156,11 +158,11 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
     }
 
     private void initRtcEngine() {
-        mAgoraManager = AgoraManager.getInstance(this);
+        /*mAgoraManager = AgoraManager.getInstance(this);
         mAgoraManager.createRtcEngine(mVendorKey);
         mRtcEngine = mAgoraManager.getRtcEngine();
         mRtcEngineEventHandler = new RtcEngineEventHandler();
-        mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);
+        mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);*/
     }
 
     @Override
