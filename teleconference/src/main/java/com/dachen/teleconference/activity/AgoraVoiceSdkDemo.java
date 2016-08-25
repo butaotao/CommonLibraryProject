@@ -88,7 +88,7 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 							long expiredTime = new Date().getTime()/1000 + 3600;
 							String token = calcToken(vendorKey,signKey,user_id.getText().toString(), expiredTime);
 							Logger.d("yehj","token=="+token);
-							AgoraManager.getInstance(AgoraVoiceSdkDemo.this).loginAgora(user_id.getText().toString(),((GetSigningKeyResponse)msg.obj),vendorKey);
+							AgoraManager.getInstance(AgoraVoiceSdkDemo.this).loginAgora(user_id.getText().toString(),((GetSigningKeyResponse)msg.obj).getData(),vendorKey);
 						}
 					}else{
 						UIHelper.ToastMessage(AgoraVoiceSdkDemo.this,(String)msg.obj);
