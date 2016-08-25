@@ -7,4 +7,5 @@ public class EmptyResult {
     public int resultCode;
     public String resultMsg;
     public String detailMsg;
+    public String data;
 }
