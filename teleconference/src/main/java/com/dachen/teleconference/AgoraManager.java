@@ -1,7 +1,7 @@
 package com.dachen.teleconference;
 
 import android.content.Context;
-
+import android.media.AudioManager;
 
 
 import io.agora.AgoraAPI;
@@ -74,6 +74,7 @@ public class AgoraManager {
         mAgoraAPIOnlySignal.channelJoin(channel);
         mRtcEngine.joinChannel(dynamicKey, channel, "",account);
     }
+
 
 
 

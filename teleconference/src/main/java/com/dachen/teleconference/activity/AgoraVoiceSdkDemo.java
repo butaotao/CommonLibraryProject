@@ -64,6 +64,7 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 	private boolean isLogin,isLeave,isJoin;
 	private final static int getMediaDynamicKey=1;
 	private final static int getSignningKey=2;
+	private AudioManager mAm;
 	private Handler mHandler =new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -72,7 +73,10 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 				case getMediaDynamicKey:
 					if(msg.arg1==1){
 						if(msg.obj!=null){
-							AgoraManager.getInstance(AgoraVoiceSdkDemo.this).joinChannel(channel_id.getText().toString(),((GetMediaDynamicKeyResponse)msg.obj).getData(),Integer.parseInt(user_id.getText().toString()));
+							if(requestAudioFocus()){
+								AgoraManager.getInstance(AgoraVoiceSdkDemo.this).joinChannel(channel_id.getText().toString(),((GetMediaDynamicKeyResponse)msg.obj).getData(),Integer.parseInt(user_id.getText().toString()));
+							}
+
 						}
 					}else{
 						UIHelper.ToastMessage(AgoraVoiceSdkDemo.this,(String)msg.obj);
@@ -83,8 +87,8 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 						if(msg.obj!=null){
 							long expiredTime = new Date().getTime()/1000 + 3600;
 							String token = calcToken(vendorKey,signKey,user_id.getText().toString(), expiredTime);
-							Logger.d("yehj","token=="+((GetSigningKeyResponse)msg.obj).getData());
-							AgoraManager.getInstance(AgoraVoiceSdkDemo.this).loginAgora(user_id.getText().toString(),((GetSigningKeyResponse)msg.obj).getData(),vendorKey);
+							Logger.d("yehj","token=="+token);
+							AgoraManager.getInstance(AgoraVoiceSdkDemo.this).loginAgora(user_id.getText().toString(),((GetSigningKeyResponse)msg.obj),vendorKey);
 						}
 					}else{
 						UIHelper.ToastMessage(AgoraVoiceSdkDemo.this,(String)msg.obj);
@@ -267,7 +271,7 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btn_ctrl ){
-			HttpCommClient.getInstance().getMediaDynamicKey(this,mHandler,getMediaDynamicKey,user_id.getText().toString(),channel_id.getText().toString(),"3600");
+			HttpCommClient.getInstance().getMediaDynamicKey(this,mHandler,getMediaDynamicKey,channel_id.getText().toString(),user_id.getText().toString(),"3600");
 
 		}else if(v.getId() == R.id.btn_leave){
 
@@ -299,205 +303,6 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 
 	private void initAgoraConfigure(){
 		AgoraManager.getInstance(this).initAgora(vendorKey);
-//		mAgoraAPIOnlySignal.callbackSet(new AgoraAPI.CallBack(){
-//
-//			@Override
-//			public void setCB(IAgoraAPI.ICallBack cb) {
-//				super.setCB(cb);
-//			}
-//
-//			@Override
-//			public IAgoraAPI.ICallBack getCB() {
-//				return super.getCB();
-//			}
-//
-//			@Override
-//			public void onReconnecting(int nretry) {
-//				super.onReconnecting(nretry);
-//			}
-//
-//			@Override
-//			public void onReconnected(int fd) {
-//				super.onReconnected(fd);
-//			}
-//
-//			@Override
-//			public void onLoginSuccess(int uid, int fd) {
-//				super.onLoginSuccess(uid, fd);
-//				Logger.d("yehj","onLoginSuccess");
-//				isLogin=true;
-//			}
-//
-//			@Override
-//			public void onLoginFailed(int ecode) {
-//				super.onLoginFailed(ecode);
-//				Logger.d("yehj","onLoginFailed");
-//			}
-//
-//			@Override
-//			public void onLogout(int ecode) {
-//				super.onLogout(ecode);
-//				Logger.d("yehj","onLogout");
-//				isLogin=false;
-//			}
-//
-//			@Override
-//			public void onChannelJoined(String channelID) {
-//				super.onChannelJoined(channelID);
-//				Logger.d("yehj","onChannelJoined------channelID---"+channelID);
-//			}
-//
-//			@Override
-//			public void onChannelJoinFailed(String channelID, int ecode) {
-//				super.onChannelJoinFailed(channelID, ecode);
-//				Logger.d("yehj","onChannelJoinFailed------channelID---"+channelID);
-//			}
-//
-//			@Override
-//			public void onChannelLeaved(String channelID, int ecode) {
-//				super.onChannelLeaved(channelID, ecode);
-//				Logger.d("yehj","onChannelLeaved------channelID---"+channelID);
-//
-//			}
-//
-//			@Override
-//			public void onChannelUserJoined(String account, int uid) {
-//				super.onChannelUserJoined(account, uid);
-//				Logger.d("yehj","onChannelUserJoined------account---"+account);
-//			}
-//
-//			@Override
-//			public void onChannelUserLeaved(String account, int uid) {
-//				super.onChannelUserLeaved(account, uid);
-//				Logger.d("yehj","onChannelUserLeaved------account---"+account);
-//			}
-//
-//			@Override
-//			public void onChannelUserList(String[] accounts, int[] uids) {
-//				super.onChannelUserList(accounts, uids);
-//				Logger.d("yehj","onChannelUserList");
-//			}
-//
-//			@Override
-//			public void onChannelQueryUserNumResult(String channelID, int ecode, int num) {
-//				super.onChannelQueryUserNumResult(channelID, ecode, num);
-//				Logger.d("yehj","onChannelQueryUserNumResult");
-//			}
-//
-//			@Override
-//			public void onChannelAttrUpdated(String channelID, String name, String value, String type) {
-//				super.onChannelAttrUpdated(channelID, name, value, type);
-//				Logger.d("yehj","onChannelAttrUpdated");
-//			}
-//
-//			@Override
-//			public void onInviteReceived(String channelID, String account, int uid) {
-//				super.onInviteReceived(channelID, account, uid);
-//				Logger.d("yehj","onInviteReceived===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteReceivedByPeer(String channelID, String account, int uid) {
-//				super.onInviteReceivedByPeer(channelID, account, uid);
-//				Logger.d("yehj","onInviteReceivedByPeer===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteAcceptedByPeer(String channelID, String account, int uid) {
-//				super.onInviteAcceptedByPeer(channelID, account, uid);
-//				Logger.d("yehj","onInviteAcceptedByPeer===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteRefusedByPeer(String channelID, String account, int uid) {
-//				super.onInviteRefusedByPeer(channelID, account, uid);
-//				Logger.d("yehj","onInviteRefusedByPeer===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteFailed(String channelID, String account, int uid, int ecode) {
-//				super.onInviteFailed(channelID, account, uid, ecode);
-//				Logger.d("yehj","onInviteFailed===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteEndByPeer(String channelID, String account, int uid) {
-//				super.onInviteEndByPeer(channelID, account, uid);
-//				Logger.d("yehj","onInviteEndByPeer===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onInviteEndByMyself(String channelID, String account, int uid) {
-//				super.onInviteEndByMyself(channelID, account, uid);
-//				Logger.d("yehj","onInviteEndByMyself===account-----"+account);
-//			}
-//
-//			@Override
-//			public void onMessageSendError(String messageID, int ecode) {
-//				super.onMessageSendError(messageID, ecode);
-//				Logger.d("yehj","onMessageSendError===messageID-----"+messageID);
-//			}
-//
-//			@Override
-//			public void onMessageSendSuccess(String messageID) {
-//				super.onMessageSendSuccess(messageID);
-//				Logger.d("yehj","onMessageSendSuccess===messageID-----"+messageID);
-//			}
-//
-//			@Override
-//			public void onMessageAppReceived(String msg) {
-//				super.onMessageAppReceived(msg);
-//				Logger.d("yehj","onMessageAppReceived===msg-----"+msg);
-//			}
-//
-//			@Override
-//			public void onMessageInstantReceive(String account, int uid, String msg) {
-//				super.onMessageInstantReceive(account, uid, msg);
-//				Logger.d("yehj","onMessageInstantReceive===msg-----"+msg);
-//			}
-//
-//			@Override
-//			public void onMessageChannelReceive(String channelID, String account, int uid, String msg) {
-//				super.onMessageChannelReceive(channelID, account, uid, msg);
-//				Logger.d("yehj","onMessageChannelReceive===msg-----"+msg);
-//			}
-//
-//			@Override
-//			public void onLog(String txt) {
-//				super.onLog(txt);
-//				Logger.d("yehj","onLog=="+txt);
-//			}
-//
-//			@Override
-//			public void onInvokeRet(String name, int ofu, String reason, String resp) {
-//				super.onInvokeRet(name, ofu, reason, resp);
-//				Logger.d("yehj","onInvokeRet");
-//			}
-//
-//			@Override
-//			public void onMsg(String from, String t, String msg) {
-//				super.onMsg(from, t, msg);
-//				Logger.d("yehj","onMsg");
-//			}
-//
-//			@Override
-//			public void onUserAttrResult(String account, String name, String value) {
-//				super.onUserAttrResult(account, name, value);
-//				Logger.d("yehj","onUserAttrResult");
-//			}
-//
-//			@Override
-//			public void onUserAttrAllResult(String account, String value) {
-//				super.onUserAttrAllResult(account, value);
-//				Logger.d("yehj","onUserAttrAllResult");
-//			}
-//
-//			@Override
-//			public void onError(String name, int ecode, String desc) {
-//				super.onError(name, ecode, desc);
-//				Logger.d("yehj","onError");
-//			}
-//		});
 	}
 
 	public String calcToken(String vendorKey, String signKey, String account, long expiredTime){
@@ -540,4 +345,41 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 		return String.valueOf(out);
 
 	}
+
+	boolean requestAudioFocus() { // can always call requestAudioFocus, if already has it, then result is still AUDIOFOCUS_REQUEST_GRANTED
+		// try do request audio focus in audio thread(try to keep the setMode in sequence)
+		mAm = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+		int result = mAm.requestAudioFocus(afChangeListener,
+				AudioManager.STREAM_VOICE_CALL,
+				AudioManager.AUDIOFOCUS_GAIN);
+
+
+		if (result == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
+			return false;
+		}
+
+		if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+			//mSystemWideAudioMode = mAm.getMode();
+			//mAm.setMode(android.media.AudioManager.MODE_IN_COMMUNICATION);
+//            int volume = mAm.getStreamVolume(android.media.AudioManager.STREAM_VOICE_CALL);
+//            int maxVolume = mAm.getStreamMaxVolume(android.media.AudioManager.STREAM_VOICE_CALL);
+			return true;
+		}
+		throw new IllegalAccessError("Trespass");
+	}
+	void abandonAudioFocus() {
+		mAm = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+		mAm.abandonAudioFocus(afChangeListener);
+	}
+	AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+		public void onAudioFocusChange(int focusChange) {
+			// for AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK | AUDIOFOCUS_LOSS_TRANSIENT, we do nothing
+			if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+				mAm.abandonAudioFocus(this);
+//                sysMessage(BKMessageCode.AUDIO_FOCUS_LOST, null);
+			} else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+				//mAm.setMode(android.media.AudioManager.MODE_IN_COMMUNICATION);
+			}
+		}
+	};
 }
