@@ -5,21 +5,77 @@
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              android:paddingBottom="25dp"
-              android:paddingRight="16dp">
+              android:paddingBottom="10dp"
+    >
 
-    <ImageView
-        android:id="@+id/headImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/avatar_normal"/>
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp">
+
+        <View
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_third_bg"
+            android:visibility="gone"
+            />
+
+        <View
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_second_bg"
+            android:visibility="gone"
+            />
+
+        <View
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_first_bg"
+            android:visibility="gone"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/headImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/add_member_iv"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/phone_online"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/sponsor_icon"
+                />
+
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
 
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:singleLine="true"
         android:textColor="#666666"
         android:textSize="12sp"
