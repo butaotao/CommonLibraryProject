@@ -2,11 +2,9 @@ package com.dachen.teleconference;
 
 import android.content.Context;
 
-
-
 import io.agora.AgoraAPI;
 import io.agora.AgoraAPIOnlySignal;
-import io.agora.NativeAgoraAPI;
+import io.agora.IAgoraAPI;
 import io.agora.rtc.RtcEngine;
 
 /**
@@ -73,6 +71,10 @@ public class AgoraManager {
     public void joinChannel(String channel,String dynamicKey,int account){
         mAgoraAPIOnlySignal.channelJoin(channel);
         mRtcEngine.joinChannel(dynamicKey, channel, "",account);
+    }
+
+    public void setApiCallBack(IAgoraAPI.ICallBack callBack){
+        mAgoraAPIOnlySignal.callbackSet(callBack);
     }
 
 

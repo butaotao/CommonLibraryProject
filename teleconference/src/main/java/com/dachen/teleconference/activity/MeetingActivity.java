@@ -3,23 +3,30 @@ package com.dachen.teleconference.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dachen.common.utils.Logger;
 import com.dachen.common.utils.ToastUtil;
+import com.dachen.common.utils.UIHelper;
 import com.dachen.imsdk.entity.GroupInfo2Bean;
+import com.dachen.teleconference.AgoraAPICallBack;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
+import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
+import com.dachen.teleconference.bean.GetSigningKeyResponse;
 import com.dachen.teleconference.common.BaseActivity;
+import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
-import com.dachen.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -35,18 +42,19 @@ import io.agora.rtc.RtcEngine;
  * @author gzhuo
  * @date 2016/8/17
  */
-public class MeetingActivity extends BaseActivity implements View.OnClickListener  {
+public class MeetingActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = MeetingActivity.class.getSimpleName();
     private static final String INTENT_EXTRA_GROUP_USER_LIST = "user_list";
     private static final String INTENT_EXTRA_USER_ID = "user_id";
     private static final String INTENT_EXTRA_GROUP_ID = "group_id";
+    private static final int GET_SIGNNING_KEY = 1001;
+    private static final int GET_MEDIADYNAMIC_KEY = 1002;
     private String mVendorKey;
     private String mDynamicKey;
     private String mChannelId;//房间号
     private AgoraManager mAgoraManager;
     private RtcEngine mRtcEngine;
     private RtcEngineEventHandler mRtcEngineEventHandler;
-    private RoomView mRoomView;
     private RecyclerView mRecyclerView;
     private TextView mLeftBtn;
     private TextView mTitle;
@@ -60,6 +68,42 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private List<GroupInfo2Bean.Data.UserInfo> mUserInfos = new ArrayList<>();
     private String mUserId;
 
+    private static final String vendorKey = "86c6c121ff444021a5152b0a791aefd3";
+    public static final String signKey = "b9aec320141347c6b64226cb7e901d23";
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case GET_SIGNNING_KEY:
+                    if (msg.arg1 == 1) {
+                        if (msg.obj != null) {
+                            GetSigningKeyResponse res = (GetSigningKeyResponse) msg.obj;
+                            String data = res.getData();
+                            AgoraManager.getInstance(MeetingActivity.this).loginAgora(mUserId, data, vendorKey);
+                        }
+                    } else {
+                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                    }
+
+                    break;
+
+                case GET_MEDIADYNAMIC_KEY:
+                    if (msg.arg1 == 1) {
+                        if (msg.obj != null) {
+                            AgoraManager.getInstance(MeetingActivity.this).joinChannel("1001", ((GetMediaDynamicKeyResponse) msg
+                                    .obj).getData(), Integer.parseInt(mUserId));
+                        }
+                    } else {
+                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                    }
+                    break;
+            }
+
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +113,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         initView();
 
-        initRtcEngine();
+        initAgoraConfigure();
 
-        joinChannel();
+        loginAndjoinChannel();
     }
 
     private void initView() {
@@ -81,7 +125,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
         mHangIv = (ImageView) findViewById(R.id.hang_iv);
         mMutIv = (ImageView) findViewById(R.id.mut_iv);
-        //        mRoomView = (RoomView) findViewById(R.id.roomView);
         mRecyclerView = (RecyclerView) findViewById(R.id.room_view);
 
 
@@ -98,7 +141,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
 
-        mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos,mUserId);
+        mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos, mUserId);
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -123,10 +166,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * 加入房间
+     * 登录并加入房间
      */
-    private void joinChannel() {
-//        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
+    private void loginAndjoinChannel() {
+        //        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
+        HttpCommClient.getInstance().getSigningKey(this, mHandler, GET_SIGNNING_KEY, mUserId, "3600");
     }
 
     private void initVariables() {
@@ -155,12 +199,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void initRtcEngine() {
-        /*mAgoraManager = AgoraManager.getInstance(this);
-        mAgoraManager.createRtcEngine(mVendorKey);
-        mRtcEngine = mAgoraManager.getRtcEngine();
-        mRtcEngineEventHandler = new RtcEngineEventHandler();
-        mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);*/
+    private void initAgoraConfigure() {
+        AgoraManager.getInstance(this).initAgora(vendorKey);
+        ApiCallBack apiCallBack = new ApiCallBack();
+        AgoraManager.getInstance(this).setApiCallBack(apiCallBack);
     }
 
     @Override
@@ -232,6 +274,22 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
         intent.putExtra(INTENT_EXTRA_GROUP_USER_LIST, userList);
         context.startActivity(intent);
+    }
+
+    class ApiCallBack extends AgoraAPICallBack {
+        @Override
+        public void onLoginSuccess(int uid, int fd) {
+            super.onLoginSuccess(uid, fd);
+            Log.d("MeetingActivity", "onLoginSuccess-----");
+        }
+
+        @Override
+        public void onLoginFailed(int ecode) {
+            super.onLoginFailed(ecode);
+            Log.d("MeetingActivity", "onLoginFailed-----");
+
+
+        }
     }
 
 }
