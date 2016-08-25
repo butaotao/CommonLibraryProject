@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.dachen.common.utils.Logger;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.views.FloatingView;
 import com.dachen.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,7 +27,7 @@ import com.dachen.teleconference.R;
  * @author gzhuo
  * @date 2016/8/17
  */
-public class MeetingActivity extends Activity {
+public class MeetingActivity extends BaseActivity {
     private static final String TAG = MeetingActivity.class.getSimpleName();
     private String mVendorKey;
     private String mDynamicKey;
@@ -113,11 +114,11 @@ public class MeetingActivity extends Activity {
     }
 
     private void initRtcEngine() {
-        mAgoraManager = AgoraManager.getInstance(this);
+        /*mAgoraManager = AgoraManager.getInstance(this);
         mAgoraManager.createRtcEngine(mVendorKey);
         mRtcEngine = mAgoraManager.getRtcEngine();
         mRtcEngineEventHandler = new RtcEngineEventHandler();
-        mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);
+        mAgoraManager.getEventHandlerMgr().addRtcEngineEventHandler(mRtcEngineEventHandler);*/
     }
 
     /**

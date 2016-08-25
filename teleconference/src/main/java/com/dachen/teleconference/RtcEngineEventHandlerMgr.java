@@ -395,6 +395,7 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
             });
         }
     }
+
     //----------------- interface end -----------------//
 
 

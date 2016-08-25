@@ -8,6 +8,7 @@
         android:supportsRtl="true">
         <activity android:name=".activity.MeetingActivity">
         </activity>
+        <activity android:name=".activity.AgoraVoiceSdkDemo"/>
     </application>
 
 </manifest>
