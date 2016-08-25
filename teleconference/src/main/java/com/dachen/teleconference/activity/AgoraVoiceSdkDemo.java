@@ -26,6 +26,8 @@ import com.dachen.common.utils.UIHelper;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.MediaHandler;
 import com.dachen.teleconference.MediaMessage;
+import com.dachen.teleconference.MyAgoraAPICallBack;
+import com.dachen.teleconference.MyRtcEngineEventHandler;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.GetSigningKeyResponse;
@@ -99,151 +101,6 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 		}
 	};
 
-
-
-
-	private IRtcEngineEventHandler  iRtcEngineEventHandler=new IRtcEngineEventHandler() {
-		@Override
-		public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-			Logger.d("yehj","onJoinChannelSuccess---channel"+channel);
-		}
-
-		@Override
-		public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
-			Logger.d("yehj","onRejoinChannelSuccess---channel"+channel);
-
-		}
-
-		@Override
-		public void onWarning(int warn) {
-			Logger.d("yehj","warn---"+warn);
-		}
-
-		@Override
-		public void onError(int err) {
-			Logger.d("yehj","onError---"+err);
-		}
-
-		@Override
-		public void onApiCallExecuted(String api, int error) {
-			Logger.d("yehj","onApiCallExecuted---"+error);
-		}
-
-		@Override
-		public void onCameraReady() {
-			Logger.d("yehj","onCameraReady");
-		}
-
-		@Override
-		public void onVideoStopped() {
-			Logger.d("yehj","onVideoStopped");
-
-		}
-
-		@Override
-		public void onAudioQuality(int uid, int quality, short delay, short lost) {
-			Logger.d("yehj","onAudioQuality");
-		}
-
-		@Override
-		public void onLeaveChannel(RtcStats stats) {
-			Logger.d("yehj","onLeaveChannel");
-		}
-
-		@Override
-		public void onRtcStats(RtcStats stats) {
-			Logger.d("yehj","onRtcStats");
-		}
-
-		@Override
-		public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
-			Logger.d("yehj","onAudioVolumeIndication");
-		}
-
-		@Override
-		public void onNetworkQuality(int quality) {
-			Logger.d("yehj","onNetworkQuality");
-		}
-
-		@Override
-		public void onUserJoined(int uid, int elapsed) {
-			Logger.d("yehj","onUserJoined");
-		}
-
-		@Override
-		public void onUserOffline(int uid, int reason) {
-			Logger.d("yehj","onUserJoined");
-
-		}
-
-		@Override
-		public void onUserMuteAudio(int uid, boolean muted) {
-			Logger.d("yehj","onUserMuteAudio");
-		}
-
-		@Override
-		public void onUserMuteVideo(int uid, boolean muted) {
-			Logger.d("yehj","onUserMuteVideo");
-		}
-
-		@Override
-		public void onUserEnableVideo(int uid, boolean enabled) {
-			Logger.d("yehj","onUserEnableVideo");
-		}
-
-		@Override
-		public void onLocalVideoStat(int sentBitrate, int sentFrameRate) {
-			Logger.d("yehj","onLocalVideoStat");
-		}
-
-		@Override
-		public void onRemoteVideoStat(int uid, int delay, int receivedBitrate, int receivedFrameRate) {
-			Logger.d("yehj","onRemoteVideoStat");
-		}
-
-		@Override
-		public void onRemoteVideoStats(RemoteVideoStats stats) {
-			Logger.d("yehj","onRemoteVideoStats");
-		}
-
-		@Override
-		public void onLocalVideoStats(LocalVideoStats stats) {
-			Logger.d("yehj","onLocalVideoStats");
-
-		}
-
-		@Override
-		public void onFirstRemoteVideoFrame(int uid, int width, int height, int elapsed) {
-			Logger.d("yehj","onFirstRemoteVideoFrame");
-		}
-
-		@Override
-		public void onFirstLocalVideoFrame(int width, int height, int elapsed) {
-			Logger.d("yehj","onFirstLocalVideoFrame");
-		}
-
-		@Override
-		public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
-			Logger.d("yehj","onFirstRemoteVideoDecoded");
-		}
-
-		@Override
-		public void onConnectionLost() {
-			Logger.d("yehj","onConnectionLost");
-		}
-
-		@Override
-		public void onConnectionInterrupted() {
-			Logger.d("yehj","onConnectionInterrupted");
-		}
-
-		@Override
-		public void onRefreshRecordingServiceStatus(int status) {
-			Logger.d("yehj","onRefreshRecordingServiceStatus");
-
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -284,6 +141,8 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 			}
 			if(!isLogin){
 				HttpCommClient.getInstance().getSigningKey(this,mHandler,getSignningKey,user_id.getText().toString(),"3600");
+			}else{
+				AgoraManager.getInstance(AgoraVoiceSdkDemo.this).logoutAgora();
 			}
 
 		}
@@ -292,17 +151,310 @@ public class AgoraVoiceSdkDemo extends BaseActivity implements OnClickListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		AgoraManager.getInstance(this).getEventHandlerMgr().addRtcEngineEventHandler(iRtcEngineEventHandler);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(iRtcEngineEventHandler);
 	}
 
 	private void initAgoraConfigure(){
 		AgoraManager.getInstance(this).initAgora(vendorKey);
+		AgoraManager.getInstance(this).getEventHandlerMgr().addRtcEngineEventHandler(new MyRtcEngineEventHandler() {
+			@Override
+			public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+
+			}
+
+			@Override
+			public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+
+			}
+
+			@Override
+			public void onWarning(int warn) {
+
+			}
+
+			@Override
+			public void onError(int err) {
+
+			}
+
+			@Override
+			public void onApiCallExecuted(String api, int error) {
+
+			}
+
+			@Override
+			public void onCameraReady() {
+
+			}
+
+			@Override
+			public void onVideoStopped() {
+
+			}
+
+			@Override
+			public void onAudioQuality(int uid, int quality, short delay, short lost) {
+
+			}
+
+			@Override
+			public void onLeaveChannel(IRtcEngineEventHandler.RtcStats stats) {
+
+			}
+
+			@Override
+			public void onRtcStats(IRtcEngineEventHandler.RtcStats stats) {
+
+			}
+
+			@Override
+			public void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume) {
+
+			}
+
+			@Override
+			public void onNetworkQuality(int quality) {
+
+			}
+
+			@Override
+			public void onUserJoined(int uid, int elapsed) {
+
+			}
+
+			@Override
+			public void onUserOffline(int uid, int reason) {
+
+			}
+
+			@Override
+			public void onUserMuteAudio(int uid, boolean muted) {
+
+			}
+
+			@Override
+			public void onUserMuteVideo(int uid, boolean muted) {
+
+			}
+
+			@Override
+			public void onUserEnableVideo(int uid, boolean enabled) {
+
+			}
+
+			@Override
+			public void onLocalVideoStat(int sentBitrate, int sentFrameRate) {
+
+			}
+
+			@Override
+			public void onRemoteVideoStat(int uid, int delay, int receivedBitrate, int receivedFrameRate) {
+
+			}
+
+			@Override
+			public void onRemoteVideoStats(IRtcEngineEventHandler.RemoteVideoStats stats) {
+
+			}
+
+			@Override
+			public void onLocalVideoStats(IRtcEngineEventHandler.LocalVideoStats stats) {
+
+			}
+
+			@Override
+			public void onFirstRemoteVideoFrame(int uid, int width, int height, int elapsed) {
+
+			}
+
+			@Override
+			public void onFirstLocalVideoFrame(int width, int height, int elapsed) {
+
+			}
+
+			@Override
+			public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
+
+			}
+
+			@Override
+			public void onConnectionLost() {
+
+			}
+
+			@Override
+			public void onConnectionInterrupted() {
+
+			}
+
+			@Override
+			public void onRefreshRecordingServiceStatus(int status) {
+
+			}
+		});
+		AgoraManager.getInstance(this).getAgoraAPICallBack().addAgoraAPICallBack(new MyAgoraAPICallBack() {
+			@Override
+			public void onReconnecting(int nretry) {
+
+			}
+
+			@Override
+			public void onReconnected(int fd) {
+
+			}
+
+			@Override
+			public void onLoginSuccess(int uid, int fd) {
+				btn_ctr2.setText("LogOut");
+				isLogin=true;
+
+			}
+
+			@Override
+			public void onLogout(int ecode) {
+				btn_ctr2.setText("Login");
+				isLogin=false;
+			}
+
+			@Override
+			public void onLoginFailed(int ecode) {
+
+			}
+
+			@Override
+			public void onChannelJoined(String channelID) {
+
+			}
+
+			@Override
+			public void onChannelJoinFailed(String channelID, int ecode) {
+
+			}
+
+			@Override
+			public void onChannelLeaved(String channelID, int ecode) {
+
+			}
+
+			@Override
+			public void onChannelUserJoined(String account, int uid) {
+
+			}
+
+			@Override
+			public void onChannelUserLeaved(String account, int uid) {
+
+			}
+
+			@Override
+			public void onChannelUserList(String[] accounts, int[] uids) {
+
+			}
+
+			@Override
+			public void onChannelQueryUserNumResult(String channelID, int ecode, int num) {
+
+			}
+
+			@Override
+			public void onChannelAttrUpdated(String channelID, String name, String value, String type) {
+
+			}
+
+			@Override
+			public void onInviteReceived(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onInviteReceivedByPeer(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onInviteAcceptedByPeer(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onInviteRefusedByPeer(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onInviteFailed(String channelID, String account, int uid, int ecode) {
+
+			}
+
+			@Override
+			public void onInviteEndByPeer(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onInviteEndByMyself(String channelID, String account, int uid) {
+
+			}
+
+			@Override
+			public void onMessageSendError(String messageID, int ecode) {
+
+			}
+
+			@Override
+			public void onMessageSendSuccess(String messageID) {
+
+			}
+
+			@Override
+			public void onMessageAppReceived(String msg) {
+
+			}
+
+			@Override
+			public void onMessageInstantReceive(String account, int uid, String msg) {
+
+			}
+
+			@Override
+			public void onMessageChannelReceive(String channelID, String account, int uid, String msg) {
+
+			}
+
+			@Override
+			public void onLog(String txt) {
+
+			}
+
+			@Override
+			public void onInvokeRet(String name, int ofu, String reason, String resp) {
+
+			}
+
+			@Override
+			public void onMsg(String from, String t, String msg) {
+
+			}
+
+			@Override
+			public void onUserAttrResult(String account, String name, String value) {
+
+			}
+
+			@Override
+			public void onUserAttrAllResult(String account, String value) {
+
+			}
+
+			@Override
+			public void onError(String name, int ecode, String desc) {
+
+			}
+		});
 	}
 
 	public String calcToken(String vendorKey, String signKey, String account, long expiredTime){

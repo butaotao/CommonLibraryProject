@@ -200,9 +200,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initAgoraConfigure() {
-        AgoraManager.getInstance(this).initAgora(vendorKey);
-        ApiCallBack apiCallBack = new ApiCallBack();
-        AgoraManager.getInstance(this).setApiCallBack(apiCallBack);
+
     }
 
     @Override
@@ -276,20 +274,5 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         context.startActivity(intent);
     }
 
-    class ApiCallBack extends AgoraAPICallBack {
-        @Override
-        public void onLoginSuccess(int uid, int fd) {
-            super.onLoginSuccess(uid, fd);
-            Log.d("MeetingActivity", "onLoginSuccess-----");
-        }
-
-        @Override
-        public void onLoginFailed(int ecode) {
-            super.onLoginFailed(ecode);
-            Log.d("MeetingActivity", "onLoginFailed-----");
-
-
-        }
-    }
 
 }

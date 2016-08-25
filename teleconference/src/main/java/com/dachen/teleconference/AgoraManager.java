@@ -26,7 +26,7 @@ public class AgoraManager {
     private AgoraManager(Context context) {
         mContext = context.getApplicationContext();
         mRtcEngineEventHandlerMgr = new RtcEngineEventHandlerMgr(mContext);
-        agoraAPICallBack =new AgoraAPICallBack();
+        agoraAPICallBack =new AgoraAPICallBack(mContext);
     }
 
     public static AgoraManager getInstance(Context context) {
@@ -61,6 +61,10 @@ public class AgoraManager {
     public RtcEngineEventHandlerMgr getEventHandlerMgr(){
         return mRtcEngineEventHandlerMgr;
     }
+    public AgoraAPICallBack getAgoraAPICallBack(){
+        return  agoraAPICallBack;
+    }
+
 
     public void loginAgora(String account,String token,String vendorKey ){
        mAgoraAPIOnlySignal.login(vendorKey, account, token, 0, "");
@@ -73,11 +77,6 @@ public class AgoraManager {
         mAgoraAPIOnlySignal.channelJoin(channel);
         mRtcEngine.joinChannel(dynamicKey, channel, "",account);
     }
-
-    public void setApiCallBack(IAgoraAPI.ICallBack callBack){
-        mAgoraAPIOnlySignal.callbackSet(callBack);
-    }
-
 
 
 
