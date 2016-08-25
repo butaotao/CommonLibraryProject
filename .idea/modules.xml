@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CommonLibraryProject.iml" filepath="$PROJECT_DIR$/CommonLibraryProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CommonLibraryProject.iml" filepath="$PROJECT_DIR$/CommonLibraryProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ImSdkProject/ImSdk/ImSdk.iml" filepath="$PROJECT_DIR$/../ImSdkProject/ImSdk/ImSdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ImSdkProject/ImSdk/ImSdk.iml" filepath="$PROJECT_DIR$/../ImSdkProject/ImSdk/ImSdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ImVideo/ImVideo.iml" filepath="$PROJECT_DIR$/ImVideo/ImVideo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ImVideo/ImVideo.iml" filepath="$PROJECT_DIR$/ImVideo/ImVideo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/actionSheetLibrary/actionSheetLibrary.iml" filepath="$PROJECT_DIR$/actionSheetLibrary/actionSheetLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/actionSheetLibrary/actionSheetLibrary.iml" filepath="$PROJECT_DIR$/actionSheetLibrary/actionSheetLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/barcodeScannerCore/barcodeScannerCore.iml" filepath="$PROJECT_DIR$/barcodeScannerCore/barcodeScannerCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/barcodeScannerCore/barcodeScannerCore.iml" filepath="$PROJECT_DIR$/barcodeScannerCore/barcodeScannerCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cmsLiveLibrary/cmsLiveLibrary.iml" filepath="$PROJECT_DIR$/cmsLiveLibrary/cmsLiveLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cmsLiveLibrary/cmsLiveLibrary.iml" filepath="$PROJECT_DIR$/cmsLiveLibrary/cmsLiveLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dCommonLibrary/dCommonLibrary.iml" filepath="$PROJECT_DIR$/dCommonLibrary/dCommonLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dCommonLibrary/dCommonLibrary.iml" filepath="$PROJECT_DIR$/dCommonLibrary/dCommonLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" filepath="$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" filepath="$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/incomeLibrary/incomeLibrary.iml" filepath="$PROJECT_DIR$/incomeLibrary/incomeLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/incomeLibrary/incomeLibrary.iml" filepath="$PROJECT_DIR$/incomeLibrary/incomeLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MedicineProject/meidecineLibrary/meidecineLibrary.iml" filepath="$PROJECT_DIR$/../MedicineProject/meidecineLibrary/meidecineLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MedicineProject/meidecineLibrary/meidecineLibrary.iml" filepath="$PROJECT_DIR$/../MedicineProject/meidecineLibrary/meidecineLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/numberPickerLibrary/numberPickerLibrary.iml" filepath="$PROJECT_DIR$/numberPickerLibrary/numberPickerLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/numberPickerLibrary/numberPickerLibrary.iml" filepath="$PROJECT_DIR$/numberPickerLibrary/numberPickerLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pickerView_Library/pickerView_Library.iml" filepath="$PROJECT_DIR$/pickerView_Library/pickerView_Library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pickerView_Library/pickerView_Library.iml" filepath="$PROJECT_DIR$/pickerView_Library/pickerView_Library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullToRefreshViewsLibrary/pullToRefreshViewsLibrary.iml" filepath="$PROJECT_DIR$/pullToRefreshViewsLibrary/pullToRefreshViewsLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullToRefreshViewsLibrary/pullToRefreshViewsLibrary.iml" filepath="$PROJECT_DIR$/pullToRefreshViewsLibrary/pullToRefreshViewsLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rTRoutineLib/rTRoutineLib.iml" filepath="$PROJECT_DIR$/rTRoutineLib/rTRoutineLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rTRoutineLib/rTRoutineLib.iml" filepath="$PROJECT_DIR$/rTRoutineLib/rTRoutineLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rtmpResourceLib/rtmpResourceLib.iml" filepath="$PROJECT_DIR$/rtmpResourceLib/rtmpResourceLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rtmpResourceLib/rtmpResourceLib.iml" filepath="$PROJECT_DIR$/rtmpResourceLib/rtmpResourceLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/videoConferencingLibrary/videoConferencingLibrary.iml" filepath="$PROJECT_DIR$/videoConferencingLibrary/videoConferencingLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/videoConferencingLibrary/videoConferencingLibrary.iml" filepath="$PROJECT_DIR$/videoConferencingLibrary/videoConferencingLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vitamioLibrary/vitamioLibrary.iml" filepath="$PROJECT_DIR$/vitamioLibrary/vitamioLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vitamioLibrary/vitamioLibrary.iml" filepath="$PROJECT_DIR$/vitamioLibrary/vitamioLibrary.iml" />
+    </modules>
+  </component>
+</project>
