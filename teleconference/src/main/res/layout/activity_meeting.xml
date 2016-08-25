@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:paddingLeft="25dp"
+            android:paddingLeft="10dp"
             android:paddingTop="15dp"></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

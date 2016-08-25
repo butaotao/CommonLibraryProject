@@ -54,6 +54,7 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
     private boolean isSpeakerOn = true;
     private boolean isMutOn = false;
     private UserAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +76,8 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
         mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
         mHangIv = (ImageView) findViewById(R.id.hang_iv);
         mMutIv = (ImageView) findViewById(R.id.mut_iv);
-//        mRoomView = (RoomView) findViewById(R.id.roomView);
-        mRecyclerView  = (RecyclerView) findViewById(R.id.room_view);
-
-
+        //        mRoomView = (RoomView) findViewById(R.id.roomView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.room_view);
 
 
         mLeftBtn.setText("隐藏");
@@ -104,7 +103,7 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
             data.add(userList);
         }
 
-//        mRoomView.setData(data);
+        //        mRoomView.setData(data);
 
         List<User> userList = new ArrayList<>();
         for (int j = 0; j < 15; j++) {
@@ -115,13 +114,17 @@ public class MeetingActivity extends Activity implements View.OnClickListener {
             userList.add(user);
         }
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 5));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 4));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
         mAdapter = new UserAdapter(MeetingActivity.this, userList);
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
+                if (position == 0) {
+                    ToastUtil.showToast(MeetingActivity.this, "添加成员");
+                    return;
+                }
                 CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this);
                 callMeetingMemberDialog.show();
             }
