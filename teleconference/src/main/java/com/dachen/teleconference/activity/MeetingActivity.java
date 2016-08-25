@@ -16,11 +16,8 @@ import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.User;
-<<<<<<< HEAD
 import com.dachen.teleconference.common.BaseActivity;
-=======
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
->>>>>>> c0d0d55852673bb3c305fddb3b1c455597b3cd65
 import com.dachen.teleconference.views.FloatingView;
 import com.dachen.teleconference.views.RoomView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,11 +35,7 @@ import io.agora.rtc.RtcEngine;
  * @author gzhuo
  * @date 2016/8/17
  */
-<<<<<<< HEAD
-public class MeetingActivity extends BaseActivity {
-=======
-public class MeetingActivity extends Activity implements View.OnClickListener {
->>>>>>> c0d0d55852673bb3c305fddb3b1c455597b3cd65
+public class MeetingActivity extends BaseActivity implements View.OnClickListener  {
     private static final String TAG = MeetingActivity.class.getSimpleName();
     private String mVendorKey;
     private String mDynamicKey;
