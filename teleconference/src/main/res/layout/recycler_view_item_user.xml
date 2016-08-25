@@ -13,6 +13,7 @@
         android:layout_height="72dp">
 
         <View
+            android:id="@+id/speaker_third_bg"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
@@ -21,6 +22,7 @@
             />
 
         <View
+            android:id="@+id/speaker_second_bg"
             android:layout_width="62dp"
             android:layout_height="62dp"
             android:layout_gravity="center"
@@ -29,6 +31,7 @@
             />
 
         <View
+            android:id="@+id/speaker_first_bg"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_gravity="center"
@@ -46,23 +49,27 @@
                 android:id="@+id/headImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/add_member_iv"/>
+                android:src="@drawable/avatar_normal"/>
 
             <ImageView
+                android:id="@+id/phone_online_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/phone_online"
                 android:visibility="gone"
+
                 />
 
             <ImageView
+                android:id="@+id/sponsor_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/sponsor_icon"
+                android:visibility="gone"
                 />
 
 

@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dachen.teleconference.R;
+import com.dachen.teleconference.constants.ImageLoaderConfig;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 呼叫网络参会人和落地电话参会人Dialog
@@ -18,19 +20,22 @@ import com.dachen.teleconference.R;
  */
 public class CallMeetingMemberDialog extends Dialog implements View.OnClickListener {
 
+    private final Context mContext;
+    private final String mName;
+    private final String mHeadImageUrl;
     private ImageView mCloseIv;
     private ImageView mHeadImageIv;
     private TextView mNameTv;
     private TextView mPhoneCallTv;
     private TextView mNetCallTv;
 
-    public CallMeetingMemberDialog(Context context) {
+    public CallMeetingMemberDialog(Context context,String name,String headImageUrl) {
         super(context,R.style.dialog);
+        mContext = context;
+        mName = name;
+        mHeadImageUrl = headImageUrl;
     }
 
-    public CallMeetingMemberDialog(Context context, int theme) {
-        super(context, theme);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,8 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         mCloseIv.setOnClickListener(this);
         mPhoneCallTv.setOnClickListener(this);
         mNetCallTv.setOnClickListener(this);
+        mNameTv.setText(mName);
+        ImageLoader.getInstance().displayImage(mHeadImageUrl, mHeadImageIv, ImageLoaderConfig.mCircleImageOptions);
     }
 
     @Override
@@ -67,4 +74,5 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         }
 
     }
+
 }

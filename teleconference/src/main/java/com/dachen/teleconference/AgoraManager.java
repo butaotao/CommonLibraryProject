@@ -1,12 +1,15 @@
 package com.dachen.teleconference;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.media.AudioManager;
 
+=======
+>>>>>>> 490dddce52ce2741c50057de1f975d010f587406
 
 import io.agora.AgoraAPI;
 import io.agora.AgoraAPIOnlySignal;
-import io.agora.NativeAgoraAPI;
+import io.agora.IAgoraAPI;
 import io.agora.rtc.RtcEngine;
 
 /**
@@ -73,6 +76,10 @@ public class AgoraManager {
     public void joinChannel(String channel,String dynamicKey,int account){
         mAgoraAPIOnlySignal.channelJoin(channel);
         mRtcEngine.joinChannel(dynamicKey, channel, "",account);
+    }
+
+    public void setApiCallBack(IAgoraAPI.ICallBack callBack){
+        mAgoraAPIOnlySignal.callbackSet(callBack);
     }
 
 
