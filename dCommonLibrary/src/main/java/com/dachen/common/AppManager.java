@@ -3,6 +3,9 @@ package com.dachen.common;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.util.Log;
+
+import com.dachen.common.utils.Logger;
 
 import java.util.Stack;
 
@@ -35,8 +38,8 @@ public class AppManager {
 	 * 添加Activity到堆栈  
 	 */
 	public void addActivity(Activity activity){
-
 		activityStack.add(activity);
+		Logger.e("AppManager", activity.getLocalClassName());
 	}
 	/**
 	 * 获取当前Activity（堆栈中最后一个压入的）
