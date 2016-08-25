@@ -166,7 +166,7 @@ public class UISwitchButton extends CheckBox {
 		}, 10);
 	}
 
-	public void setChecked(boolean checked) {
+	public void setChecked(boolean checked,boolean noticeListener){
 		if (mChecked != checked) {
 			mChecked = checked;
 
@@ -182,17 +182,21 @@ public class UISwitchButton extends CheckBox {
 			}
 			// 正在执行监听事件
 			mBroadcasting = true;
-			if (mOnCheckedChangeListener != null) {
+			if (noticeListener && mOnCheckedChangeListener != null) {
 				mOnCheckedChangeListener.onCheckedChanged(UISwitchButton.this,
 						mChecked);
 			}
-			if (mOnCheckedChangeWidgetListener != null) {
+			if (noticeListener && mOnCheckedChangeWidgetListener != null) {
 				mOnCheckedChangeWidgetListener.onCheckedChanged(
 						UISwitchButton.this, mChecked);
 			}
 			// 监听事件结束
 			mBroadcasting = false;
 		}
+	}
+
+	public void setChecked(boolean checked) {
+		setChecked(checked,true);
 	}
 
 	public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {

@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dachen.teleconference.R;
 import com.dachen.teleconference.bean.User;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
-import com.dachen.teleconference.R;
 
 /**
  * @author gzhuo
@@ -40,10 +40,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
 
     @Override
     public void onBindViewHolder(GalleryViewHolder holder, int position) {
-        User user = mData.get(position);
-        holder.mName.setText(user.name);
-        holder.mHeadImage.setImageResource(R.drawable.ic_launcher);
-        ImageLoader.getInstance().displayImage(user.head, holder.mHeadImage, ImageLoaderConfig.mCircleImageOptions);
+        if (position == 0) {
+            holder.mName.setText("添加");
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.blue_3cbaff));
+            holder.mHeadImage.setImageResource(R.drawable.add_member_iv);
+        } else {
+            User user = mData.get(position - 1);
+            holder.mName.setText(user.name);
+            holder.mName.setTextColor(mContext.getResources().getColor(R.color.black_333333));
+            holder.mHeadImage.setImageResource(R.drawable.ic_launcher);
+            ImageLoader.getInstance().displayImage(user.head, holder.mHeadImage, ImageLoaderConfig.mCircleImageOptions);
+        }
+
     }
 
     @Override

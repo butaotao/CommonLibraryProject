@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">Teleconference</string>
+<<<<<<< HEAD
     <!-- http -->
     <string name="error_response">解析问题</string>
     <string name="http_timeout">访问超时</string>
     <string name="error_other">服务器内部错误</string>
     <string name="param_error">参数错误</string>
+=======
+    <string name= "tele_incoming_tips">邀请您加入会议</string>
+    <string name="receive">接听</string>
+    <string name="refuse">拒接</string>
+    <string name="dialog_phone_call">电话呼叫</string>
+    <string name="dialog_net_call">网络重播</string>
+
+>>>>>>> c0d0d55852673bb3c305fddb3b1c455597b3cd65
 </resources>

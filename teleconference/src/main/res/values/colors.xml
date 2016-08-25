@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tele_incoming_bg_color">#f1f8fb</color>
+    <color name="black_333333">#333333</color>
+    <color name="black_666666">#666666</color>
+    <color name="blue_3cbaff">#3cbaff</color>
+    <color name="blue_9bdcff">#9bdcff</color>
+</resources>

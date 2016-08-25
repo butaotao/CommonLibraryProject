@@ -8,7 +8,14 @@
         android:supportsRtl="true">
         <activity android:name=".activity.MeetingActivity">
         </activity>
+<<<<<<< HEAD
         <activity android:name=".activity.AgoraVoiceSdkDemo"/>
+=======
+        <activity android:name=".activity.TeleIncomingActivity">
+        </activity>
+
+
+>>>>>>> c0d0d55852673bb3c305fddb3b1c455597b3cd65
     </application>
 
 </manifest>

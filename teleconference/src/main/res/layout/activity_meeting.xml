@@ -12,15 +12,25 @@
         android:id="@+id/header"
         layout="@layout/meeting_common_header"/>
 
-    <TextView
-        android:id="@+id/time"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#cccccc"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textColor="#666666"
-        tools:text="会议已进行：5:15"/>
+        android:layout_height="45dp"
+        android:background="@color/blue_9bdcff">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/meeting_in"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="会议已进行05:15"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,18 +42,32 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:background="#eef0f0">
         </ListView>
 
-        <com.dachen.teleconference.views.RoomView
-            android:id="@+id/roomView"
+        <!--<com.dachen.teleconference.views.RoomView-->
+        <!--android:id="@+id/roomView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="3"-->
+        <!--android:background="#d2f1f2">-->
+        <!--</com.dachen.teleconference.views.RoomView>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/room_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:background="#d2f1f2">
-        </com.dachen.teleconference.views.RoomView>
+            android:paddingLeft="10dp"
+            android:paddingTop="15dp"></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dcdcdc"/>
 
     <include layout="@layout/bottom_control_bar"/>
 

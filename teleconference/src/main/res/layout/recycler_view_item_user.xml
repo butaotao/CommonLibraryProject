@@ -1,34 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:paddingBottom="10dp"
+    >
 
-    <com.example.teleconference.views.SquareLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true">
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp">
 
-        <ImageView
-            android:id="@+id/headImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/avatar_normal"/>
+        <View
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_third_bg"
+            android:visibility="gone"
+            />
 
-    </com.example.teleconference.views.SquareLayout>
+        <View
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_second_bg"
+            android:visibility="gone"
+            />
+
+        <View
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_speaker_first_bg"
+            android:visibility="gone"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/headImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/add_member_iv"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/phone_online"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/sponsor_icon"
+                />
+
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="7dp"
-        android:gravity="center"
         android:singleLine="true"
         android:textColor="#666666"
         android:textSize="12sp"

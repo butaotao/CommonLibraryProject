@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dachen.teleconference.bean.User;
+import com.dachen.teleconference.views.CallMeetingMemberDialog;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class RoomPagerAdapter extends PagerAdapter {
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-
+                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(mContext);
+                callMeetingMemberDialog.show();
             }
         });
         recyclerView.setAdapter(mAdapter);
