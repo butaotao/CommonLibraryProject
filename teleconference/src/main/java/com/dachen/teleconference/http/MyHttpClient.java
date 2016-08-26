@@ -77,9 +77,6 @@ public class MyHttpClient extends AsyncHttpClient {
 	public RequestHandle post(Context context, RequestParams params, String URL,
 							  ResponseHandlerInterface responseHandler) {
 		// TODO Auto-generated method stub
-		if(!(context instanceof Activity)){
-			throw new RuntimeException("context must be activity");
-		}
 		Logger.d(TAG, "====================================");
 		Logger.e(TAG,  "URL: " + URL);
 		Logger.e(TAG, "params: " + String.valueOf(params));

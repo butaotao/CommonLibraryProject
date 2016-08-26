@@ -63,4 +63,18 @@ public class HttpCommImpl implements HttpComm {
 					}
 				});
 	}
+
+	@Override
+	public void getConfInfoByChannelId(Context context, Handler mHandler, int what, String channelId) {
+		MyHttpClient client = MyHttpClient.getInstance();
+		MyRequestParams params = new MyRequestParams(context);
+		params.set("channelId",channelId);
+		client.post(context, params, "http://192.168.3.62:8089/phone/getConfInfoByChannelId",
+				new GsonHttpResponseHandler(mHandler, what, context) {
+					@Override
+					protected Object parseJson(JsonObject response) {
+						return super.parseJson(response);
+					}
+				});
+	}
 }
