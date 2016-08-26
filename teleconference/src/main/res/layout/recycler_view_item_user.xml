@@ -9,13 +9,13 @@
     >
 
     <FrameLayout
-        android:layout_width="72dp"
-        android:layout_height="72dp">
+        android:layout_width="70dp"
+        android:layout_height="70dp">
 
         <View
             android:id="@+id/speaker_third_bg"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_speaker_third_bg"
             android:visibility="gone"
@@ -32,8 +32,8 @@
 
         <View
             android:id="@+id/speaker_first_bg"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_speaker_first_bg"
             android:visibility="gone"

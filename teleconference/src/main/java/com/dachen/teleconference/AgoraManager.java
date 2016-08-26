@@ -1,11 +1,9 @@
 package com.dachen.teleconference;
 
 import android.content.Context;
-import android.media.AudioManager;
 
 import io.agora.AgoraAPI;
 import io.agora.AgoraAPIOnlySignal;
-import io.agora.IAgoraAPI;
 import io.agora.rtc.RtcEngine;
 
 /**
@@ -26,21 +24,23 @@ public class AgoraManager {
     private AgoraManager(Context context) {
         mContext = context.getApplicationContext();
         mRtcEngineEventHandlerMgr = new RtcEngineEventHandlerMgr(mContext);
-        agoraAPICallBack =new AgoraAPICallBack(mContext);
+        agoraAPICallBack = new AgoraAPICallBack(mContext);
     }
 
     public static AgoraManager getInstance(Context context) {
         if (mInstance == null) {
-            synchronized (AgoraManager.class){
+            synchronized (AgoraManager.class) {
                 mInstance = new AgoraManager(context);
             }
         }
         return mInstance;
     }
-    public void initAgora(String vendorKey){
+
+    public void initAgora(String vendorKey) {
         createRtcEngine(vendorKey);
         creatAgoraAPIOnlySignal(vendorKey);
     }
+
     private RtcEngine createRtcEngine(String vendorKey) {
         if (mRtcEngine == null) {
             mRtcEngine = RtcEngine.create(mContext, vendorKey, mRtcEngineEventHandlerMgr);
@@ -48,36 +48,54 @@ public class AgoraManager {
             mRtcEngine.monitorConnectionEvent(true);
             mRtcEngine.monitorBluetoothHeadsetEvent(true);
             mRtcEngine.enableHighPerfWifiMode(true);
+            mRtcEngine.setEnableSpeakerphone(true);
+            mRtcEngine.enableAudioVolumeIndication(500,1);
         }
         return mRtcEngine;
     }
-    private AgoraAPIOnlySignal creatAgoraAPIOnlySignal(String vendorKey){
-        if(mAgoraAPIOnlySignal == null){
-            mAgoraAPIOnlySignal= AgoraAPI.getInstance(mContext,vendorKey);
+
+    private AgoraAPIOnlySignal creatAgoraAPIOnlySignal(String vendorKey) {
+        if (mAgoraAPIOnlySignal == null) {
+            mAgoraAPIOnlySignal = AgoraAPI.getInstance(mContext, vendorKey);
             mAgoraAPIOnlySignal.callbackSet(agoraAPICallBack);
         }
         return mAgoraAPIOnlySignal;
     }
-    public RtcEngineEventHandlerMgr getEventHandlerMgr(){
+
+    public RtcEngineEventHandlerMgr getEventHandlerMgr() {
         return mRtcEngineEventHandlerMgr;
     }
-    public AgoraAPICallBack getAgoraAPICallBack(){
-        return  agoraAPICallBack;
+
+    public AgoraAPICallBack getAgoraAPICallBack() {
+        return agoraAPICallBack;
     }
 
 
-    public void loginAgora(String account,String token,String vendorKey ){
-       mAgoraAPIOnlySignal.login(vendorKey, account, token, 0, "");
+    public void loginAgora(String account, String token, String vendorKey) {
+        mAgoraAPIOnlySignal.login(vendorKey, account, token, 0, "");
     }
-    public void logoutAgora(){
+
+    public void logoutAgora() {
         mAgoraAPIOnlySignal.logout();
     }
 
-    public void joinChannel(String channel,String dynamicKey,int account){
+    public void joinChannel(String channel, String dynamicKey, int account) {
         mAgoraAPIOnlySignal.channelJoin(channel);
-        mRtcEngine.joinChannel(dynamicKey, channel, "",account);
+        mRtcEngine.joinChannel(dynamicKey, channel, "", account);
     }
 
+    public void leaveChannel(String channel) {
+        mAgoraAPIOnlySignal.channelLeave(channel);
+        mRtcEngine.leaveChannel();
+    }
+
+    public void setEnableSpeakerphone(boolean b) {
+        mRtcEngine.setEnableSpeakerphone(b);
+    }
+
+    public void muteLocalAudioStream(boolean b) {
+        mRtcEngine.muteLocalAudioStream(b);
+    }
 
 
 }
