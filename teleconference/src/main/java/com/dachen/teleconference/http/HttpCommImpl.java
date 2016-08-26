@@ -46,4 +46,20 @@ public class HttpCommImpl implements HttpComm {
 			}
 		});
 	}
+
+	@Override
+	public void createPhoneMeeting(Context context, Handler mHandler, int what, String token, String creater, String groupId) {
+		MyHttpClient client = MyHttpClient.getInstance();
+		MyRequestParams params = new MyRequestParams(context);
+		params.set("token", token);
+		params.set("creater", creater);
+		params.set("groupId", groupId);
+		client.post(context, params, "http://192.168.3.62:8089/phone/createConf",
+				new GsonHttpResponseHandler(mHandler, what, context) {
+					@Override
+					protected Object parseJson(JsonObject response) {
+						return JsonMananger.jsonToBean(String.valueOf(response), GetSigningKeyResponse.class);
+					}
+				});
+	}
 }

@@ -54,15 +54,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
             holder.mPhoneOnlineIv.setVisibility(View.GONE);
             holder.mSponsorIv.setVisibility(View.GONE);
         } else {
+
+            holder.mFirstBg.setVisibility(View.GONE);
+            holder.mSecondBg.setVisibility(View.GONE);
+            holder.mThirdBg.setVisibility(View.GONE);
+
             GroupInfo2Bean.Data.UserInfo user = mData.get(position - 1);
             holder.mName.setText(user.name);
             holder.mName.setTextColor(mContext.getResources().getColor(R.color.black_333333));
             holder.mHeadImage.setImageResource(R.drawable.ic_launcher);
+            if (user.phoneOnline == 1) {
+                holder.mHeadImage.setAlpha(1f);
+            } else {
+                holder.mHeadImage.setAlpha(0.5f);
+            }
             ImageLoader.getInstance().displayImage(user.pic, holder.mHeadImage, ImageLoaderConfig.mCircleImageOptions);
             if (user.id.equals(mSponsorId)) {
                 holder.mSponsorIv.setVisibility(View.VISIBLE);
             } else {
                 holder.mSponsorIv.setVisibility(View.GONE);
+            }
+            if (user.volume > 0 && user.volume <= 85) {
+                holder.mFirstBg.setVisibility(View.VISIBLE);
+                holder.mSecondBg.setVisibility(View.GONE);
+                holder.mThirdBg.setVisibility(View.GONE);
+            } else if (user.volume > 85 && user.volume <= 170) {
+                holder.mFirstBg.setVisibility(View.VISIBLE);
+                holder.mSecondBg.setVisibility(View.VISIBLE);
+                holder.mThirdBg.setVisibility(View.GONE);
+            } else if (user.volume > 170 && user.volume <= 255) {
+                holder.mFirstBg.setVisibility(View.VISIBLE);
+                holder.mSecondBg.setVisibility(View.VISIBLE);
+                holder.mThirdBg.setVisibility(View.VISIBLE);
             }
 
         }
