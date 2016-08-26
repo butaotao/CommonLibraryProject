@@ -58,10 +58,13 @@ public class VolleyUtil {
 	}
 
 	public static Listener<String> getEmptyListener(){
+		return getEmptyListener("");
+	}
+	public static Listener<String> getEmptyListener(final String reqName){
 		return new Listener<String>() {
 			@Override
 			public void onResponse(String s) {
-				Logger.d(TAG, "s=" + s);
+				Logger.d(TAG, reqName+",response= " + s);
 			}
 		};
 	}
