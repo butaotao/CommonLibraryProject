@@ -21,6 +21,7 @@ import com.dachen.teleconference.MyAgoraAPICallBack;
 import com.dachen.teleconference.MyRtcEngineEventHandler;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.UserAdapter;
+import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.GetSigningKeyResponse;
 import com.dachen.teleconference.common.BaseActivity;
@@ -65,6 +66,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
     private static final String vendorKey = "86c6c121ff444021a5152b0a791aefd3";
     public static final String signKey = "b9aec320141347c6b64226cb7e901d23";
+    private String mChannelId;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -83,29 +85,30 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
                     break;
 
-                case GET_MEDIADYNAMIC_KEY:
-                    if (msg.arg1 == 1) {
-                        if (msg.obj != null) {
-                            AgoraManager.getInstance(MeetingActivity.this).joinChannel("1001", ((GetMediaDynamicKeyResponse) msg
-                                    .obj).getData(), Integer.parseInt(mUserId));
-                        }
-                    } else {
-                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
-                    }
-                    break;
-
                 case CREATE_PHONE_MEETING:
                     if (msg.arg1 == 1) {
                         if (msg.obj != null) {
-                            GetSigningKeyResponse res = (GetSigningKeyResponse) msg.obj;
-                            String data = res.getData();
-                            AgoraManager.getInstance(MeetingActivity.this).loginAgora(mUserId, data, vendorKey);
+                            CreatePhoneMeetingResponse res = (CreatePhoneMeetingResponse) msg.obj;
+                            mChannelId = res.getData();
+                            HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
+                                    mUserId, "3600");
                         }
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
-
                     break;
+
+                case GET_MEDIADYNAMIC_KEY:
+                    if (msg.arg1 == 1) {
+                        if (msg.obj != null) {
+                            AgoraManager.getInstance(MeetingActivity.this).joinChannel(mChannelId,
+                                    ((GetMediaDynamicKeyResponse) msg.obj).getData(), Integer.parseInt(mUserId));
+                        }
+                    } else {
+                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                    }
+                    break;
+
             }
 
 
@@ -185,9 +188,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 登录并加入房间
      */
     private void loginAndjoinChannel() {
-        //        mRtcEngine.joinChannel(mDynamicKey, mChannelId, "", Integer.parseInt(mUserId));
-        //        HttpCommClient.getInstance().getSigningKey(this, mHandler, GET_SIGNNING_KEY, mUserId, "3600");
-        HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
+        HttpCommClient.getInstance().getSigningKey(this, mHandler, GET_SIGNNING_KEY, mUserId, "3600");
     }
 
     private void initVariables() {
@@ -422,8 +423,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onLoginSuccess(int uid, int fd) {
                 ToastUtil.showToast(mContext, "登录成功");
-                HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, "1001", mUserId,
-                        "3600");
+                HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId,
+                        mGroupId);
 
             }
 

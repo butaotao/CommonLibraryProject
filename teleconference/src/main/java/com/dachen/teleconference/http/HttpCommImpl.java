@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.dachen.common.json.JsonMananger;
+import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.GetSigningKeyResponse;
 import com.google.gson.JsonObject;
@@ -58,7 +59,7 @@ public class HttpCommImpl implements HttpComm {
 				new GsonHttpResponseHandler(mHandler, what, context) {
 					@Override
 					protected Object parseJson(JsonObject response) {
-						return JsonMananger.jsonToBean(String.valueOf(response), GetSigningKeyResponse.class);
+						return JsonMananger.jsonToBean(String.valueOf(response), CreatePhoneMeetingResponse.class);
 					}
 				});
 	}
