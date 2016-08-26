@@ -17,6 +17,8 @@ public interface HttpComm {
 
     public void getSigningKey(Context context, Handler mHandler, int what, String uid, String expiredTs);
 
-    void createPhoneMeeting(Context context, Handler mHandler, int what, String token, String creater, String groupId);
+    public void createPhoneMeeting(Context context, Handler mHandler, int what, String token, String creater, String groupId);
+
+    public void  getConfInfoByChannelId(Context context, Handler mHandler, int what,String channelId);
 
 }
