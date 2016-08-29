@@ -62,7 +62,7 @@ public class VChatMemberActivity extends ImBaseActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.vchat_menber_activity);
+        setContentView(R.layout.vchat_menber_activity_v2);
 //        memberList = (ArrayList<UserInfo>) getIntent().getSerializableExtra(INTENT_MEMBER_LIST);
 //        oldList= (ArrayList<UserInfo>) getIntent().getSerializableExtra(INTENT_OLD_LIST);
         initOldList();
@@ -86,7 +86,7 @@ public class VChatMemberActivity extends ImBaseActivity implements OnClickListen
         mAdapter = new VChatMemberAdapter(this, memberList, oldList);
         ListView lv = (ListView) findViewById(R.id.list_view);
         lv.setAdapter(mAdapter);
-        findViewById(R.id.btn_confirm).setOnClickListener(this);
+        findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.back_btn).setOnClickListener(this);
         if (isCreate) {
             regReceiver();
@@ -114,7 +114,7 @@ public class VChatMemberActivity extends ImBaseActivity implements OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_confirm) {
+        if (v.getId() == R.id.btn_start) {
             doInvite();
         } else if (v.getId() == R.id.back_btn) {
             finish();
