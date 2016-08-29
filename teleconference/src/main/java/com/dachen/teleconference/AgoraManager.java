@@ -49,7 +49,7 @@ public class AgoraManager {
             mRtcEngine.monitorBluetoothHeadsetEvent(true);
             mRtcEngine.enableHighPerfWifiMode(true);
             mRtcEngine.setEnableSpeakerphone(true);
-            mRtcEngine.enableAudioVolumeIndication(500,1);
+            mRtcEngine.enableAudioVolumeIndication(500, 1);
         }
         return mRtcEngine;
     }
@@ -97,5 +97,20 @@ public class AgoraManager {
         mRtcEngine.muteLocalAudioStream(b);
     }
 
+    public void channelInviteAccept(String channelID, String account) {
+        mAgoraAPIOnlySignal.channelInviteAccept(channelID, account, 0);
+    }
+
+    public void muteRemoteAudioStream(boolean b) {
+        mRtcEngine.muteAllRemoteAudioStreams(b);
+    }
+
+    public void messageChannelSend(String channelID, String msg, String msgID) {
+        mAgoraAPIOnlySignal.messageChannelSend(channelID, msg, msgID);
+    }
+
+    public void channelInviteRefuse(String channelID, String account) {
+        mAgoraAPIOnlySignal.channelInviteRefuse(channelID, account, 0);
+    }
 
 }

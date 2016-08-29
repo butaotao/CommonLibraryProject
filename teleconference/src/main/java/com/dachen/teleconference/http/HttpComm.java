@@ -21,4 +21,6 @@ public interface HttpComm {
 
     public void  getConfInfoByChannelId(Context context, Handler mHandler, int what,String channelId);
 
+    public void dismissConf(Context context, Handler mHandler, int what,String token,String groupId,String channelId);
+
 }

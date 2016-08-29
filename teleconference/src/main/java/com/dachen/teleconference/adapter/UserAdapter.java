@@ -63,7 +63,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
             holder.mName.setText(user.name);
             holder.mName.setTextColor(mContext.getResources().getColor(R.color.black_333333));
             holder.mHeadImage.setImageResource(R.drawable.ic_launcher);
-            if (user.phoneOnline == 1) {
+            if (user.netOnLine) {
                 holder.mHeadImage.setAlpha(1f);
             } else {
                 holder.mHeadImage.setAlpha(0.5f);

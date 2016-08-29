@@ -3,7 +3,8 @@ package com.dachen.teleconference;
 import android.content.Context;
 import android.os.Handler;
 
-import com.dachen.common.utils.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.agora.AgoraAPI;
 import io.agora.IAgoraAPI;
@@ -13,19 +14,24 @@ import io.agora.IAgoraAPI;
  */
 public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
-    private MyAgoraAPICallBack myAgoraAPICallBack;
+    private List<MyAgoraAPICallBack> myAgoraAPICallBacks = new ArrayList<>();
     private Context mContext;
     private Handler mMainHandler;
 
-    public AgoraAPICallBack(Context mContext){
+    public AgoraAPICallBack(Context mContext) {
         this.mContext = mContext.getApplicationContext();
         mMainHandler = new Handler(mContext.getMainLooper());
     }
 
-    public void addAgoraAPICallBack(MyAgoraAPICallBack myAgoraAPICallBack){
-        this.myAgoraAPICallBack=myAgoraAPICallBack;
+    public void addAgoraAPICallBack(MyAgoraAPICallBack myAgoraAPICallBack) {
+        if (myAgoraAPICallBack != null) {
+            myAgoraAPICallBacks.add(myAgoraAPICallBack);
+        }
     }
 
+    public void removeAgoraAPICallBack(MyAgoraAPICallBack myAgoraAPICallBack) {
+        myAgoraAPICallBacks.remove(myAgoraAPICallBack);
+    }
 
     @Override
     public void setCB(IAgoraAPI.ICallBack cb) {
@@ -39,7 +45,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onReconnecting(final int nretry) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -51,7 +58,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onReconnected(final int fd) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -64,11 +72,12 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
     @Override
     public void onLoginSuccess(final int uid, final int fd) {
         super.onLoginSuccess(uid, fd);
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myAgoraAPICallBack.onLoginSuccess(uid,fd);
+                    myAgoraAPICallBack.onLoginSuccess(uid, fd);
                 }
             });
         }
@@ -76,7 +85,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onLogout(final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -88,7 +98,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onLoginFailed(final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -100,7 +111,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelJoined(final String channelID) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -112,11 +124,12 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelJoinFailed(final String channelID, final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myAgoraAPICallBack.onChannelJoinFailed(channelID,ecode);
+                    myAgoraAPICallBack.onChannelJoinFailed(channelID, ecode);
                 }
             });
         }
@@ -124,7 +137,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelLeaved(final String channelID, final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -136,7 +150,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelUserJoined(final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -148,7 +163,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelUserLeaved(final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -160,7 +176,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelUserList(final String[] accounts, final int[] uids) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -172,7 +189,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelQueryUserNumResult(final String channelID, final int ecode, final int num) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -184,7 +202,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onChannelAttrUpdated(final String channelID, final String name, final String value, final String type) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -196,7 +215,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteReceived(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -208,7 +228,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteReceivedByPeer(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -220,7 +241,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteAcceptedByPeer(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -232,7 +254,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteRefusedByPeer(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -244,7 +267,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteFailed(final String channelID, final String account, final int uid, final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -256,7 +280,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteEndByPeer(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -268,7 +293,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInviteEndByMyself(final String channelID, final String account, final int uid) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -280,7 +306,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMessageSendError(final String messageID, final int ecode) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -292,7 +319,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMessageSendSuccess(final String messageID) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -304,7 +332,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMessageAppReceived(final String msg) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -316,7 +345,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMessageInstantReceive(final String account, final int uid, final String msg) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -328,7 +358,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMessageChannelReceive(final String channelID, final String account, final int uid, final String msg) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -340,7 +371,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onLog(final String txt) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -352,7 +384,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onInvokeRet(final String name, final int ofu, final String reason, final String resp) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -364,7 +397,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onMsg(final String from, final String t, final String msg) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -376,7 +410,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onUserAttrResult(final String account, final String name, final String value) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -388,7 +423,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onUserAttrAllResult(final String account, final String value) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -400,7 +436,8 @@ public class AgoraAPICallBack extends AgoraAPI.CallBack {
 
     @Override
     public void onError(final String name, final int ecode, final String desc) {
-        if (myAgoraAPICallBack!= null) {
+        List<MyAgoraAPICallBack> myAgoraAPICallBacks = this.myAgoraAPICallBacks;
+        for (final MyAgoraAPICallBack myAgoraAPICallBack : myAgoraAPICallBacks) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {

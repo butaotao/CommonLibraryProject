@@ -15,7 +15,7 @@ import io.agora.rtc.IRtcEngineEventHandler;
  * @date 2016/8/16
  */
 public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
-    private MyRtcEngineEventHandler myRtcEngineEventHandler;
+    private List<MyRtcEngineEventHandler> mRtcEngineEventHandlers = new ArrayList<>();
     private Context mContext;
     private Handler mMainHandler;
 
@@ -25,32 +25,39 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
     }
 
     public void addRtcEngineEventHandler(MyRtcEngineEventHandler myRtcEngineEventHandler) {
-        if (myRtcEngineEventHandler!= null) {
-            this.myRtcEngineEventHandler=myRtcEngineEventHandler;
+        if (myRtcEngineEventHandler != null) {
+            mRtcEngineEventHandlers.add(myRtcEngineEventHandler);
         }
+    }
+
+    public void removeRtcEngineEventHandler(MyRtcEngineEventHandler eventHandler) {
+        mRtcEngineEventHandlers.remove(eventHandler);
     }
 
     //----------------- interface start -----------------//
     @Override
     public void onJoinChannelSuccess(final String channel, final int uid, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
-            mMainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    myRtcEngineEventHandler.onJoinChannelSuccess(channel, uid, elapsed);
-                }
-            });
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
+            if (mRtcEngineEventHandlers != null) {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        rtcEngineEventHandler.onJoinChannelSuccess(channel, uid, elapsed);
+                    }
+                });
+            }
         }
-
     }
 
     @Override
     public void onRejoinChannelSuccess(final String channel, final int uid, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onRejoinChannelSuccess(channel,uid,elapsed);
+                    rtcEngineEventHandler.onRejoinChannelSuccess(channel, uid, elapsed);
                 }
             });
         }
@@ -58,11 +65,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onWarning(final int warn) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onWarning(warn);
+                    rtcEngineEventHandler.onWarning(warn);
                 }
             });
         }
@@ -70,11 +78,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onError(final int err) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onError(err);
+                    rtcEngineEventHandler.onError(err);
                 }
             });
         }
@@ -82,11 +91,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onApiCallExecuted(final String api, final int error) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onApiCallExecuted(api,error);
+                    rtcEngineEventHandler.onApiCallExecuted(api, error);
                 }
             });
         }
@@ -94,11 +104,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onCameraReady() {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onCameraReady();
+                    rtcEngineEventHandler.onCameraReady();
                 }
             });
         }
@@ -106,11 +117,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onVideoStopped() {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onVideoStopped();
+                    rtcEngineEventHandler.onVideoStopped();
                 }
             });
         }
@@ -118,11 +130,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onAudioQuality(final int uid, final int quality, final short delay, final short lost) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onAudioQuality(uid,quality,delay,lost);
+                    rtcEngineEventHandler.onAudioQuality(uid, quality, delay, lost);
                 }
             });
         }
@@ -130,11 +143,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onLeaveChannel(final IRtcEngineEventHandler.RtcStats stats) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onLeaveChannel(stats);
+                    rtcEngineEventHandler.onLeaveChannel(stats);
                 }
             });
         }
@@ -142,11 +156,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onRtcStats(final IRtcEngineEventHandler.RtcStats stats) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onRtcStats(stats);
+                    rtcEngineEventHandler.onRtcStats(stats);
                 }
             });
         }
@@ -154,11 +169,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onAudioVolumeIndication(final IRtcEngineEventHandler.AudioVolumeInfo[] speakers, final int totalVolume) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onAudioVolumeIndication(speakers,totalVolume);
+                    rtcEngineEventHandler.onAudioVolumeIndication(speakers, totalVolume);
                 }
             });
         }
@@ -166,11 +182,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onNetworkQuality(final int quality) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onNetworkQuality(quality);
+                    rtcEngineEventHandler.onNetworkQuality(quality);
                 }
             });
         }
@@ -178,11 +195,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onUserJoined(final int uid, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onUserJoined(uid,elapsed);
+                    rtcEngineEventHandler.onUserJoined(uid, elapsed);
                 }
             });
         }
@@ -190,11 +208,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onUserOffline(final int uid, final int reason) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onUserOffline(uid,reason);
+                    rtcEngineEventHandler.onUserOffline(uid, reason);
                 }
             });
         }
@@ -202,11 +221,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onUserMuteAudio(final int uid, final boolean muted) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onUserMuteAudio(uid,muted);
+                    rtcEngineEventHandler.onUserMuteAudio(uid, muted);
                 }
             });
         }
@@ -214,11 +234,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onUserMuteVideo(final int uid, final boolean muted) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onUserMuteVideo(uid,muted);
+                    rtcEngineEventHandler.onUserMuteVideo(uid, muted);
                 }
             });
         }
@@ -226,11 +247,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onUserEnableVideo(final int uid, final boolean enabled) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onUserEnableVideo(uid,enabled);
+                    rtcEngineEventHandler.onUserEnableVideo(uid, enabled);
                 }
             });
         }
@@ -242,11 +264,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
     @Deprecated
     @Override
     public void onLocalVideoStat(final int sentBitrate, final int sentFrameRate) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onLocalVideoStat(sentBitrate,sentFrameRate);
+                    rtcEngineEventHandler.onLocalVideoStat(sentBitrate, sentFrameRate);
                 }
             });
         }
@@ -258,11 +281,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
     @Deprecated
     @Override
     public void onRemoteVideoStat(final int uid, final int delay, final int receivedBitrate, final int receivedFrameRate) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onRemoteVideoStat(uid,delay,receivedBitrate,receivedFrameRate);
+                    rtcEngineEventHandler.onRemoteVideoStat(uid, delay, receivedBitrate, receivedFrameRate);
                 }
             });
         }
@@ -270,11 +294,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onRemoteVideoStats(final IRtcEngineEventHandler.RemoteVideoStats stats) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onRemoteVideoStats(stats);
+                    rtcEngineEventHandler.onRemoteVideoStats(stats);
                 }
             });
         }
@@ -282,11 +307,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onLocalVideoStats(final IRtcEngineEventHandler.LocalVideoStats stats) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onLocalVideoStats(stats);
+                    rtcEngineEventHandler.onLocalVideoStats(stats);
                 }
             });
         }
@@ -294,11 +320,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onFirstRemoteVideoFrame(final int uid, final int width, final int height, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onFirstRemoteVideoFrame(uid,width,height,elapsed);
+                    rtcEngineEventHandler.onFirstRemoteVideoFrame(uid, width, height, elapsed);
                 }
             });
         }
@@ -306,11 +333,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onFirstLocalVideoFrame(final int width, final int height, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onFirstLocalVideoFrame(width,height,elapsed);
+                    rtcEngineEventHandler.onFirstLocalVideoFrame(width, height, elapsed);
                 }
             });
         }
@@ -318,11 +346,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onFirstRemoteVideoDecoded(final int uid, final int width, final int height, final int elapsed) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onFirstRemoteVideoDecoded(uid,width,height,elapsed);
+                    rtcEngineEventHandler.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
                 }
             });
         }
@@ -330,11 +359,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onConnectionLost() {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onConnectionLost();
+                    rtcEngineEventHandler.onConnectionLost();
                 }
             });
         }
@@ -342,11 +372,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onConnectionInterrupted() {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onConnectionInterrupted();
+                    rtcEngineEventHandler.onConnectionInterrupted();
                 }
             });
         }
@@ -354,11 +385,12 @@ public class RtcEngineEventHandlerMgr extends IRtcEngineEventHandler {
 
     @Override
     public void onRefreshRecordingServiceStatus(final int status) {
-        if(myRtcEngineEventHandler!=null){
+        List<MyRtcEngineEventHandler> rtcEngineEventHandlers = mRtcEngineEventHandlers;
+        for (final MyRtcEngineEventHandler rtcEngineEventHandler : rtcEngineEventHandlers) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    myRtcEngineEventHandler.onRefreshRecordingServiceStatus(status);
+                    rtcEngineEventHandler.onRefreshRecordingServiceStatus(status);
                 }
             });
         }

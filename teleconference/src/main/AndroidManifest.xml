@@ -9,7 +9,9 @@
         <activity android:name=".activity.MeetingActivity">
         </activity>
         <activity android:name=".activity.AgoraVoiceSdkDemo"/>
-        <activity android:name=".activity.TeleIncomingActivity">
+        <activity android:name=".activity.TeleIncomingActivity"
+            android:launchMode="singleInstance"
+            >
         </activity>
     </application>
 
