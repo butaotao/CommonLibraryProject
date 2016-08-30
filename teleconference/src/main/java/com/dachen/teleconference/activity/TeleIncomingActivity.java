@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,6 +46,25 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
     private String mCreateID;
     private String mChannelID;
     private String mUserId;
+    private int reckonTime = 60;
+
+    private Handler mReckonHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what == 0x1) {
+                reckonTime--;
+                if (reckonTime < 0) {
+                    mReckonHandler.sendEmptyMessage(0x2);
+                } else {
+                    mReckonHandler.sendEmptyMessageDelayed(0x1, 1000);
+                }
+            } else if (msg.what == 0x2) {// 60秒结束
+                mSoundPlayer.stop();
+                finish();
+            }
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +72,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         initVariables();
         initView();
         initSound();
-
+        mReckonHandler.sendEmptyMessage(0x1);
     }
 
     private void initVariables() {
