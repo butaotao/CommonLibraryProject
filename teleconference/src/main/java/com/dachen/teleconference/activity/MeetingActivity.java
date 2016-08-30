@@ -923,7 +923,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     "selectList");
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
-
+                    HttpCommClient.getInstance().voipCall(MeetingActivity.this,mHandler,VOIP_CALL ,info.id,mChannelId);
                 }
             }
         }
