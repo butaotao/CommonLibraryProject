@@ -19,10 +19,10 @@ public interface HttpComm {
 
     public void createPhoneMeeting(Context context, Handler mHandler, int what, String token, String creater, String groupId);
 
-    public void  getConfInfoByChannelId(Context context, Handler mHandler, int what,String channelId);
+    public void getConfInfoByChannelId(Context context, Handler mHandler, int what, String channelId);
 
-    public void dismissConf(Context context, Handler mHandler, int what,String token,String groupId,String channelId);
+    public void dismissConf(Context context, Handler mHandler, int what, String token, String groupId, String channelId);
 
-    public void voipCall(Context context, Handler mHandler,int what,String user,String channelId);
+    public void voipCall(Context context, Handler mHandler, int what, String user, String gId, String channelId);
 
 }

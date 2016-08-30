@@ -100,10 +100,11 @@ public class HttpCommImpl implements HttpComm {
     }
 
     @Override
-    public void voipCall(Context context, Handler mHandler,int what, String user, String channelId) {
+    public void voipCall(Context context, Handler mHandler,int what, String user, String gId,String channelId) {
         MyHttpClient client = MyHttpClient.getInstance();
         MyRequestParams params = new MyRequestParams(context);
         params.set("user", user);
+        params.set("gId", gId);
         params.set("channelId", channelId);
         client.post(context, params, "http://192.168.3.62:8089/phone/voipCall",
                 new GsonHttpResponseHandler(mHandler, what, context) {

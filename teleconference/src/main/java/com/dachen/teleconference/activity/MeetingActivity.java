@@ -297,7 +297,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                             userInfo.name, userInfo.pic, new CallMeetingMemberDialog.CallMeetingListener() {
                         @Override
                         public void onNetCall() {
-                            HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, userInfo.id, mChannelId);
+                            HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, userInfo.id,mGroupId,
+                                    mChannelId);
                         }
 
                         @Override
@@ -346,6 +347,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         int i = v.getId();
         if (i == R.id.left_btn) {
             //            hide();
+            finish();
         } else if (i == R.id.right_btn) {
             if (isAllMut) {
                 mRightBtn.setText("全部静音");
@@ -874,7 +876,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         info.name, info.pic, new CallMeetingMemberDialog.CallMeetingListener() {
                     @Override
                     public void onNetCall() {
-                        HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, info.id, mChannelId);
+                        HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, info.id,mGroupId, mChannelId);
                         showNetCallDialog();
                     }
 
@@ -968,12 +970,17 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     mUserInfos.add(info);
-                    HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mChannelId);
+                    HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id,mGroupId, mChannelId);
                     AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mCreateName + "邀请" + info.name + "加入会议",
                             "");
                 }
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }
