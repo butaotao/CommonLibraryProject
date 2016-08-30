@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.dachen.common.media.SoundPlayer;
 import com.dachen.teleconference.AgoraManager;
+import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
-import com.dachen.teleconference.views.MeetingBusinessCallBack;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -47,6 +47,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
     private String mChannelID;
     private String mUserId;
     private int reckonTime = 60;
+    private static MeetingBusinessCallBack meetingBusinessCallBack;
 
     private Handler mReckonHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -118,7 +119,8 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
 
 
     public static void openUI(Context context, String token, String channelId, String userId, String createrId, String
-            createrName, String createrPic, String groupId) {
+            createrName, String createrPic, String groupId,MeetingBusinessCallBack meetingBusinessCallBack) {
+        TeleIncomingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
         Intent intent = new Intent(context, TeleIncomingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
@@ -153,12 +155,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
             finish();
         } else if (id == R.id.response_tele_call) {
             mSoundPlayer.stop();
-            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID, new MeetingBusinessCallBack() {
-                @Override
-                public void addPersonIntoMeeting() {
-
-                }
-            });
+            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID, meetingBusinessCallBack);
             finish();
         }
     }

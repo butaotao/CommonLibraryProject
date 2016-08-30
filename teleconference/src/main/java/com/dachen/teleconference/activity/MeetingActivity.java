@@ -24,6 +24,7 @@ import com.dachen.imsdk.db.po.ChatGroupPo;
 import com.dachen.imsdk.entity.GroupInfo2Bean;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.MediaMessage;
+import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.MyAgoraAPICallBack;
 import com.dachen.teleconference.MyRtcEngineEventHandler;
 import com.dachen.teleconference.R;
@@ -36,7 +37,6 @@ import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
-import com.dachen.teleconference.views.MeetingBusinessCallBack;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -86,6 +86,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private String mCreateId;
     private String mCreateName;
     private static MeetingBusinessCallBack meetingBusinessCallBack;
+    public static final int REQUEST_CODE_UPDATE_GROUP = 10001;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -207,8 +208,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onItemClick(View itemView, int position) {
                 if (position == 0) {
-                    ToastUtil.showToast(MeetingActivity.this, "添加成员");
-                    meetingBusinessCallBack.addPersonIntoMeeting();
+                    meetingBusinessCallBack.addPersonIntoMeeting(MeetingActivity.this,mGroupId);
                     return;
                 }
                 GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
@@ -795,5 +795,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if(requestCode == REQUEST_CODE_UPDATE_GROUP){
+            List<GroupInfo2Bean.Data.UserInfo> userInfos=(List<GroupInfo2Bean.Data.UserInfo>)data.getSerializableExtra("selectList");
+            if(userInfos!=null&&userInfos.size()>0){
+                
+            }
+        }
+
+    }
 }
