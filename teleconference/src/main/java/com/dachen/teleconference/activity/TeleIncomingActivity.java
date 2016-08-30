@@ -15,6 +15,7 @@ import com.dachen.common.media.SoundPlayer;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
+import com.dachen.teleconference.views.MeetingBusinessCallBack;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -131,7 +132,12 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
             finish();
         } else if (id == R.id.response_tele_call) {
             mSoundPlayer.stop();
-            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID);
+            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID, new MeetingBusinessCallBack() {
+                @Override
+                public void addPersonIntoMeeting() {
+
+                }
+            });
             finish();
         }
     }

@@ -36,6 +36,7 @@ import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
 import com.dachen.teleconference.views.FloatingView;
+import com.dachen.teleconference.views.MeetingBusinessCallBack;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -84,6 +85,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private boolean isSponsor;
     private String mCreateId;
     private String mCreateName;
+    private static MeetingBusinessCallBack meetingBusinessCallBack;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -206,6 +208,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             public void onItemClick(View itemView, int position) {
                 if (position == 0) {
                     ToastUtil.showToast(MeetingActivity.this, "添加成员");
+                    meetingBusinessCallBack.addPersonIntoMeeting();
                     return;
                 }
                 GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
@@ -385,7 +388,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
 
     public static void openUI(Context context, String token, String userId, String groupId,
-                              ArrayList<GroupInfo2Bean.Data.UserInfo> userList) {
+                              ArrayList<GroupInfo2Bean.Data.UserInfo> userList, MeetingBusinessCallBack meetingBusinessCallBack) {
+        MeetingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
         Intent intent = new Intent(context, MeetingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
@@ -395,7 +399,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         context.startActivity(intent);
     }
 
-    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId) {
+    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId,MeetingBusinessCallBack meetingBusinessCallBack) {
+        MeetingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
         Intent intent = new Intent(context, MeetingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
