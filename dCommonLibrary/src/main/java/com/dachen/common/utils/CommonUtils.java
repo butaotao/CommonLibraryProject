@@ -3,6 +3,8 @@ package com.dachen.common.utils;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.util.List;
 
@@ -21,5 +23,13 @@ public class CommonUtils {
             }
         }
         return name;
+    }
+
+    public static boolean checkNetworkEnable(Context context) {
+        ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network = cManager.getActiveNetworkInfo();
+        if (network == null)
+            return false;
+        return network.isAvailable();
     }
 }
