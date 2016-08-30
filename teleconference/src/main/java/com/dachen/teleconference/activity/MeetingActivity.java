@@ -264,6 +264,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
                 GroupInfo2Bean.Data.UserInfo.class);
 
+
         if (!ImageLoader.getInstance().isInited()) {
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
             ImageLoader.getInstance().init(config);
@@ -479,7 +480,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         @Override
         public void onRtcStats(IRtcEngineEventHandler.RtcStats stats) {
 
-            Logger.d("onRtcStats", "totalDuration---" + stats.totalDuration);
         }
 
         @Override
@@ -581,9 +581,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onLoginSuccess(int uid, int fd) {
-            ToastUtil.showToast(mContext, "登录成功");
-            HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId,
-                    mGroupId);
 
         }
 
@@ -715,6 +712,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 mMessageListAdapter.notifyDataSetChanged();
             }
 
+            setUserStatus(msg);
+
 
         }
 
@@ -748,6 +747,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         }
     };
+
+    private void setUserStatus(String msg) {
+
+
+    }
 
     private void updateOffLineUser(String account) {
         String userName = "";
