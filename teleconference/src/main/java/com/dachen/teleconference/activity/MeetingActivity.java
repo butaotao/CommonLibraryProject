@@ -83,6 +83,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private String mChannelId;
     private boolean isSponsor;
     private String mCreateId;
+    private String mCreateName;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -149,7 +150,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         initView();
 
-        initAgoraConfigure();
+//        initAgoraConfigure();
 
         loginAndjoinChannel();
     }
@@ -157,8 +158,16 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
+        initAgoraConfigure();
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
+        AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
+    }
 
     @Override
     protected void onDestroy() {
@@ -250,6 +259,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
         ChatGroupDao dao = new ChatGroupDao();
         ChatGroupPo po = dao.queryForId(mGroupId);
+        String meeting = po.meeting;
         String groupUsers = po.groupUsers;
         List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
                 GroupInfo2Bean.Data.UserInfo.class);
@@ -266,6 +276,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (info.id.equals(mCreateId)) {
                 mUserInfos.clear();
                 mUserInfos.add(info);
+                mCreateName = info.name;
             }
         }
         for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
@@ -315,7 +326,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void showSponsorDialog() {
-        // 弹出提示dialog
         CustomDialog hintDialog = new CustomDialog.Builder(MeetingActivity.this, new CustomDialog.CustomClickEvent() {
             @Override
             public void onDismiss(CustomDialog hintDialog) {
@@ -334,7 +344,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
 
     private void showFinishDialog() {
-        // 弹出提示dialog
         CustomDialog hintDialog = new CustomDialog.Builder(MeetingActivity.this, new CustomDialog.CustomClickEvent() {
             @Override
             public void onDismiss(CustomDialog hintDialog) {
@@ -693,7 +702,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     mMutIv.setImageResource(R.drawable.mut_on);
                     AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
                 }
-                mMessageData.add("全员静音开启");
+                mMessageData.add(mCreateName+"开启全员静音");
                 mMessageListAdapter.notifyDataSetChanged();
             }
             if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
@@ -702,7 +711,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     mMutIv.setImageResource(R.drawable.mut_close);
                     AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
                 }
-                mMessageData.add("全员静音取消");
+                mMessageData.add(mCreateName+"解除全员静音");
                 mMessageListAdapter.notifyDataSetChanged();
             }
 
