@@ -42,7 +42,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 
@@ -77,9 +79,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private UserAdapter mAdapter;
     private List<GroupInfo2Bean.Data.UserInfo> mUserInfos = new ArrayList<>();//IM成员list
     private List<GroupInfo2Bean.Data.UserInfo> mChannelUserList = new ArrayList<>();//频道成员list
-
-
-    private List<String> mMessageData = new ArrayList<>();
+    private List<String> mMessageData = new ArrayList<>();//频道消息list
+    private Map<GroupInfo2Bean.Data.UserInfo, String> mShowDialogUserMap = new HashMap<>();//自动弹出拨叫界面框的用户Map
     private ListView mMessageListView;
     private String mUserId;
     private String mToken;
@@ -92,6 +93,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private String mCreateName;
     private static MeetingBusinessCallBack meetingBusinessCallBack;
     public static final int REQUEST_CODE_UPDATE_GROUP = 10001;
+    private MessageListAdapter mMessageListAdapter;
+    private boolean isAllMut = false;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -159,8 +163,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         }
     };
-    private MessageListAdapter mMessageListAdapter;
-    private boolean isAllMut = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -766,6 +769,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (msg.equals(MediaMessage.INVITE_REFUSE)) {
 
             }
+            if (msg.startsWith(mCreateName) && msg.endsWith("加入会议")) {
+                mMessageData.add(msg);
+                mMessageListAdapter.notifyDataSetChanged();
+            }
+
 
             /**
              * 根据服务端返回的频道消息获取更改会议成员头像状态
@@ -825,7 +833,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
 
     /**
-     * 通过server发送的频道信息,更新会议成员头像状态
+     * 通过server发送的频道信息,更新会议成员头像状态,并弹框
      *
      * @param msg
      */
@@ -838,11 +846,47 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         if (!mChannelUserList.contains(info)) {
                             info.netOnLine = false;
                             mChannelUserList.add(info);
+                            if (!mShowDialogUserMap.containsKey(info)) {
+                                mShowDialogUserMap.put(info, "0");
+                            }
+
                         }
                     }
                 }
             }
+
+            if (isSponsor) {
+                showNetCallDialog();
+            }
             mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    /**
+     * 自动弹出网络超时dialog
+     */
+    private void showNetCallDialog() {
+        for (Map.Entry<GroupInfo2Bean.Data.UserInfo, String> entry : mShowDialogUserMap.entrySet()) {
+            if ("0".equals(entry.getValue())) {
+                final GroupInfo2Bean.Data.UserInfo info = entry.getKey();
+                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this,
+                        info.name, info.pic, new CallMeetingMemberDialog.CallMeetingListener() {
+                    @Override
+                    public void onNetCall() {
+                        HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, info.id, mChannelId);
+                        showNetCallDialog();
+                    }
+
+                    @Override
+                    public void onPhoneCall() {
+                        showNetCallDialog();
+                    }
+                });
+                callMeetingMemberDialog.show();
+                entry.setValue("1");
+                break;
+            }
         }
 
     }
@@ -918,12 +962,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
-        if (requestCode == REQUEST_CODE_UPDATE_GROUP) {
+        if (requestCode == REQUEST_CODE_UPDATE_GROUP && data != null) {
             List<GroupInfo2Bean.Data.UserInfo> userInfos = (List<GroupInfo2Bean.Data.UserInfo>) data.getSerializableExtra(
                     "selectList");
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
-                    HttpCommClient.getInstance().voipCall(MeetingActivity.this,mHandler,VOIP_CALL ,info.id,mChannelId);
+                    mUserInfos.add(info);
+                    HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mChannelId);
+                    AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mCreateName + "邀请" + info.name + "加入会议",
+                            "");
                 }
             }
         }

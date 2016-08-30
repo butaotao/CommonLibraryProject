@@ -62,6 +62,7 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         mNetCallTv.setOnClickListener(this);
         mNameTv.setText(mName);
         ImageLoader.getInstance().displayImage(mHeadImageUrl, mHeadImageIv, ImageLoaderConfig.mCircleImageOptions);
+        setCanceledOnTouchOutside(false);
     }
 
     @Override
