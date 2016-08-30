@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.dachen.common.media.SoundPlayer;
 import com.dachen.teleconference.AgoraManager;
+import com.dachen.teleconference.MediaMessage;
 import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
@@ -152,6 +153,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         if (id == R.id.refuse_tele_call) {
             mSoundPlayer.stop();
             AgoraManager.getInstance(TeleIncomingActivity.this).channelInviteRefuse(mChannelID, mUserId);
+            AgoraManager.getInstance(TeleIncomingActivity.this).messageChannelSend(mChannelID, MediaMessage.INVITE_REFUSE,mUserId);
             finish();
         } else if (id == R.id.response_tele_call) {
             mSoundPlayer.stop();

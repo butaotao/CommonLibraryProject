@@ -59,6 +59,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("token", token);
         params.set("creater", creater);
         params.set("groupId", groupId);
+        params.set("planEndTime", "3600");
         client.post(context, params, "http://192.168.3.62:8089/phone/createConf",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
@@ -90,6 +91,21 @@ public class HttpCommImpl implements HttpComm {
         params.set("groupId", groupId);
         params.set("channelId", channelId);
         client.post(context, params, "http://192.168.3.62:8089/phone/dismissConf",
+                new GsonHttpResponseHandler(mHandler, what, context) {
+                    @Override
+                    protected Object parseJson(JsonObject response) {
+                        return JsonMananger.jsonToBean(String.valueOf(response), BaseResponse.class);
+                    }
+                });
+    }
+
+    @Override
+    public void voipCall(Context context, Handler mHandler,int what, String user, String channelId) {
+        MyHttpClient client = MyHttpClient.getInstance();
+        MyRequestParams params = new MyRequestParams(context);
+        params.set("user", user);
+        params.set("channelId", channelId);
+        client.post(context, params, "http://192.168.3.62:8089/phone/voipCall",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {

@@ -30,6 +30,7 @@ import com.dachen.teleconference.MyRtcEngineEventHandler;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
+import com.dachen.teleconference.bean.ChannelMemberStatusBean;
 import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.GetSigningKeyResponse;
@@ -63,6 +64,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private static final int CREATE_PHONE_MEETING = 1003;
     private static final String INTENT_EXTRA_CREATE_ID = "create_id";
     private static final int DISMISS_CONF = 1004;
+    private static final int VOIP_CALL = 1005;
     private RecyclerView mRecyclerView;
     private TextView mLeftBtn;
     private TextView mTitle;
@@ -73,7 +75,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private boolean isSpeakerOn = true;
     private boolean isMutOn = false;
     private UserAdapter mAdapter;
-    private List<GroupInfo2Bean.Data.UserInfo> mUserInfos = new ArrayList<>();
+    private List<GroupInfo2Bean.Data.UserInfo> mUserInfos = new ArrayList<>();//IM成员list
+    private List<GroupInfo2Bean.Data.UserInfo> mChannelUserList = new ArrayList<>();//频道成员list
+
+
     private List<String> mMessageData = new ArrayList<>();
     private ListView mMessageListView;
     private String mUserId;
@@ -102,7 +107,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
-
                     break;
 
                 case CREATE_PHONE_MEETING:
@@ -110,6 +114,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         if (msg.obj != null) {
                             CreatePhoneMeetingResponse res = (CreatePhoneMeetingResponse) msg.obj;
                             mChannelId = res.getData();
+                            if (TextUtils.isEmpty(mChannelId)) {
+                                UIHelper.ToastMessage(MeetingActivity.this, "创建会议失败");
+                                finish();
+                                return;
+                            }
                             HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
                                     mUserId, "3600");
                         }
@@ -131,6 +140,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
                 case DISMISS_CONF:
                     if (msg.arg1 == 1) {
+                        AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.MEETING_EDN, "");
+                    } else {
+                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                    }
+                    break;
+
+                case VOIP_CALL:
+                    if (msg.arg1 == 1) {
+
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
@@ -153,7 +171,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         initView();
 
-//        initAgoraConfigure();
+        initAgoraConfigure();
 
         loginAndjoinChannel();
     }
@@ -161,92 +179,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        initAgoraConfigure();
+        //        initAgoraConfigure();
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
-        AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-    }
-
-    private void initView() {
-        mLeftBtn = (TextView) findViewById(R.id.left_btn);
-        mTitle = (TextView) findViewById(R.id.title);
-        mRightBtn = (TextView) findViewById(R.id.right_btn);
-        mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
-        mHangIv = (ImageView) findViewById(R.id.hang_iv);
-        mMutIv = (ImageView) findViewById(R.id.mut_iv);
-        mRecyclerView = (RecyclerView) findViewById(R.id.room_view);
-        mMessageListView = (ListView) findViewById(R.id.message_list_view);
-        mMessageListAdapter = new MessageListAdapter(mContext, mMessageData);
-        mMessageListView.setAdapter(mMessageListAdapter);
-
-        mLeftBtn.setText("隐藏");
-        mTitle.setText("电话会议");
-        mRightBtn.setText("全部静音");
-
-        mLeftBtn.setOnClickListener(this);
-        mRightBtn.setOnClickListener(this);
-        mSpeakerIv.setOnClickListener(this);
-        mHangIv.setOnClickListener(this);
-        mMutIv.setOnClickListener(this);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 4));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
-
-        mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos, mCreateId);
-        mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                if (position == 0) {
-                    meetingBusinessCallBack.addPersonIntoMeeting(MeetingActivity.this,mGroupId);
-                    return;
-                }
-                GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
-                CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this, userInfo.name,
-                        userInfo.pic);
-                callMeetingMemberDialog.show();
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-
-    }
-
-    private void hide() {
-        FloatingView floatingView = new FloatingView(this);
-        floatingView.show();
-
-    }
-
-    /**
-     * 登录并加入房间
-     */
-    private void loginAndjoinChannel() {
-        //        HttpCommClient.getInstance().getSigningKey(this, mHandler, GET_SIGNNING_KEY, mUserId, "3600");
-
-        if (TextUtils.isEmpty(getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID))) {//邀请者
-            mMessageData.add("呼叫中~");
-            mMessageListAdapter.notifyDataSetChanged();
-            isSponsor = true;
-            mRightBtn.setVisibility(View.VISIBLE);
-            HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
-        } else {//参会者
-            isSponsor = false;
-            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
-            mRightBtn.setVisibility(View.GONE);
-            HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
-                    mUserId, "3600");
-        }
-
+        AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
+        AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
     }
 
     private void initVariables() {
@@ -276,17 +223,26 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         if (userInfos == null) {
             return;
         }
+
+
+        /**
+         * 会议发起人排第一位
+         */
         for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
             if (info.id.equals(mCreateId)) {
                 mUserInfos.clear();
                 mUserInfos.add(info);
                 mCreateName = info.name;
+                mChannelUserList.clear();
+                mChannelUserList.add(info);
             }
         }
+
         for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
             if (mCreateId != mUserId) {
                 if (info.id.equals(mUserId)) {
                     mUserInfos.add(info);
+                    mChannelUserList.add(info);
                 }
             }
         }
@@ -294,6 +250,89 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (!info.id.equals(mUserId) && !info.id.equals(mCreateId)) {
                 mUserInfos.add(info);
             }
+        }
+    }
+
+
+    private void initView() {
+        mLeftBtn = (TextView) findViewById(R.id.left_btn);
+        mTitle = (TextView) findViewById(R.id.title);
+        mRightBtn = (TextView) findViewById(R.id.right_btn);
+        mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
+        mHangIv = (ImageView) findViewById(R.id.hang_iv);
+        mMutIv = (ImageView) findViewById(R.id.mut_iv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.room_view);
+        mMessageListView = (ListView) findViewById(R.id.message_list_view);
+        mMessageListAdapter = new MessageListAdapter(mContext, mMessageData);
+        mMessageListView.setAdapter(mMessageListAdapter);
+
+        mLeftBtn.setText("隐藏");
+        mTitle.setText("电话会议");
+        mRightBtn.setText("全部静音");
+
+        mLeftBtn.setOnClickListener(this);
+        mRightBtn.setOnClickListener(this);
+        mSpeakerIv.setOnClickListener(this);
+        mHangIv.setOnClickListener(this);
+        mMutIv.setOnClickListener(this);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 4));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
+
+        mAdapter = new UserAdapter(MeetingActivity.this, mChannelUserList, mCreateId);
+        mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                if (position == 0) {
+                    meetingBusinessCallBack.addPersonIntoMeeting(MeetingActivity.this, mGroupId);
+                    return;
+                }
+                final GroupInfo2Bean.Data.UserInfo userInfo = mChannelUserList.get(position - 1);
+                //重新邀请未加入人员;
+                if (isSponsor && !userInfo.netOnLine) {
+                    CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this,
+                            userInfo.name, userInfo.pic, new CallMeetingMemberDialog.CallMeetingListener() {
+                        @Override
+                        public void onNetCall() {
+                            HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, userInfo.id, mChannelId);
+                        }
+
+                        @Override
+                        public void onPhoneCall() {
+
+                        }
+                    });
+                    callMeetingMemberDialog.show();
+                }
+
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    private void hide() {
+        FloatingView floatingView = new FloatingView(this);
+        floatingView.show();
+
+    }
+
+    /**
+     * 登录并加入房间
+     */
+    private void loginAndjoinChannel() {
+        if (TextUtils.isEmpty(getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID))) {//邀请者
+            mMessageData.add("呼叫中~");
+            mMessageListAdapter.notifyDataSetChanged();
+            isSponsor = true;
+            mRightBtn.setVisibility(View.VISIBLE);
+            HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
+        } else {//参会者
+            isSponsor = false;
+            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
+            mRightBtn.setVisibility(View.GONE);
+            HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
+                    mUserId, "3600");
         }
     }
 
@@ -390,7 +429,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
     public static void openUI(Context context, String token, String userId, String groupId,
                               ArrayList<GroupInfo2Bean.Data.UserInfo> userList, MeetingBusinessCallBack meetingBusinessCallBack) {
-        MeetingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
+        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
         Intent intent = new Intent(context, MeetingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
@@ -400,8 +439,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         context.startActivity(intent);
     }
 
-    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId,MeetingBusinessCallBack meetingBusinessCallBack) {
-        MeetingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
+    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId,
+                              MeetingBusinessCallBack meetingBusinessCallBack) {
+        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
         Intent intent = new Intent(context, MeetingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
@@ -656,8 +696,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onInviteRefusedByPeer(String channelID, String account, int uid) {
-
+            updateRefuseStatus(channelID, account);
         }
+
 
         @Override
         public void onInviteFailed(String channelID, String account, int uid, int ecode) {
@@ -666,8 +707,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onInviteEndByPeer(String channelID, String account, int uid) {
-            AgoraManager.getInstance(mContext).leaveChannel(mChannelId);
-            finish();
+            leaveChannel();
         }
 
         @Override
@@ -697,14 +737,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onMessageChannelReceive(String channelID, String account, int uid, String msg) {
-            Logger.d("onMessageChannelReceive", "onMessageChannelReceive---" + "msg----" + msg);
+            Logger.d("onMessageChannelReceive", "onMessageChannelReceive---" + "msg----" +
+                    msg + "account---" + account + "channelID-----" + channelID);
             if (msg.equals(MediaMessage.ALL_MUT_ON)) {
                 if (!isSponsor) {
                     isMutOn = true;
                     mMutIv.setImageResource(R.drawable.mut_on);
                     AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
                 }
-                mMessageData.add(mCreateName+"开启全员静音");
+                mMessageData.add(mCreateName + "开启全员静音");
                 mMessageListAdapter.notifyDataSetChanged();
             }
             if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
@@ -713,13 +754,25 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     mMutIv.setImageResource(R.drawable.mut_close);
                     AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
                 }
-                mMessageData.add(mCreateName+"解除全员静音");
+                mMessageData.add(mCreateName + "解除全员静音");
                 mMessageListAdapter.notifyDataSetChanged();
             }
 
-            setUserStatus(msg);
+            if (msg.equals(MediaMessage.MEETING_EDN)) {
+                mMessageData.add("会议结束");
+                mMessageListAdapter.notifyDataSetChanged();
+            }
 
+            if (msg.equals(MediaMessage.INVITE_REFUSE)) {
 
+            }
+
+            /**
+             * 根据服务端返回的频道消息获取更改会议成员头像状态
+             */
+            if ("server".equals(account)) {
+                setUserStatus(msg);
+            }
         }
 
         @Override
@@ -753,17 +806,69 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
-    private void setUserStatus(String msg) {
+    /**
+     * 更新正忙信息(拒绝接听)
+     *
+     * @param channelID
+     * @param account
+     */
+    private void updateRefuseStatus(String channelID, String account) {
+        String name = "";
+        for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+            if (account.equals(info.id)) {
+                name = info.name;
+            }
+        }
+        mMessageData.add(name + "在忙碌");
+        mMessageListAdapter.notifyDataSetChanged();
+    }
 
+
+    /**
+     * 通过server发送的频道信息,更新会议成员头像状态
+     *
+     * @param msg
+     */
+    private void setUserStatus(String msg) {
+        List<ChannelMemberStatusBean> statusBeanList = JSON.parseArray(msg, ChannelMemberStatusBean.class);
+        if (statusBeanList != null && statusBeanList.size() > 0) {
+            for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                for (ChannelMemberStatusBean bean : statusBeanList) {
+                    if (bean.getMember().equals(info.id)) {
+                        if (!mChannelUserList.contains(info)) {
+                            info.netOnLine = false;
+                            mChannelUserList.add(info);
+                        }
+                    }
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 
+    /**
+     * 收到结束会议通知,离开会议频道
+     */
+    private void leaveChannel() {
+        AgoraManager.getInstance(mContext).leaveChannel(mChannelId);
+        finish();
+    }
+
+    /**
+     * 更新离线成员
+     *
+     * @param account
+     */
     private void updateOffLineUser(String account) {
         String userName = "";
         for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
             if (account.equals(info.id)) {
                 info.netOnLine = false;
                 userName = info.name;
+                if (mChannelUserList.contains(info)) {
+                    mChannelUserList.remove(info);
+                }
             }
         }
         mMessageData.add(userName + "离开了会议");
@@ -771,12 +876,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 更新单个在线成员
+     *
+     * @param account
+     */
+
     private void updateOnlineUser(String account) {
         String userName = "";
         for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
             if (account.equals(info.id)) {
                 info.netOnLine = true;
                 userName = info.name;
+                if (!mChannelUserList.contains(info)) {
+                    mChannelUserList.add(info);
+                }
             }
         }
         mMessageData.add(userName + "加入了会议");
@@ -784,6 +898,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 更新多个在线成员
+     *
+     * @param accounts
+     */
     private void updateOnlineUsers(String[] accounts) {
         for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
             for (String account : accounts) {
@@ -798,10 +917,14 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == REQUEST_CODE_UPDATE_GROUP){
-            List<GroupInfo2Bean.Data.UserInfo> userInfos=(List<GroupInfo2Bean.Data.UserInfo>)data.getSerializableExtra("selectList");
-            if(userInfos!=null&&userInfos.size()>0){
-                
+
+        if (requestCode == REQUEST_CODE_UPDATE_GROUP) {
+            List<GroupInfo2Bean.Data.UserInfo> userInfos = (List<GroupInfo2Bean.Data.UserInfo>) data.getSerializableExtra(
+                    "selectList");
+            if (userInfos != null && userInfos.size() > 0) {
+                for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
+
+                }
             }
         }
 

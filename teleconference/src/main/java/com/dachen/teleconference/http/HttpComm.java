@@ -23,4 +23,6 @@ public interface HttpComm {
 
     public void dismissConf(Context context, Handler mHandler, int what,String token,String groupId,String channelId);
 
+    public void voipCall(Context context, Handler mHandler,int what,String user,String channelId);
+
 }

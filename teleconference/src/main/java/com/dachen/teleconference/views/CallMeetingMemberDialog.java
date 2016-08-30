@@ -23,17 +23,19 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
     private final Context mContext;
     private final String mName;
     private final String mHeadImageUrl;
+    private final CallMeetingListener mListener;
     private ImageView mCloseIv;
     private ImageView mHeadImageIv;
     private TextView mNameTv;
     private TextView mPhoneCallTv;
     private TextView mNetCallTv;
 
-    public CallMeetingMemberDialog(Context context,String name,String headImageUrl) {
-        super(context,R.style.dialog);
+    public CallMeetingMemberDialog(Context context, String name, String headImageUrl, CallMeetingListener listener) {
+        super(context, R.style.dialog);
         mContext = context;
         mName = name;
         mHeadImageUrl = headImageUrl;
+        mListener = listener;
     }
 
 
@@ -68,11 +70,17 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         if (id == R.id.close_iv) {
             dismiss();
         } else if (id == R.id.phone_call_tv) {
-
+            mListener.onPhoneCall();
+            dismiss();
         } else if (id == R.id.net_call_tv) {
-
+            mListener.onNetCall();
+            dismiss();
         }
 
     }
 
+    public interface CallMeetingListener {
+        void onNetCall();
+        void onPhoneCall();
+    }
 }
