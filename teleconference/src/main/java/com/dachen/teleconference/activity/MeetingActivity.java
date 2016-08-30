@@ -217,7 +217,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
                 GroupInfo2Bean.Data.UserInfo.class);
 
-
         if (!ImageLoader.getInstance().isInited()) {
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
             ImageLoader.getInstance().init(config);
@@ -282,7 +281,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
 
-        mAdapter = new UserAdapter(MeetingActivity.this, mChannelUserList, mCreateId);
+        mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos, mCreateId);
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -290,7 +289,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     meetingBusinessCallBack.addPersonIntoMeeting(MeetingActivity.this, mGroupId);
                     return;
                 }
-                final GroupInfo2Bean.Data.UserInfo userInfo = mChannelUserList.get(position - 1);
+                final GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
                 //重新邀请未加入人员;
                 if (isSponsor && !userInfo.netOnLine) {
                     CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this,
@@ -967,9 +966,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         if (requestCode == REQUEST_CODE_UPDATE_GROUP && data != null) {
             List<GroupInfo2Bean.Data.UserInfo> userInfos = (List<GroupInfo2Bean.Data.UserInfo>) data.getSerializableExtra(
                     "selectList");
+            String users = "";
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     mUserInfos.add(info);
+                    users += info.id+",";
                     HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id,mGroupId, mChannelId);
                     AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mCreateName + "邀请" + info.name + "加入会议",
                             "");

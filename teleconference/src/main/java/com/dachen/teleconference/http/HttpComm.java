@@ -25,4 +25,7 @@ public interface HttpComm {
 
     public void voipCall(Context context, Handler mHandler, int what, String user, String gId, String channelId);
 
+    public void voipCallUsers(Context context, Handler mHandler, int what, String users, String gId, String channelId);
+
+
 }

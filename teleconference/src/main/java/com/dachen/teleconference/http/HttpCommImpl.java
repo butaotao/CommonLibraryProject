@@ -114,4 +114,20 @@ public class HttpCommImpl implements HttpComm {
                     }
                 });
     }
+
+    @Override
+    public void voipCallUsers(Context context, Handler mHandler, int what, String users, String gId, String channelId) {
+        MyHttpClient client = MyHttpClient.getInstance();
+        MyRequestParams params = new MyRequestParams(context);
+        params.set("users", users);
+        params.set("gId", gId);
+        params.set("channelId", channelId);
+        client.post(context, params, "http://192.168.3.62:8089/phone/voipCallUsers",
+                new GsonHttpResponseHandler(mHandler, what, context) {
+                    @Override
+                    protected Object parseJson(JsonObject response) {
+                        return JsonMananger.jsonToBean(String.valueOf(response), BaseResponse.class);
+                    }
+                });
+    }
 }
