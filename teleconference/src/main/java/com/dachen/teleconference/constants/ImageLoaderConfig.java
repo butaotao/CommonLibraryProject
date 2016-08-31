@@ -15,9 +15,9 @@ public class ImageLoaderConfig {
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .resetViewBeforeLoading(true)
-            .displayer(new RoundedBitmapDisplayer(360))
             .showImageForEmptyUri(R.drawable.ic_default_head)
             .showImageOnFail(R.drawable.ic_default_head)
             .showImageOnLoading(R.drawable.ic_default_head)
+            .displayer(new RoundedBitmapDisplayer(360))
             .build();
 }
