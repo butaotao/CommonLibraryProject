@@ -31,9 +31,6 @@ import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.ChannelMemberStatusBean;
-import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
-import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
-import com.dachen.teleconference.bean.GetSigningKeyResponse;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
@@ -67,6 +64,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private static final String INTENT_EXTRA_CREATE_ID = "create_id";
     private static final int DISMISS_CONF = 1004;
     private static final int VOIP_CALL = 1005;
+    private static final String INTENT_EXTRA_IS_CREATOR = "is_creator";
     private RecyclerView mRecyclerView;
     private TextView mLeftBtn;
     private TextView mTitle;
@@ -101,47 +99,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case GET_SIGNNING_KEY:
-                    if (msg.arg1 == 1) {
-                        if (msg.obj != null) {
-                            GetSigningKeyResponse res = (GetSigningKeyResponse) msg.obj;
-                            String data = res.getData();
-                            AgoraManager.getInstance(MeetingActivity.this).loginAgora(mUserId, data, vendorKey);
-                        }
-                    } else {
-                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
-                    }
-                    break;
-
-                case CREATE_PHONE_MEETING:
-                    if (msg.arg1 == 1) {
-                        if (msg.obj != null) {
-                            CreatePhoneMeetingResponse res = (CreatePhoneMeetingResponse) msg.obj;
-                            mChannelId = res.getData();
-                            if (TextUtils.isEmpty(mChannelId)) {
-                                UIHelper.ToastMessage(MeetingActivity.this, "创建会议失败");
-                                finish();
-                                return;
-                            }
-                            HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
-                                    mUserId, "3600");
-                        }
-                    } else {
-                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
-                    }
-                    break;
-
-                case GET_MEDIADYNAMIC_KEY:
-                    if (msg.arg1 == 1) {
-                        if (msg.obj != null) {
-                            AgoraManager.getInstance(MeetingActivity.this).joinChannel(mChannelId,
-                                    ((GetMediaDynamicKeyResponse) msg.obj).getData(), Integer.parseInt(mUserId));
-                        }
-                    } else {
-                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
-                    }
-                    break;
-
                 case DISMISS_CONF:
                     if (msg.arg1 == 1) {
                         AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.MEETING_EDN, "");
@@ -176,20 +133,16 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         initAgoraConfigure();
 
-        loginAndjoinChannel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //        initAgoraConfigure();
     }
-
 
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
@@ -199,14 +152,16 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
     }
 
+    /**
+     * 初始化参数
+     */
     private void initVariables() {
         Intent intent = getIntent();
         mToken = intent.getStringExtra(INTENT_EXTRA_TOKEN);
-        //        List<GroupInfo2Bean.Data.UserInfo> userInfos = (List<GroupInfo2Bean.Data.UserInfo>) intent.getSerializableExtra(
-        //                INTENT_EXTRA_GROUP_USER_LIST);
         mUserId = intent.getStringExtra(INTENT_EXTRA_USER_ID);
         mGroupId = intent.getStringExtra(INTENT_EXTRA_GROUP_ID);
         mCreateId = intent.getStringExtra(INTENT_EXTRA_CREATE_ID);
+        mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
         if (TextUtils.isEmpty(mCreateId)) {
             mCreateId = mUserId;
         }
@@ -225,7 +180,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         if (userInfos == null) {
             return;
         }
-
 
         /**
          * 会议发起人排第一位
@@ -255,8 +209,23 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-
+    /**
+     * 初始化view
+     */
     private void initView() {
+
+        if (getIntent().getBooleanExtra(INTENT_EXTRA_IS_CREATOR, false)) {//邀请者
+            mMessageData.add("呼叫中~");
+            mMessageListAdapter.notifyDataSetChanged();
+            isSponsor = true;
+            mRightBtn.setVisibility(View.VISIBLE);
+        } else {//参会者
+            isSponsor = false;
+            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
+            mRightBtn.setVisibility(View.GONE);
+        }
+
+
         mLeftBtn = (TextView) findViewById(R.id.left_btn);
         mTitle = (TextView) findViewById(R.id.title);
         mRightBtn = (TextView) findViewById(R.id.right_btn);
@@ -279,7 +248,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mMutIv.setOnClickListener(this);
         mRecyclerView.setLayoutManager(new GridLayoutManager(MeetingActivity.this, 4));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new GridDividerItemDecoration(2, 3));
 
         mAdapter = new UserAdapter(MeetingActivity.this, mUserInfos, mCreateId);
         mAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
@@ -296,7 +264,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                             userInfo.name, userInfo.pic, new CallMeetingMemberDialog.CallMeetingListener() {
                         @Override
                         public void onNetCall() {
-                            HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, userInfo.id,mGroupId,
+                            HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, userInfo.id, mGroupId,
                                     mChannelId);
                         }
 
@@ -312,40 +280,24 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         });
         mRecyclerView.setAdapter(mAdapter);
 
-    }
-
-    private void hide() {
-        FloatingView floatingView = new FloatingView(this);
-        floatingView.show();
 
     }
 
     /**
-     * 登录并加入房间
+     * 初始化Agora设置
      */
-    private void loginAndjoinChannel() {
-        if (TextUtils.isEmpty(getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID))) {//邀请者
-            mMessageData.add("呼叫中~");
-            mMessageListAdapter.notifyDataSetChanged();
-            isSponsor = true;
-            mRightBtn.setVisibility(View.VISIBLE);
-            HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
-        } else {//参会者
-            isSponsor = false;
-            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
-            mRightBtn.setVisibility(View.GONE);
-            HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
-                    mUserId, "3600");
-        }
+    private void initAgoraConfigure() {
+        //        AgoraManager.getInstance(this).initAgora(vendorKey);
+        AgoraManager.getInstance(this).getEventHandlerMgr().addRtcEngineEventHandler(mMyRtcEngineEventHandler);
+        AgoraManager.getInstance(this).getAgoraAPICallBack().addAgoraAPICallBack(mMyAgoraAPICallBack);
     }
-
 
     @Override
     public void onClick(View v) {
 
         int i = v.getId();
         if (i == R.id.left_btn) {
-            //            hide();
+            // hide();
             finish();
         } else if (i == R.id.right_btn) {
             if (isAllMut) {
@@ -357,7 +309,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.ALL_MUT_ON, "");
                 isAllMut = true;
             }
-            //            AgoraManager.getInstance(mContext).muteRemoteAudioStream(isAllMut);
         } else if (i == R.id.speaker_iv) {
             setSpeaker();
         } else if (i == R.id.hang_iv) {
@@ -372,6 +323,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+    private void hide() {
+        FloatingView floatingView = new FloatingView(this);
+        floatingView.show();
+
+    }
+
+    /**
+     * 发起人结束会议
+     */
     private void showSponsorDialog() {
         CustomDialog hintDialog = new CustomDialog.Builder(MeetingActivity.this, new CustomDialog.CustomClickEvent() {
             @Override
@@ -389,6 +349,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         hintDialog.show();
     }
 
+    /**
+     * 参会人离开会议
+     */
 
     private void showFinishDialog() {
         CustomDialog hintDialog = new CustomDialog.Builder(MeetingActivity.this, new CustomDialog.CustomClickEvent() {
@@ -408,6 +371,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         hintDialog.show();
     }
 
+    /**
+     * 设置扬声器开关
+     */
+
     private void setSpeaker() {
         if (isSpeakerOn) {
             isSpeakerOn = false;
@@ -419,6 +386,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         AgoraManager.getInstance(mContext).setEnableSpeakerphone(isSpeakerOn);
     }
 
+    /**
+     * 设置静音开关
+     */
     private void setMut() {
         if (isMutOn) {
             isMutOn = false;
@@ -430,38 +400,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
     }
 
-
-    public static void openUI(Context context, String token, String userId, String groupId,
-                              ArrayList<GroupInfo2Bean.Data.UserInfo> userList, MeetingBusinessCallBack meetingBusinessCallBack) {
-        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
-        Intent intent = new Intent(context, MeetingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(INTENT_EXTRA_TOKEN, token);
-        intent.putExtra(INTENT_EXTRA_USER_ID, userId);
-        intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
-        intent.putExtra(INTENT_EXTRA_GROUP_USER_LIST, userList);
-        context.startActivity(intent);
-    }
-
-    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId,
-                              MeetingBusinessCallBack meetingBusinessCallBack) {
-        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
-        Intent intent = new Intent(context, MeetingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(INTENT_EXTRA_TOKEN, token);
-        intent.putExtra(INTENT_EXTRA_USER_ID, userId);
-        intent.putExtra(INTENT_EXTRA_CREATE_ID, createId);
-        intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
-        intent.putExtra(INTENT_EXTRA_CHANNEL_ID, channelId);
-        context.startActivity(intent);
-    }
-
-
-    private void initAgoraConfigure() {
-        AgoraManager.getInstance(this).getEventHandlerMgr().addRtcEngineEventHandler(mMyRtcEngineEventHandler);
-        AgoraManager.getInstance(this).getAgoraAPICallBack().addAgoraAPICallBack(mMyAgoraAPICallBack);
-    }
-
+    /**
+     * 更新用户头像音量大小
+     *
+     * @param speakers
+     */
     private void updateSpeakers(IRtcEngineEventHandler.AudioVolumeInfo[] speakers) {
 
         for (IRtcEngineEventHandler.AudioVolumeInfo speaker : speakers) {
@@ -478,6 +421,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
 
+    /**
+     * Agora媒体回调
+     */
     private MyRtcEngineEventHandler mMyRtcEngineEventHandler = new MyRtcEngineEventHandler() {
         @Override
         public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
@@ -617,6 +563,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
+    /**
+     * Agora信令回调
+     */
     private MyAgoraAPICallBack mMyAgoraAPICallBack = new MyAgoraAPICallBack() {
         @Override
         public void onReconnecting(int nretry) {
@@ -875,7 +824,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         info.name, info.pic, new CallMeetingMemberDialog.CallMeetingListener() {
                     @Override
                     public void onNetCall() {
-                        HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, info.id,mGroupId, mChannelId);
+                        HttpCommClient.getInstance().voipCall(mContext, mHandler, VOIP_CALL, info.id, mGroupId, mChannelId);
                         showNetCallDialog();
                     }
 
@@ -970,8 +919,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     mUserInfos.add(info);
-                    users += info.id+",";
-                    HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id,mGroupId, mChannelId);
+                    users += info.id + ",";
+                    HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mGroupId,
+                            mChannelId);
                     AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mCreateName + "邀请" + info.name + "加入会议",
                             "");
                 }
@@ -983,5 +933,32 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         return;
+    }
+
+    public static void openUI(Context context, String token, String userId, String groupId, String channelId, boolean isCreator,
+                              MeetingBusinessCallBack meetingBusinessCallBack) {
+        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
+        Intent intent = new Intent(context, MeetingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(INTENT_EXTRA_TOKEN, token);
+        intent.putExtra(INTENT_EXTRA_USER_ID, userId);
+        intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
+        intent.putExtra(INTENT_EXTRA_CHANNEL_ID, channelId);
+        intent.putExtra(INTENT_EXTRA_IS_CREATOR, isCreator);
+        context.startActivity(intent);
+    }
+
+    public static void openUI(Context context, String token, String userId, String createId, String groupId, String channelId,
+                              boolean isCreator, MeetingBusinessCallBack meetingBusinessCallBack) {
+        MeetingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
+        Intent intent = new Intent(context, MeetingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(INTENT_EXTRA_TOKEN, token);
+        intent.putExtra(INTENT_EXTRA_USER_ID, userId);
+        intent.putExtra(INTENT_EXTRA_CREATE_ID, createId);
+        intent.putExtra(INTENT_EXTRA_GROUP_ID, groupId);
+        intent.putExtra(INTENT_EXTRA_CHANNEL_ID, channelId);
+        intent.putExtra(INTENT_EXTRA_IS_CREATOR, isCreator);
+        context.startActivity(intent);
     }
 }

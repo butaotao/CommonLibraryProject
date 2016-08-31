@@ -14,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dachen.common.media.SoundPlayer;
+import com.dachen.common.utils.ToastUtil;
 import com.dachen.teleconference.AgoraManager;
+import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
 import com.dachen.teleconference.MediaMessage;
 import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.R;
@@ -65,7 +67,6 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
             }
         }
     };
-
 
 
     @Override
@@ -120,8 +121,8 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
 
 
     public static void openUI(Context context, String token, String channelId, String userId, String createrId, String
-            createrName, String createrPic, String groupId,MeetingBusinessCallBack meetingBusinessCallBack) {
-        TeleIncomingActivity.meetingBusinessCallBack=meetingBusinessCallBack;
+            createrName, String createrPic, String groupId, MeetingBusinessCallBack meetingBusinessCallBack) {
+        TeleIncomingActivity.meetingBusinessCallBack = meetingBusinessCallBack;
         Intent intent = new Intent(context, TeleIncomingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_EXTRA_TOKEN, token);
@@ -153,12 +154,27 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         if (id == R.id.refuse_tele_call) {
             mSoundPlayer.stop();
             AgoraManager.getInstance(TeleIncomingActivity.this).channelInviteRefuse(mChannelID, mUserId);
-            AgoraManager.getInstance(TeleIncomingActivity.this).messageChannelSend(mChannelID, MediaMessage.INVITE_REFUSE,mUserId);
+            AgoraManager.getInstance(TeleIncomingActivity.this).messageChannelSend(mChannelID, MediaMessage.INVITE_REFUSE,
+                    mUserId);
             finish();
         } else if (id == R.id.response_tele_call) {
             mSoundPlayer.stop();
-            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID, meetingBusinessCallBack);
-            finish();
+            MeetingOpenHelper.getInstance(TeleIncomingActivity.this).joinMeeting(mToken, mUserId, mGroupId,mChannelID,
+                    new CreateOrJoinMeetingCallBack() {
+                        @Override
+                        public void createOrJoinMeetingSuccess(String channelId) {
+                            MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID,
+                                    false, meetingBusinessCallBack);
+                            finish();
+                        }
+
+                        @Override
+                        public void createOrJoinMeetingFailed(String failMessage) {
+                            ToastUtil.showToast(TeleIncomingActivity.this, failMessage);
+                            finish();
+                        }
+                    });
+
         }
     }
 }

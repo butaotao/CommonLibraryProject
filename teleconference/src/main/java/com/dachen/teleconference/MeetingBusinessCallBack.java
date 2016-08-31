@@ -8,4 +8,6 @@ import android.app.Activity;
 public interface MeetingBusinessCallBack {
 
     public void addPersonIntoMeeting(Activity mActivity,String groupId);
+
+
 }
