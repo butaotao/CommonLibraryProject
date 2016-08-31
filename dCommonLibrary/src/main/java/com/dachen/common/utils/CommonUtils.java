@@ -5,7 +5,9 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -31,5 +33,9 @@ public class CommonUtils {
         if (network == null)
             return false;
         return network.isAvailable();
+    }
+    public static String getFileUriStr(String filePath) {
+        Uri uri=Uri.fromFile(new File(filePath));
+        return uri.toString();
     }
 }
