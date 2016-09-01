@@ -31,6 +31,7 @@ import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.ChannelMemberStatusBean;
+import com.dachen.teleconference.bean.event.ChatGroupEvent;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.views.CallMeetingMemberDialog;
@@ -43,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot1.event.EventBus;
 import io.agora.rtc.IRtcEngineEventHandler;
 
 /**
@@ -133,6 +135,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         initAgoraConfigure();
 
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -148,9 +152,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
         AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
     }
+
 
     /**
      * 初始化参数
@@ -214,18 +220,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      */
     private void initView() {
 
-        if (getIntent().getBooleanExtra(INTENT_EXTRA_IS_CREATOR, false)) {//邀请者
-            mMessageData.add("呼叫中~");
-            mMessageListAdapter.notifyDataSetChanged();
-            isSponsor = true;
-            mRightBtn.setVisibility(View.VISIBLE);
-        } else {//参会者
-            isSponsor = false;
-            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
-            mRightBtn.setVisibility(View.GONE);
-        }
-
-
         mLeftBtn = (TextView) findViewById(R.id.left_btn);
         mTitle = (TextView) findViewById(R.id.title);
         mRightBtn = (TextView) findViewById(R.id.right_btn);
@@ -279,6 +273,17 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+        if (getIntent().getBooleanExtra(INTENT_EXTRA_IS_CREATOR, false)) {//邀请者
+            mMessageData.add("呼叫中~");
+            mMessageListAdapter.notifyDataSetChanged();
+            isSponsor = true;
+            mRightBtn.setVisibility(View.VISIBLE);
+        } else {//参会者
+            isSponsor = false;
+            mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
+            mRightBtn.setVisibility(View.GONE);
+        }
 
 
     }
@@ -960,5 +965,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         intent.putExtra(INTENT_EXTRA_CHANNEL_ID, channelId);
         intent.putExtra(INTENT_EXTRA_IS_CREATOR, isCreator);
         context.startActivity(intent);
+    }
+
+    public void onEventMainThread(ChatGroupEvent event) {
+        ChatGroupPo group = event.group;
+        if (mGroupId.equals(group.groupId)) {
+            ChatGroupDao dao = new ChatGroupDao();
+            ChatGroupPo po = dao.queryForId(mGroupId);
+            String meeting = po.meeting;
+            String groupUsers = po.groupUsers;
+            List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
+                    GroupInfo2Bean.Data.UserInfo.class);
+            if (userInfos != null && mUserInfos != null && userInfos.size() > mUserInfos.size()) {
+
+            }
+        }
+
     }
 }
