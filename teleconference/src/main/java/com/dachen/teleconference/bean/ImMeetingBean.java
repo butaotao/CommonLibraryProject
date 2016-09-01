@@ -3,7 +3,7 @@ package com.dachen.teleconference.bean;
 /**
  * Created by TianWei on 2016/8/31.
  */
-public class ImMeetingMemberBean {
+public class ImMeetingBean {
     /**
      * channelId : 3225447141127496
      * startTime  : 1472638605000
@@ -13,7 +13,7 @@ public class ImMeetingMemberBean {
      */
 
     private String channelId;
-    private String startTime;
+    private long startTime;
     private String creater;
     private String confStatus;
     private String planEndTime;
@@ -26,11 +26,11 @@ public class ImMeetingMemberBean {
         this.channelId = channelId;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 

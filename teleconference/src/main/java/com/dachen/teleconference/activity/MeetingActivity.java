@@ -31,6 +31,7 @@ import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.ChannelMemberStatusBean;
+import com.dachen.teleconference.bean.ImMeetingBean;
 import com.dachen.teleconference.bean.event.ChatGroupEvent;
 import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.http.HttpCommClient;
@@ -94,8 +95,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private static MeetingBusinessCallBack meetingBusinessCallBack;
     public static final int REQUEST_CODE_UPDATE_GROUP = 10001;
     private MessageListAdapter mMessageListAdapter;
+    private long mStartTime;
+    private int timeCount;
     private boolean isAllMut = false;
-
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -117,11 +119,25 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     }
                     break;
 
+                case 0x1:
+                    if (timeCount != 0) {
+                        timeCount++;
+                        mMeetingTime += 1000;
+                        setTime();
+                        mHandler.sendEmptyMessageDelayed(0x1, 1000);
+                    }
+
+                    break;
+
             }
 
 
         }
     };
+    private TextView mTimeTv;
+    private long mMeetingTime;
+    private int mMinTime;
+    private int mSecTime;
 
 
     @Override
@@ -152,6 +168,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        timeCount = 0;
         EventBus.getDefault().unregister(this);
         AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
         AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
@@ -174,6 +191,16 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         ChatGroupDao dao = new ChatGroupDao();
         ChatGroupPo po = dao.queryForId(mGroupId);
         String meeting = po.meeting;
+        ImMeetingBean imMeetingBean = JSON.parseObject(meeting, ImMeetingBean.class);
+
+        if (imMeetingBean != null) {
+            mStartTime = imMeetingBean.getStartTime();
+            long l = System.currentTimeMillis();
+            if (l > mStartTime) {
+                mMeetingTime = l - mStartTime;
+            }
+        }
+
         String groupUsers = po.groupUsers;
         List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
                 GroupInfo2Bean.Data.UserInfo.class);
@@ -213,6 +240,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 mUserInfos.add(info);
             }
         }
+
+
     }
 
     /**
@@ -226,14 +255,20 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
         mHangIv = (ImageView) findViewById(R.id.hang_iv);
         mMutIv = (ImageView) findViewById(R.id.mut_iv);
+        mTimeTv = (TextView) findViewById(R.id.time);
         mRecyclerView = (RecyclerView) findViewById(R.id.room_view);
         mMessageListView = (ListView) findViewById(R.id.message_list_view);
         mMessageListAdapter = new MessageListAdapter(mContext, mMessageData);
         mMessageListView.setAdapter(mMessageListAdapter);
 
         mLeftBtn.setText("隐藏");
-        mTitle.setText("电话会议");
+        mTitle.setText(mCreateName + "的电话会议" + "（" + mUserInfos.size() + "）");
         mRightBtn.setText("全部静音");
+
+        setTime();
+        timeCount++;
+        mHandler.sendEmptyMessageDelayed(0x1, 1000);
+
 
         mLeftBtn.setOnClickListener(this);
         mRightBtn.setOnClickListener(this);
@@ -287,6 +322,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
 
     }
+
 
     /**
      * 初始化Agora设置
@@ -375,6 +411,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }).setMessage("会议还未结束,你确定要离开吗？").setPositive("确定").setNegative("取消").create();
         hintDialog.show();
     }
+
+    /**
+     * 设置会议进行的时间
+     */
+    private void setTime() {
+
+        if (mTimeTv == null) {
+            return;
+        }
+
+        mMinTime = (int) mMeetingTime / 60000;
+        mSecTime = (int) mMeetingTime % 60000;
+        mTimeTv.setText("会议已进行" + mMinTime + ":" + mSecTime);
+    }
+
 
     /**
      * 设置扬声器开关

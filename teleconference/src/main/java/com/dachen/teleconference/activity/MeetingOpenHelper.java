@@ -12,7 +12,7 @@ import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
 import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
-import com.dachen.teleconference.bean.ImMeetingMemberBean;
+import com.dachen.teleconference.bean.ImMeetingBean;
 import com.dachen.teleconference.http.HttpCommClient;
 
 /**
@@ -91,7 +91,24 @@ public class MeetingOpenHelper {
         mUserId = userId;
         mGroupId = groupId;
         mCallBack = callBack;
-        HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
+        updateGroupMember();
+
+    }
+
+    private void updateGroupMember() {
+        SessionGroup group = new SessionGroup(mContext);
+        group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
+            @Override
+            public void onGroupInfo(ChatGroupPo po, int what) {
+                HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
+            }
+
+            @Override
+            public void onGroupInfoFailed(String msg) {
+
+            }
+        });
+        group.getGroupInfoNew(mGroupId);
     }
 
     public void joinMeeting(String token, String userId, String groupId,String channelId, CreateOrJoinMeetingCallBack callBack) {
@@ -109,8 +126,8 @@ public class MeetingOpenHelper {
             @Override
             public void onGroupInfo(ChatGroupPo po, int what) {
                 String meeting = po.meeting;
-                ImMeetingMemberBean imMeetingMemberBean = JSON.parseObject(meeting, ImMeetingMemberBean.class);
-                if ("1".equals(imMeetingMemberBean.getConfStatus())) {
+                ImMeetingBean imMeetingBean = JSON.parseObject(meeting, ImMeetingBean.class);
+                if ("1".equals(imMeetingBean.getConfStatus())) {
                     HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
                             mUserId, "3600");
                 } else {
