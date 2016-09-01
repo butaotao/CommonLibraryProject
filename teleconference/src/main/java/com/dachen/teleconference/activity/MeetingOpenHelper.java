@@ -57,9 +57,23 @@ public class MeetingOpenHelper {
                 case GET_MEDIADYNAMIC_KEY:
                     if (msg.arg1 == 1) {
                         if (msg.obj != null) {
-                            AgoraManager.getInstance(mContext).joinChannel(mChannelId,
-                                    ((GetMediaDynamicKeyResponse) msg.obj).getData(), Integer.parseInt(mUserId));
-                            mCallBack.createOrJoinMeetingSuccess(mChannelId);
+                            final String data = ((GetMediaDynamicKeyResponse) msg.obj).getData();
+                            SessionGroup group = new SessionGroup(mContext);
+                            group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
+                                @Override
+                                public void onGroupInfo(ChatGroupPo po, int what) {
+                                    AgoraManager.getInstance(mContext).joinChannel(mChannelId, data, Integer.parseInt(mUserId));
+                                    mCallBack.createOrJoinMeetingSuccess(mChannelId);
+                                }
+
+                                @Override
+                                public void onGroupInfoFailed(String msg) {
+                                    mCallBack.createOrJoinMeetingFailed(msg);
+                                }
+                            });
+                            group.getGroupInfoNew(mGroupId);
+
+
                         }
                     } else {
                         mCallBack.createOrJoinMeetingFailed((String) msg.obj);
@@ -96,22 +110,10 @@ public class MeetingOpenHelper {
     }
 
     private void updateGroupMember() {
-        SessionGroup group = new SessionGroup(mContext);
-        group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
-            @Override
-            public void onGroupInfo(ChatGroupPo po, int what) {
-                HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
-            }
-
-            @Override
-            public void onGroupInfoFailed(String msg) {
-
-            }
-        });
-        group.getGroupInfoNew(mGroupId);
+        HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
     }
 
-    public void joinMeeting(String token, String userId, String groupId,String channelId, CreateOrJoinMeetingCallBack callBack) {
+    public void joinMeeting(String token, String userId, String groupId, String channelId, CreateOrJoinMeetingCallBack callBack) {
         mToken = token;
         mUserId = userId;
         mGroupId = groupId;
@@ -127,6 +129,10 @@ public class MeetingOpenHelper {
             public void onGroupInfo(ChatGroupPo po, int what) {
                 String meeting = po.meeting;
                 ImMeetingBean imMeetingBean = JSON.parseObject(meeting, ImMeetingBean.class);
+                if (imMeetingBean == null) {
+                    mCallBack.createOrJoinMeetingFailed("加入会议失败,会议状态异常");
+                    return;
+                }
                 if ("1".equals(imMeetingBean.getConfStatus())) {
                     HttpCommClient.getInstance().getMediaDynamicKey(mContext, mHandler, GET_MEDIADYNAMIC_KEY, mChannelId,
                             mUserId, "3600");
@@ -137,7 +143,7 @@ public class MeetingOpenHelper {
 
             @Override
             public void onGroupInfoFailed(String msg) {
-
+                mCallBack.createOrJoinMeetingFailed(msg);
             }
         });
         group.getGroupInfoNew(mGroupId);

@@ -122,7 +122,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 case 0x1:
                     if (timeCount != 0) {
                         timeCount++;
-                        mMeetingTime += 1000;
+                        mMeetingTime += 1;
                         setTime();
                         mHandler.sendEmptyMessageDelayed(0x1, 1000);
                     }
@@ -135,7 +135,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     };
     private TextView mTimeTv;
-    private long mMeetingTime;
+    private int mMeetingTime;
     private int mMinTime;
     private int mSecTime;
 
@@ -197,7 +197,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             mStartTime = imMeetingBean.getStartTime();
             long l = System.currentTimeMillis();
             if (l > mStartTime) {
-                mMeetingTime = l - mStartTime;
+                mMeetingTime = (int)(l - mStartTime)/1000;
             }
         }
 
@@ -421,8 +421,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        mMinTime = (int) mMeetingTime / 60000;
-        mSecTime = (int) mMeetingTime % 60000;
+        mMinTime = (int) mMeetingTime / 60;
+        mSecTime = (int) mMeetingTime % 60;
         mTimeTv.setText("会议已进行" + mMinTime + ":" + mSecTime);
     }
 
@@ -915,6 +915,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
             if (account.equals(info.id)) {
                 info.netOnLine = false;
+                info.volume = 0;
                 userName = info.name;
                 if (mChannelUserList.contains(info)) {
                     mChannelUserList.remove(info);
