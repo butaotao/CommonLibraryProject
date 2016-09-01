@@ -923,7 +923,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             String users = "";
             if (userInfos != null && userInfos.size() > 0) {
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
-                    mUserInfos.add(info);
                     users += info.id + ",";
                     HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mGroupId,
                             mChannelId);
@@ -968,6 +967,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void onEventMainThread(ChatGroupEvent event) {
+        if (mGroupId == null || mUserInfos == null || mAdapter == null) {
+            return;
+        }
         ChatGroupPo group = event.group;
         if (mGroupId.equals(group.groupId)) {
             ChatGroupDao dao = new ChatGroupDao();
@@ -976,8 +978,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             String groupUsers = po.groupUsers;
             List<GroupInfo2Bean.Data.UserInfo> userInfos = JSON.parseArray(groupUsers,
                     GroupInfo2Bean.Data.UserInfo.class);
-            if (userInfos != null && mUserInfos != null && userInfos.size() > mUserInfos.size()) {
-
+            if (userInfos != null && userInfos.size() > mUserInfos.size()) {
+                int i = userInfos.size() - mUserInfos.size();
+                List<GroupInfo2Bean.Data.UserInfo> subList = userInfos.subList(userInfos.size() - i, userInfos.size());
+                mUserInfos.addAll(subList);
+                mAdapter.notifyDataSetChanged();
             }
         }
 

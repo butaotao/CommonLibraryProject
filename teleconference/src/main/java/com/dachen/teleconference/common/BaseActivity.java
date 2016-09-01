@@ -7,8 +7,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
+
 import com.dachen.common.AppManager;
+import com.dachen.imsdk.net.ImPolling;
 
 
 /**
@@ -42,11 +43,13 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ImPolling.getInstance().onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        ImPolling.getInstance().onPause();
     }
 
     private void initProgressDialog(){
