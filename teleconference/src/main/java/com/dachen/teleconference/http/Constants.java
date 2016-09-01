@@ -5,6 +5,7 @@ package com.dachen.teleconference.http;
  */
 public class Constants {
     //http://192.168.3.7:8087/
-    public static final String IP = "http://192.168.3.62:8089/";
+    //http://192.168.3.62:8089/
+    public static final String IP = "http://192.168.3.7:8087/";
 
 }
