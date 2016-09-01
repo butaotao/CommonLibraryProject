@@ -28,7 +28,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("channelName", channelName);
         params.set("uid", uid);
         params.set("expiredTs", expiredTs);
-        client.post(context, params, "http://1560t568w7.iok.la:8089/phone/getMediaDynamicKey",
+        client.post(context, params, "http://192.168.3.7:8087/phone/getMediaDynamicKey",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -43,7 +43,7 @@ public class HttpCommImpl implements HttpComm {
         MyRequestParams params = new MyRequestParams(context);
         params.set("uid", uid);
         params.set("expiredTs", expiredTs);
-        client.post(context, params, "http://1560t568w7.iok.la:8089/phone/getSigningKey",
+        client.post(context, params, "http://192.168.3.7:8087/phone/getSigningKey",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -60,7 +60,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("creater", creater);
         params.set("groupId", groupId);
         params.set("planEndTime", "3600");
-        client.post(context, params, "http://192.168.3.62:8089/phone/createConf",
+        client.post(context, params, "http://192.168.3.7:8087/phone/createConf",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -74,7 +74,7 @@ public class HttpCommImpl implements HttpComm {
         MyHttpClient client = MyHttpClient.getInstance();
         MyRequestParams params = new MyRequestParams(context);
         params.set("channelId", channelId);
-        client.post(context, params, "http://192.168.3.62:8089/phone/getConfInfoByChannelId",
+        client.post(context, params, "http://192.168.3.7:8087/phone/getConfInfoByChannelId",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -90,7 +90,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("token", token);
         params.set("groupId", groupId);
         params.set("channelId", channelId);
-        client.post(context, params, "http://192.168.3.62:8089/phone/dismissConf",
+        client.post(context, params, "http://192.168.3.7:8087/phone/dismissConf",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -106,7 +106,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("user", user);
         params.set("gId", gId);
         params.set("channelId", channelId);
-        client.post(context, params, "http://192.168.3.62:8089/phone/voipCall",
+        client.post(context, params, "http://192.168.3.7:8087/phone/voipCall",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
@@ -122,7 +122,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("users", users);
         params.set("gId", gId);
         params.set("channelId", channelId);
-        client.post(context, params, "http://192.168.3.62:8089/phone/voipCallUsers",
+        client.post(context, params, "http://192.168.3.7:8087/phone/voipCallUsers",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
