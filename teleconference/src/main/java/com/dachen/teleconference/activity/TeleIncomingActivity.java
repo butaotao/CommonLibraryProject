@@ -153,7 +153,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         int id = v.getId();
         if (id == R.id.refuse_tele_call) {
             mSoundPlayer.stop();
-            AgoraManager.getInstance(TeleIncomingActivity.this).channelInviteRefuse(mChannelID, mUserId);
+            AgoraManager.getInstance(TeleIncomingActivity.this).channelInviteRefuse(mChannelID, "server_37");
             AgoraManager.getInstance(TeleIncomingActivity.this).messageChannelSend(mChannelID, MediaMessage.INVITE_REFUSE,
                     mUserId);
             finish();

@@ -86,6 +86,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
                 holder.mFirstBg.setVisibility(View.VISIBLE);
                 holder.mSecondBg.setVisibility(View.VISIBLE);
                 holder.mThirdBg.setVisibility(View.VISIBLE);
+            }else {
+                holder.mFirstBg.setVisibility(View.GONE);
+                holder.mSecondBg.setVisibility(View.GONE);
+                holder.mThirdBg.setVisibility(View.GONE);
             }
 
         }

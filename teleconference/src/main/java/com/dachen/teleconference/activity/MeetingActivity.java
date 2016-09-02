@@ -220,6 +220,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
             if (info.id.equals(mCreateId)) {
                 mUserInfos.clear();
+                info.netOnLine = true;
                 mUserInfos.add(info);
                 mCreateName = info.name;
                 mChannelUserList.clear();
@@ -230,6 +231,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
             if (mCreateId != mUserId) {
                 if (info.id.equals(mUserId)) {
+                    info.netOnLine = true;
                     mUserInfos.add(info);
                     mChannelUserList.add(info);
                 }
