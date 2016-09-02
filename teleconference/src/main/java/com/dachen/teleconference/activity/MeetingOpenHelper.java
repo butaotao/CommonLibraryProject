@@ -6,10 +6,12 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.dachen.imsdk.db.dao.ChatGroupDao;
 import com.dachen.imsdk.db.po.ChatGroupPo;
 import com.dachen.imsdk.net.SessionGroup;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
+import com.dachen.teleconference.MyAgoraAPICallBack;
 import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.ImMeetingBean;
@@ -57,22 +59,9 @@ public class MeetingOpenHelper {
                 case GET_MEDIADYNAMIC_KEY:
                     if (msg.arg1 == 1) {
                         if (msg.obj != null) {
+
                             final String data = ((GetMediaDynamicKeyResponse) msg.obj).getData();
-                            SessionGroup group = new SessionGroup(mContext);
-                            group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
-                                @Override
-                                public void onGroupInfo(ChatGroupPo po, int what) {
-                                    AgoraManager.getInstance(mContext).joinChannel(mChannelId, data, Integer.parseInt(mUserId));
-                                    mCallBack.createOrJoinMeetingSuccess(mChannelId);
-                                }
-
-                                @Override
-                                public void onGroupInfoFailed(String msg) {
-                                    mCallBack.createOrJoinMeetingFailed(msg);
-                                }
-                            });
-                            group.getGroupInfoNew(mGroupId);
-
+                            AgoraManager.getInstance(mContext).joinChannel(mChannelId, data, Integer.parseInt(mUserId));
 
                         }
                     } else {
@@ -87,6 +76,7 @@ public class MeetingOpenHelper {
 
     private MeetingOpenHelper(Context context) {
         mContext = context;
+        AgoraManager.getInstance(context).getAgoraAPICallBack().addAgoraAPICallBack(mMyAgoraAPICallBack);
     }
 
     public static MeetingOpenHelper getInstance(Context context) {
@@ -149,5 +139,181 @@ public class MeetingOpenHelper {
         group.getGroupInfoNew(mGroupId);
     }
 
+    /**
+     * Agora信令回调
+     */
+    private MyAgoraAPICallBack mMyAgoraAPICallBack = new MyAgoraAPICallBack() {
+        @Override
+        public void onReconnecting(int nretry) {
+
+        }
+
+        @Override
+        public void onReconnected(int fd) {
+
+        }
+
+        @Override
+        public void onLoginSuccess(int uid, int fd) {
+
+        }
+
+        @Override
+        public void onLogout(int ecode) {
+
+        }
+
+        @Override
+        public void onLoginFailed(int ecode) {
+
+        }
+
+        @Override
+        public void onChannelJoined(final String channelID) {
+            final ChatGroupDao dao = new ChatGroupDao();
+            AgoraManager.getInstance(mContext).channelInviteAccept(channelID, "server_37");
+            SessionGroup group = new SessionGroup(mContext);
+            group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
+                @Override
+                public void onGroupInfo(ChatGroupPo po, int what) {
+                    dao.saveGroup(po);
+                    mCallBack.createOrJoinMeetingSuccess(channelID);
+                }
+
+                @Override
+                public void onGroupInfoFailed(String msg) {
+
+                }
+            });
+            group.getGroupInfoNew(mGroupId);
+
+
+        }
+
+        @Override
+        public void onChannelJoinFailed(String channelID, int ecode) {
+
+        }
+
+        @Override
+        public void onChannelLeaved(String channelID, int ecode) {
+
+        }
+
+        @Override
+        public void onChannelUserJoined(String account, int uid) {
+
+        }
+
+        @Override
+        public void onChannelUserLeaved(String account, int uid) {
+
+        }
+
+        @Override
+        public void onChannelUserList(String[] accounts, int[] uids) {
+
+        }
+
+        @Override
+        public void onChannelQueryUserNumResult(String channelID, int ecode, int num) {
+
+        }
+
+        @Override
+        public void onChannelAttrUpdated(String channelID, String name, String value, String type) {
+
+        }
+
+        @Override
+        public void onInviteReceived(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onInviteReceivedByPeer(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onInviteAcceptedByPeer(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onInviteRefusedByPeer(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onInviteFailed(String channelID, String account, int uid, int ecode) {
+
+        }
+
+        @Override
+        public void onInviteEndByPeer(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onInviteEndByMyself(String channelID, String account, int uid) {
+
+        }
+
+        @Override
+        public void onMessageSendError(String messageID, int ecode) {
+
+        }
+
+        @Override
+        public void onMessageSendSuccess(String messageID) {
+
+        }
+
+        @Override
+        public void onMessageAppReceived(String msg) {
+
+        }
+
+        @Override
+        public void onMessageInstantReceive(String account, int uid, String msg) {
+
+        }
+
+        @Override
+        public void onMessageChannelReceive(String channelID, String account, int uid, String msg) {
+
+        }
+
+        @Override
+        public void onLog(String txt) {
+
+        }
+
+        @Override
+        public void onInvokeRet(String name, int ofu, String reason, String resp) {
+
+        }
+
+        @Override
+        public void onMsg(String from, String t, String msg) {
+
+        }
+
+        @Override
+        public void onUserAttrResult(String account, String name, String value) {
+
+        }
+
+        @Override
+        public void onUserAttrAllResult(String account, String value) {
+
+        }
+
+        @Override
+        public void onError(String name, int ecode, String desc) {
+
+        }
+    };
 
 }

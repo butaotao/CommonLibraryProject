@@ -314,7 +314,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             mMessageListAdapter.notifyDataSetChanged();
             isSponsor = true;
             mRightBtn.setVisibility(View.VISIBLE);
+            mLeftBtn.setVisibility(View.GONE);
         } else {//参会者
+            mLeftBtn.setVisibility(View.VISIBLE);
             isSponsor = false;
             mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
             mRightBtn.setVisibility(View.GONE);
@@ -784,7 +786,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             /**
              * 根据服务端返回的频道消息获取更改会议成员头像状态
              */
-            if ("server".equals(account)) {
+            if ("server_37".equals(account)) {
                 setUserStatus(msg);
             }
         }
