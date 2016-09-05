@@ -5,9 +5,14 @@
     <string name="http_timeout">访问超时</string>
     <string name="error_other">服务器内部错误</string>
     <string name="param_error">参数错误</string>
-    <string name= "tele_incoming_tips">邀请您加入会议</string>
+    <string name="tele_incoming_tips">邀请您加入会议</string>
     <string name="receive">接听</string>
     <string name="refuse">拒接</string>
     <string name="dialog_phone_call">电话呼叫</string>
     <string name="dialog_net_call">网络重播</string>
+    <string name="warning_text">接听将结束当前会议，请慎选！</string>
+    <string name="warning_text_simple">接听将离开当前会议</string>
+    <string name="ignore_text">忽略</string>
+    <string name="answer_the_phone_text">结束会议，接听</string>
+    <string name="answer_the_phone_text_simple">离开会议，接听</string>
 </resources>

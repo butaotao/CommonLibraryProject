@@ -98,6 +98,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private long mStartTime;
     private int timeCount;
     private boolean isAllMut = false;
+    private TextView mTimeTv;
+    private int mMeetingTime;
+    private int mMinTime;
+    private int mSecTime;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -105,7 +109,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             switch (msg.what) {
                 case DISMISS_CONF:
                     if (msg.arg1 == 1) {
+                        leaveChannel();
                         AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.MEETING_EDN, "");
+
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
@@ -126,18 +132,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         setTime();
                         mHandler.sendEmptyMessageDelayed(0x1, 1000);
                     }
-
                     break;
-
             }
-
-
         }
     };
-    private TextView mTimeTv;
-    private int mMeetingTime;
-    private int mMinTime;
-    private int mSecTime;
 
 
     @Override
@@ -194,10 +192,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         ImMeetingBean imMeetingBean = JSON.parseObject(meeting, ImMeetingBean.class);
 
         if (imMeetingBean != null) {
-            mStartTime = imMeetingBean.getStartTime();
-            long l = System.currentTimeMillis();
-            if (l > mStartTime) {
-                mMeetingTime = (int)(l - mStartTime)/1000;
+            if ("1".equals(imMeetingBean.getConfStatus())) {
+                mStartTime = imMeetingBean.getStartTime();
+                long l = System.currentTimeMillis();
+                if (l > mStartTime) {
+                    mMeetingTime = (int) (l - mStartTime) / 1000;
+                }
+            } else {
+                mStartTime = System.currentTimeMillis();
+                mMeetingTime = 0;
             }
         }
 
@@ -720,7 +723,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onInviteEndByPeer(String channelID, String account, int uid) {
-            leaveChannel();
+            if (!isSponsor) {
+                leaveChannel();
+            }
         }
 
         @Override

@@ -15,11 +15,14 @@ import com.dachen.teleconference.MyAgoraAPICallBack;
 import com.dachen.teleconference.bean.CreatePhoneMeetingResponse;
 import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.ImMeetingBean;
+import com.dachen.teleconference.bean.MeetingRole;
+import com.dachen.teleconference.bean.MeetingStatus;
 import com.dachen.teleconference.http.HttpCommClient;
+import com.dachen.teleconference.utils.MeetingInfo;
 
 /**
  * 会议开启帮助类
- * <p/>
+ * <p>
  * Created by TianWei on 2016/8/31.
  */
 public class MeetingOpenHelper {
@@ -33,6 +36,7 @@ public class MeetingOpenHelper {
     private String mUserId;
     private String mGroupId;
     private String mChannelId;
+    private boolean isSponsor;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -91,6 +95,7 @@ public class MeetingOpenHelper {
     }
 
     public void createMeeting(String token, String userId, String groupId, CreateOrJoinMeetingCallBack callBack) {
+        isSponsor = true;
         mToken = token;
         mUserId = userId;
         mGroupId = groupId;
@@ -104,6 +109,7 @@ public class MeetingOpenHelper {
     }
 
     public void joinMeeting(String token, String userId, String groupId, String channelId, CreateOrJoinMeetingCallBack callBack) {
+        isSponsor = false;
         mToken = token;
         mUserId = userId;
         mGroupId = groupId;
@@ -178,6 +184,9 @@ public class MeetingOpenHelper {
                 public void onGroupInfo(ChatGroupPo po, int what) {
                     dao.saveGroup(po);
                     mCallBack.createOrJoinMeetingSuccess(channelID);
+                    MeetingInfo.getInstance(mContext).setMeetingChannel(channelID);
+                    MeetingInfo.getInstance(mContext).setMeetingRole(isSponsor ? MeetingRole.Sponsor : MeetingRole.Member);
+                    MeetingInfo.getInstance(mContext).setMeetingStatus(MeetingStatus.Start);
                 }
 
                 @Override
