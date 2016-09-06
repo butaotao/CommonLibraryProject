@@ -294,4 +294,5 @@ public class VChatMemberActivity extends ImBaseActivity implements OnClickListen
             mQavsdkControl.stopContext();
         super.finish();
     }
+
 }

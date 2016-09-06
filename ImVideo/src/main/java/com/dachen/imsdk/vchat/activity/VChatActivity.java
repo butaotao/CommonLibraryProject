@@ -1,5 +1,6 @@
 package com.dachen.imsdk.vchat.activity;
 
+import android.Manifest.permission;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -13,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.PermissionChecker;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -376,10 +378,21 @@ public class VChatActivity extends ImBaseActivity implements OnClickListener {
 
         updateTime();
 //        initGuide();
+        checkFloatPermission();
     }
 
     public static VChatActivity getInstance() {
         return instance;
+    }
+
+    private void checkFloatPermission(){
+        try {
+            PermissionChecker.checkSelfPermission(this, permission.SYSTEM_ALERT_WINDOW);
+        } catch (Exception e) {
+            e.printStackTrace();
+//            Intent i=new Intent(Settings.ACTION_APPLICATION_SETTINGS);
+//            startActivity(i);
+        }
     }
 
     @Override

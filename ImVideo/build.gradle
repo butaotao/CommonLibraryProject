@@ -30,4 +30,5 @@ dependencies {
     compile project(':ImSdk')
 //    compile 'com.dachen.library:ImSdk:1.0.0'
     compile project(':videoConferencingLibrary')
+    compile 'com.android.support:support-v4:24.0.0'
 }

@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.dachen.imsdk.vchat.activity.VChatInvitedActivity;
 import com.tencent.av.sdk.AVConstants;
 
 import java.io.BufferedReader;
@@ -339,4 +340,8 @@ public class VChatUtil {
             DEFAULT_ACCOUNT_TYPE = "2550";
         }
     }
+
+	public static boolean isBusy(){
+		return (VChatInvitedActivity.getInstance() != null ||VChatManager.getInstance().isInChat);
+	}
 }
