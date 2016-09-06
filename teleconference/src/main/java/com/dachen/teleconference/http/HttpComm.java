@@ -27,5 +27,7 @@ public interface HttpComm {
 
     public void voipCallUsers(Context context, Handler mHandler, int what, String users, String gId, String channelId);
 
+    public void delayConf(Context context, Handler mHandler, int what, String channelId, String creater,String delayTime);
+
 
 }

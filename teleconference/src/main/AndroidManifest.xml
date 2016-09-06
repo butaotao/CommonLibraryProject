@@ -7,8 +7,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".activity.MeetingActivity"
-            android:launchMode="singleInstance">
+            android:name=".activity.MeetingActivity">
+        </activity>
+        <activity
+            android:name=".activity.ChatAlertActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            >
         </activity>
         <activity android:name=".activity.AgoraVoiceSdkDemo"/>
         <activity

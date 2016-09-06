@@ -1,6 +1,7 @@
 package com.dachen.teleconference.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,12 @@ public class MessageListAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+        }
+        String s = mData.get(position);
+        if (s.endsWith("解除全员静音") || s.endsWith("开启全员静音")) {
+            holder.tvMessage.setTextColor(Color.RED);
+        }else{
+            holder.tvMessage.setTextColor(mContext.getResources().getColor(R.color.gray_aaaaaa));
         }
         holder.tvMessage.setText(mData.get(position));
         return convertView;

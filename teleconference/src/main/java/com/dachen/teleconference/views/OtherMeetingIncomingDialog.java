@@ -50,7 +50,7 @@ public class OtherMeetingIncomingDialog extends Dialog implements View.OnClickLi
         layoutParams.dimAmount = 0.5f;
         window.setGravity(Gravity.CENTER);
         window.setAttributes(layoutParams);
-
+        setCanceledOnTouchOutside(false);
 
         mHeadImageIv = (ImageView) findViewById(R.id.head_image_iv);
         mNameTv = (TextView) findViewById(R.id.name_tv);

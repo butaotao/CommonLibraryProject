@@ -113,4 +113,9 @@ public class AgoraManager {
         mAgoraAPIOnlySignal.channelInviteRefuse(channelID, account, 0);
     }
 
+    public void messageInstantSend(String account, int uid, String msg, String msgID) {
+        mAgoraAPIOnlySignal.messageInstantSend(account, uid, msg, msgID);
+    }
+
+
 }

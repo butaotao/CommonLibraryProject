@@ -130,4 +130,20 @@ public class HttpCommImpl implements HttpComm {
                     }
                 });
     }
+
+    @Override
+    public void delayConf(Context context, Handler mHandler, int what, String channelId, String creater, String delayTime) {
+        MyHttpClient client = MyHttpClient.getInstance();
+        MyRequestParams params = new MyRequestParams(context);
+        params.set("channelId", channelId);
+        params.set("creater", creater);
+        params.set("delayTime", delayTime);
+        client.post(context, params, Constants.IP + "phone/delayConf",
+                new GsonHttpResponseHandler(mHandler, what, context) {
+                    @Override
+                    protected Object parseJson(JsonObject response) {
+                        return JsonMananger.jsonToBean(String.valueOf(response), BaseResponse.class);
+                    }
+                });
+    }
 }

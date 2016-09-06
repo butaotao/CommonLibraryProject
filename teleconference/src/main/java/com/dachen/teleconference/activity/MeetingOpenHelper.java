@@ -22,7 +22,7 @@ import com.dachen.teleconference.utils.MeetingInfo;
 
 /**
  * 会议开启帮助类
- * <p>
+ * <p/>
  * Created by TianWei on 2016/8/31.
  */
 public class MeetingOpenHelper {
@@ -94,22 +94,53 @@ public class MeetingOpenHelper {
         return INSTANCE;
     }
 
+    /**
+     * 发起人发起会议
+     *
+     * @param token
+     * @param userId
+     * @param groupId
+     * @param callBack
+     */
     public void createMeeting(String token, String userId, String groupId, CreateOrJoinMeetingCallBack callBack) {
         isSponsor = true;
         mToken = token;
         mUserId = userId;
         mGroupId = groupId;
         mCallBack = callBack;
-        updateGroupMember();
-
-    }
-
-    private void updateGroupMember() {
         HttpCommClient.getInstance().createPhoneMeeting(mContext, mHandler, CREATE_PHONE_MEETING, mToken, mUserId, mGroupId);
+
     }
 
+    /**
+     * 参会人参加会议
+     *
+     * @param token
+     * @param userId
+     * @param groupId
+     * @param channelId
+     * @param callBack
+     */
     public void joinMeeting(String token, String userId, String groupId, String channelId, CreateOrJoinMeetingCallBack callBack) {
         isSponsor = false;
+        mToken = token;
+        mUserId = userId;
+        mGroupId = groupId;
+        mCallBack = callBack;
+        mChannelId = channelId;
+        checkImStatus();
+    }
+
+    /**
+     * 发起人从IM快捷入口再次进入会议
+     *
+     * @param token
+     * @param userId
+     * @param groupId
+     * @param callBack
+     */
+    public void rejoinMeeting(String token, String userId, String groupId, String channelId, CreateOrJoinMeetingCallBack callBack) {
+        isSponsor = true;
         mToken = token;
         mUserId = userId;
         mGroupId = groupId;

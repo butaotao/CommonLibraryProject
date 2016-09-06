@@ -13,7 +13,7 @@ public class ImMeetingBean {
      */
 
     private String channelId;
-    private long startTime;
+    private long createTime;
     private String creater;
     private String confStatus;
     private String planEndTime;
@@ -26,12 +26,12 @@ public class ImMeetingBean {
         this.channelId = channelId;
     }
 
-    public long getStartTime() {
-        return startTime;
+    public long getCreateTime() {
+        return createTime;
     }
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
     public String getCreater() {
