@@ -149,6 +149,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
     };
     private TextView mNumberTv;
+    private String mName;
 
 
     @Override
@@ -241,6 +242,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 mCreateName = info.name;
                 mChannelUserList.clear();
                 mChannelUserList.add(info);
+            }
+            if (info.id.equals(mUserId)) {
+                mName = info.name;
             }
         }
 
@@ -1103,10 +1107,14 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     mAdapter.notifyDataSetChanged();
                     for (GroupInfo2Bean.Data.UserInfo info : subList) {
                         for (GroupInfo2Bean.Data.UserInfo user : mUserInfos) {
-                            AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mCreateName + "邀请" + info.name +
-                                    "加入会议", "");
+                            if (mUserId != user.id) {
+                                AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mName + "邀请" + info.name +
+                                        "加入会议", "");
+                            }
                         }
+                        mMessageData.add(mName + "邀请" + info.name + "加入会议");
                     }
+                    mMessageListAdapter.notifyDataSetChanged();
                 }
 
             }
