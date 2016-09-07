@@ -148,6 +148,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             }
         }
     };
+    private TextView mNumberTv;
 
 
     @Override
@@ -270,6 +271,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mEndMeetingDialog.setCanceledOnTouchOutside(false);
         mLeftBtn = (TextView) findViewById(R.id.left_btn);
         mTitle = (TextView) findViewById(R.id.title);
+        mNumberTv = (TextView) findViewById(R.id.number);
         mRightBtn = (TextView) findViewById(R.id.right_btn);
         mSpeakerIv = (ImageView) findViewById(R.id.speaker_iv);
         mHangIv = (ImageView) findViewById(R.id.hang_iv);
@@ -281,7 +283,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mMessageListView.setAdapter(mMessageListAdapter);
 
         mLeftBtn.setText("隐藏");
-        mTitle.setText(mCreateName + "的电话会议" + "（" + mUserInfos.size() + "）");
+        mTitle.setText(mCreateName + "的电话会议");
+        mNumberTv.setText("（" + mUserInfos.size() + "）");
         mRightBtn.setText("全部静音");
 
         setTime();
@@ -809,8 +812,13 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
              * 根据服务端返回的频道消息获取更改会议成员头像状态
              */
             if ("server_37".equals(account)) {
-                setUserStatus(msg);
-                setDelayConf(msg);
+                if (msg != null) {
+                    if (msg.startsWith("[")) {
+                        setUserStatus(msg);
+                    } else if (msg.startsWith("{")) {
+                        setDelayConf(msg);
+                    }
+                }
             }
 
 
@@ -1035,8 +1043,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mGroupId,
                             mChannelId);
-                    AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, mCreateName + "邀请" + info.name + "加入会议",
-                            "");
+
                 }
             }
         }
@@ -1090,8 +1097,18 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (userInfos != null && userInfos.size() > mUserInfos.size()) {
                 int i = userInfos.size() - mUserInfos.size();
                 List<GroupInfo2Bean.Data.UserInfo> subList = userInfos.subList(userInfos.size() - i, userInfos.size());
-                mUserInfos.addAll(subList);
-                mAdapter.notifyDataSetChanged();
+                if (subList != null) {
+                    mUserInfos.addAll(subList);
+                    mNumberTv.setText("（" + mUserInfos.size() + "）");
+                    mAdapter.notifyDataSetChanged();
+                    for (GroupInfo2Bean.Data.UserInfo info : subList) {
+                        for (GroupInfo2Bean.Data.UserInfo user : mUserInfos) {
+                            AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mCreateName + "邀请" + info.name +
+                                    "加入会议", "");
+                        }
+                    }
+                }
+
             }
         }
 
