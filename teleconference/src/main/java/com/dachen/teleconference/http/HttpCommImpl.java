@@ -59,7 +59,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("token", token);
         params.set("creater", creater);
         params.set("groupId", groupId);
-        params.set("planEndTime", 60 * 60 * 1000 + "");
+        params.set("planEndTime", 15 * 60 * 1000 + "");
         client.post(context, params, Constants.IP + "phone/createConf",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
