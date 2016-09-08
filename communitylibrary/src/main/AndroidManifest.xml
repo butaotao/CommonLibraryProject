@@ -7,8 +7,8 @@
         android:supportsRtl="true"
         android:label="@string/lib_name"
         tools:replace="android:label"
+        android:theme="@android:style/Theme.Light.NoTitleBar"
         >
-
     </application>
 
 </manifest>
