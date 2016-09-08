@@ -6,7 +6,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.Listener;
-import com.android.volley.toolbox.Volley;
+import com.dachen.common.http.HttpsSupportCompat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,8 @@ public class VolleyUtil {
 		if (requestQueue == null) {
 			synchronized (VolleyUtil.class) {
 				if (requestQueue == null) {
-					requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+//					requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+					requestQueue = new HttpsSupportCompat(context).compatVolley();//增加Https支持
 					requestQueue.start();
 				}
 			}
