@@ -49,21 +49,14 @@
                     android:background="@null"
                     android:gravity="top"
                     android:hint="这一刻，想说点什么呢..."
-                    android:lines="10"
+                    android:lines="8"
                     android:padding="10dip"
                     android:textColor="@color/title_color"
                     android:textColorHint="@color/support_color"
                     android:textSize="16sp" />
 
 
-                <ImageView
-                    android:id="@+id/img_video"
-                    android:layout_width="80dip"
-                    android:layout_height="80dip"
-                    android:layout_margin="10dip"
-                    android:visibility="gone" />
-
-                <com.jingdl.qulove.widget.NoScrollGridView
+               <!-- <com.dachen.common.widget.NoScrollGridView
                     android:id="@+id/gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,7 +72,7 @@
                     android:smoothScrollbar="true"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="5dip"
-                    android:visibility="gone" />
+                    android:visibility="gone" />-->
 
                 <View
                     style="@style/line_style"
