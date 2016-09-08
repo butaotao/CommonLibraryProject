@@ -72,6 +72,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private static final int VOIP_CALL = 1005;
     private static final String INTENT_EXTRA_IS_CREATOR = "is_creator";
     private static final int DELAY_CONF = 1006;
+    private static final int FLOOR_CALL = 1007;
     private RecyclerView mRecyclerView;
     private TextView mLeftBtn;
     private TextView mTitle;
@@ -114,15 +115,21 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             switch (msg.what) {
                 case DISMISS_CONF:
                     if (msg.arg1 == 1) {
-                        leaveChannel();
-                        AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.MEETING_EDN, "");
-
+//                        leaveChannel();
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
                     break;
 
                 case VOIP_CALL:
+                    if (msg.arg1 == 1) {
+
+                    } else {
+                        UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                    }
+                    break;
+
+                case FLOOR_CALL:
                     if (msg.arg1 == 1) {
 
                     } else {
@@ -287,7 +294,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mMessageListView.setAdapter(mMessageListAdapter);
 
         mLeftBtn.setText("隐藏");
-        mTitle.setText(mCreateName + "的电话会议");
+        mTitle.setText(mCreateName + "的会议");
         mNumberTv.setText("（" + mUserInfos.size() + "）");
         mRightBtn.setText("全部静音");
 
@@ -325,7 +332,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
                         @Override
                         public void onPhoneCall() {
-
+                            HttpCommClient.getInstance().floorCall(mContext, mHandler, FLOOR_CALL, mToken, userInfo.id, mGroupId,
+                                    mChannelId);
                         }
                     });
                     callMeetingMemberDialog.show();
@@ -368,26 +376,32 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         if (i == R.id.left_btn) {
             // hide();
             finish();
+//            moveTaskToBack(true);
         } else if (i == R.id.right_btn) {
             if (isAllMut) {
                 mRightBtn.setText("全部静音");
-                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-                    if (info.id != mCreateId) {
-                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_CANCEL, "");
-                    }
-                }
-                mMessageData.add(mCreateName + "解除全员静音");
-                mMessageListAdapter.notifyDataSetChanged();
+                //                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                //                    if (info.id != mCreateId) {
+                //                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_CANCEL, "");
+                //                    }
+                //                }
+
+                AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.ALL_MUT_CANCEL, "");
+                //                mMessageData.add(mCreateName + "解除全员静音");
+                //                mMessageListAdapter.notifyDataSetChanged();
+                //                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
                 isAllMut = false;
             } else {
                 mRightBtn.setText("取消静音");
-                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-                    if (info.id != mCreateId) {
-                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_ON, "");
-                    }
-                }
-                mMessageData.add(mCreateName + "开启全员静音");
-                mMessageListAdapter.notifyDataSetChanged();
+                //                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                //                    if (info.id != mCreateId) {
+                //                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_ON, "");
+                //                    }
+                //                }
+                AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.ALL_MUT_ON, "");
+                //                mMessageData.add(mCreateName + "开启全员静音");
+                //                mMessageListAdapter.notifyDataSetChanged();
+                //                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
                 isAllMut = true;
             }
         } else if (i == R.id.speaker_iv) {
@@ -754,9 +768,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onInviteEndByPeer(String channelID, String account, int uid) {
-            if (!isSponsor) {
-                leaveChannel();
-            }
+            leaveChannel();
         }
 
         @Override
@@ -781,26 +793,30 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onMessageInstantReceive(String account, int uid, String msg) {
-            if (msg.equals(MediaMessage.ALL_MUT_ON)) {
-                if (!isSponsor) {
-                    isMutOn = true;
-                    mMutIv.setImageResource(R.drawable.mut_on);
-                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
-                }
-                mMessageData.add(mCreateName + "开启全员静音");
-                mMessageListAdapter.notifyDataSetChanged();
-            } else if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
-                if (!isSponsor) {
-                    isMutOn = false;
-                    mMutIv.setImageResource(R.drawable.mut_close);
-                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
-                }
-                mMessageData.add(mCreateName + "解除全员静音");
-                mMessageListAdapter.notifyDataSetChanged();
-            } else {
-                mMessageData.add(msg);
-                mMessageListAdapter.notifyDataSetChanged();
-            }
+            //            if (msg.equals(MediaMessage.ALL_MUT_ON)) {
+            //                if (!isSponsor) {
+            //                    isMutOn = true;
+            //                    mMutIv.setImageResource(R.drawable.mut_on);
+            //                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
+            //                }
+            //                mMessageData.add(mCreateName + "开启全员静音");
+            //                mMessageListAdapter.notifyDataSetChanged();
+            //                mMessageListView.setSelection(mMessageData.size() - 1);
+            //                mMessageListView.setSelected(true);
+            //            } else if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
+            //                if (!isSponsor) {
+            //                    isMutOn = false;
+            //                    mMutIv.setImageResource(R.drawable.mut_close);
+            //                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
+            //                }
+            //                mMessageData.add(mCreateName + "解除全员静音");
+            //                mMessageListAdapter.notifyDataSetChanged();
+            //                mMessageListView.setSelection(mMessageData.size() - 1);
+            //                mMessageListView.setSelected(true);
+            //            } else {
+            //                mMessageData.add(msg);
+            //                mMessageListAdapter.notifyDataSetChanged();
+            //            }
         }
 
         @Override
@@ -808,10 +824,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             Logger.d("onMessageChannelReceive", "onMessageChannelReceive---" + "msg----" +
                     msg + "account---" + account + "channelID-----" + channelID);
 
-            if (msg.equals(MediaMessage.MEETING_EDN)) {
-                mMessageData.add("会议结束");
-                mMessageListAdapter.notifyDataSetChanged();
-            }
             /**
              * 根据服务端返回的频道消息获取更改会议成员头像状态
              */
@@ -823,6 +835,31 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         setDelayConf(msg);
                     }
                 }
+                return;
+            }
+
+            if (msg.equals(MediaMessage.ALL_MUT_ON)) {
+                if (!isSponsor) {
+                    isMutOn = true;
+                    mMutIv.setImageResource(R.drawable.mut_on);
+                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
+                }
+                mMessageData.add(mCreateName + "开启全员静音");
+                mMessageListAdapter.notifyDataSetChanged();
+                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+            } else if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
+                if (!isSponsor) {
+                    isMutOn = false;
+                    mMutIv.setImageResource(R.drawable.mut_close);
+                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
+                }
+                mMessageData.add(mCreateName + "解除全员静音");
+                mMessageListAdapter.notifyDataSetChanged();
+                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+            } else {
+                mMessageData.add(msg);
+                mMessageListAdapter.notifyDataSetChanged();
+                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
             }
 
 
@@ -899,9 +936,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 name = info.name;
             }
         }
-        for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-            AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, name + "在忙碌", "");
-        }
+        //        for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+        //            AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, name + "在忙碌", "");
+        //        }
+        AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, name + "在忙碌", "");
     }
 
 
@@ -953,6 +991,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
                     @Override
                     public void onPhoneCall() {
+                        HttpCommClient.getInstance().floorCall(mContext, mHandler, FLOOR_CALL, mToken, info.id, mGroupId,
+                                mChannelId);
                         showNetCallDialog();
                     }
                 });
@@ -968,6 +1008,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 收到结束会议通知,离开会议频道
      */
     private void leaveChannel() {
+        mMessageData.add("会议结束");
+        mMessageListAdapter.notifyDataSetChanged();
+        mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
         AgoraManager.getInstance(mContext).leaveChannel(mChannelId);
         MeetingInfo.getInstance(mContext).setMeetingStatus(MeetingStatus.End);
         if (mEndMeetingDialog != null && mEndMeetingDialog.isShowing()) {
@@ -996,6 +1039,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mMessageData.add(userName + "离开了会议");
         mMessageListAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
+        mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
     }
 
     /**
@@ -1015,9 +1059,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         }
-        mMessageData.add(userName + "加入了会议");
+        mMessageData.add(userName + "已加入会议");
         mMessageListAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
+        mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
     }
 
     /**
@@ -1047,8 +1092,13 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mGroupId,
                             mChannelId);
+                    //                    for (GroupInfo2Bean.Data.UserInfo user : mUserInfos) {
+                    //                        AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mName + "邀请" + info.name + "加入会议", "");
+                    //                    }
+                    AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mName + "邀请" + info.name + "加入会议", "");
 
                 }
+
             }
         }
 
@@ -1105,16 +1155,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     mUserInfos.addAll(subList);
                     mNumberTv.setText("（" + mUserInfos.size() + "）");
                     mAdapter.notifyDataSetChanged();
-                    for (GroupInfo2Bean.Data.UserInfo info : subList) {
-                        for (GroupInfo2Bean.Data.UserInfo user : mUserInfos) {
-                            if (mUserId != user.id) {
-                                AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mName + "邀请" + info.name +
-                                        "加入会议", "");
-                            }
-                        }
-                        mMessageData.add(mName + "邀请" + info.name + "加入会议");
-                    }
-                    mMessageListAdapter.notifyDataSetChanged();
                 }
 
             }

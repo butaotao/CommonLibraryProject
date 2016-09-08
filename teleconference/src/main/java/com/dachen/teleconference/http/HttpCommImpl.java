@@ -59,7 +59,7 @@ public class HttpCommImpl implements HttpComm {
         params.set("token", token);
         params.set("creater", creater);
         params.set("groupId", groupId);
-        params.set("planEndTime", 15 * 60 * 1000 + "");
+        params.set("planEndTime", 5 * 60 * 1000 + "");
         client.post(context, params, Constants.IP + "phone/createConf",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
@@ -139,6 +139,24 @@ public class HttpCommImpl implements HttpComm {
         params.set("creater", creater);
         params.set("delayTime", delayTime);
         client.post(context, params, Constants.IP + "phone/delayConf",
+                new GsonHttpResponseHandler(mHandler, what, context) {
+                    @Override
+                    protected Object parseJson(JsonObject response) {
+                        return JsonMananger.jsonToBean(String.valueOf(response), BaseResponse.class);
+                    }
+                });
+    }
+
+    @Override
+    public void floorCall(Context context, Handler mHandler, int what, String token, String userId, String gId,
+                          String channelId) {
+        MyHttpClient client = MyHttpClient.getInstance();
+        MyRequestParams params = new MyRequestParams(context);
+        params.set("token", token);
+        params.set("userId", userId);
+        params.set("gId", gId);
+        params.set("channelId", channelId);
+        client.post(context, params, Constants.IP + "phone/floorCall",
                 new GsonHttpResponseHandler(mHandler, what, context) {
                     @Override
                     protected Object parseJson(JsonObject response) {
