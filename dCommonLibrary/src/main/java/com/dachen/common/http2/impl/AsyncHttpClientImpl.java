@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.dachen.common.http.HttpsSupportCompat;
 import com.dachen.common.http2.handle.AbsHandle;
-import com.dachen.common.http2.handle.ResponseHandle;
 import com.dachen.common.http2.request.AbsRequst;
 import com.dachen.common.http2.interfaces.AbsHttpClient;
 import com.loopj.android.http.AsyncHttpClient;
