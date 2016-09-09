@@ -2,19 +2,30 @@ package com.dachen.community.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dachen.common.utils.CommonUtils;
+import com.dachen.common.widget.NoScrollerGridView;
+import com.dachen.community.Adapter.GridImgAdapter;
 import com.dachen.community.R;
+import com.dachen.community.model.PictureModel;
 import com.dachen.community.views.ChatFaceView;
+import com.dachen.gallery.CustomGalleryActivity;
+import com.dachen.gallery.GalleryAction;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * [发帖页面]
@@ -23,8 +34,9 @@ import com.dachen.community.views.ChatFaceView;
  * @date 2016-9-9
  *
  **/
-public class PublishActivity extends BaseActivity implements View.OnClickListener{
+public class PublishActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener{
 
+    private static final int REQUEST_PICK = 0;
     private ChatFaceView mChatFaceView;
     private EditText edit_content;
     private EditText edit_title;
@@ -32,6 +44,12 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private TextView tv_title;
     private Button btn_right;
     private Button btn_left;
+    private ImageView btn_img;
+    private String ADDPIC = "add";
+    private ArrayList<PictureModel> selectedPicture = new ArrayList<PictureModel>();
+    private NoScrollerGridView gridView;
+    private GridImgAdapter mAdapter;
+    private int mUploadingPictureCount;//正在上传的图片数量
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +72,13 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         edit_content = getViewById(R.id.edit_content);
         btn_face = getViewById(R.id.btn_face);
         btn_face.setOnClickListener(this);
+        btn_img = getViewById(R.id.btn_img);
+        btn_img.setOnClickListener(this);
+        gridView = getViewById(R.id.gridView);
+        gridView.setOnItemClickListener(this);
+        gridView.setOnItemLongClickListener(this);
+        mAdapter = new GridImgAdapter(this);
+        gridView.setAdapter(mAdapter);
         mChatFaceView = getViewById(R.id.chat_face_view);
         mChatFaceView.setEmotionClickListener(new ChatFaceView.EmotionClickListener() {
             @Override
@@ -103,7 +128,70 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
         }else if(view.getId()== R.id.btn_left){
             finish();
+        }else if(view.getId()==R.id.btn_img){
+            CustomGalleryActivity.openUi(this, true, REQUEST_PICK, 8 - getPicNum());
         }
+    }
+
+    private int getPicNum() {
+        int num = selectedPicture.size();
+        if (selectedPicture.contains(ADDPIC))
+            num -= 1;
+        return num;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_PICK:
+                    String[] all_path = intent.getStringArrayExtra(GalleryAction.INTENT_ALL_PATH);
+                    if (all_path == null || all_path.length == 0)
+                        return;
+                    uploadImages(all_path);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    private void uploadImages(String[] paths) {
+        if (paths == null || paths.length == 0) {
+            return;
+        }
+
+        if(selectedPicture.size()>0 && selectedPicture.size()<=8){
+            if(selectedPicture.get(selectedPicture.size()-1).getLocalImg().equals("add")){
+                selectedPicture.remove(selectedPicture.size()-1);
+            }
+        }
+
+//        mUploadingPictureCount += paths.length;
+        //显示本地图片
+        for(int i=0;i<paths.length;i++){
+            PictureModel model = new PictureModel();
+            model.setLocalImg(paths[i]);
+            model.setNetImg("");
+            selectedPicture.add(model);
+        }
+
+        PictureModel model = new PictureModel();
+        model.setLocalImg(ADDPIC);
+        model.setNetImg("");
+        selectedPicture.add(model);
+
+        if (selectedPicture.size() > 8) {
+            selectedPicture.remove(selectedPicture.size()-1);
+        }
+        mAdapter.removeAll();
+        mAdapter.addData(selectedPicture);
+        mAdapter.notifyDataSetChanged();
+
+//        for (String path : paths) {
+//            uploadImage(path,paths);
+//        }
     }
 
     @Override
@@ -126,5 +214,15 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        return false;
     }
 }

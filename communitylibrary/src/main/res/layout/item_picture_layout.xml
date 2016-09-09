@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dachen.community.views.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:custom="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_pic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"/>
+
+<ImageView
+    android:id="@+id/img_del"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_toRightOf="@+id/linear"
+    android:src="@drawable/book_time_del"
+    android:visibility="gone"
+    />
+
+<com.dachen.common.widget.DonutProgress
+    android:id="@+id/donut_progress"
+    android:layout_width="47dp"
+    android:layout_height="47dp"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    custom:donut_circle_starting_degree="270"
+    custom:donut_finished_stroke_width="2dp"
+    custom:donut_text_color="@color/white"
+    custom:donut_text_size="12dp"
+    custom:donut_max="100"
+    custom:donut_progress="0"
+    custom:donut_unfinished_color="#00000000"
+    custom:donut_unfinished_stroke_width="2dp"
+    custom:donut_finished_color="@color/white"
+    tools:visibility="visible"/>
+
+</com.dachen.community.views.SquareLayout>

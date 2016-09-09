@@ -56,7 +56,7 @@
                     android:textSize="16sp" />
 
 
-               <!-- <com.dachen.common.widget.NoScrollGridView
+                <com.dachen.common.widget.NoScrollerGridView
                     android:id="@+id/gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:smoothScrollbar="true"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="5dip"
-                    android:visibility="gone" />-->
+                    />
 
                 <View
                     style="@style/line_style"
@@ -93,13 +93,13 @@
                         android:layout_height="40dip"
                         android:layout_marginLeft="5dip"
                         android:layout_marginRight="5dip"
-                        android:background="@drawable/ic_default_head"
+                        android:background="@drawable/im_input_more_nor"
                          />
 
                     <ImageView
                         android:id="@+id/btn_face"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dip"
+                        android:layout_height="40dip"
                         android:layout_marginLeft="5dip"
                         android:layout_marginRight="5dip"
                         android:background="@drawable/im_input_expression_press"
