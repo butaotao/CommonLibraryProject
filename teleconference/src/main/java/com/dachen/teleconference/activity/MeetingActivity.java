@@ -108,6 +108,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private int mMinTime;
     private int mSecTime;
     private ProgressDialog mEndMeetingDialog;
+    private TextView mNumberTv;
+    private String mName;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -158,8 +160,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             }
         }
     };
-    private TextView mNumberTv;
-    private String mName;
 
 
     @Override
@@ -325,7 +325,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 final GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
                 //重新邀请未加入人员;
                 if (isSponsor) {
-                    if (userInfo.id == mCreateId) {
+                    if (userInfo.id.equals(mCreateId)) {
                         return;
                     }
                     boolean flag = false;
@@ -935,6 +935,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             customDialog.show();
         }
 
+        if (meetingMsgBean != null && meetingMsgBean.getType() == 1){
+            String leftTime = meetingMsgBean.getParam().getLeftTime();
+            if (!TextUtils.isEmpty(leftTime)){
+                mMessageData.add("会议将在"+leftTime+"分钟后自动结束，请把握好会议节奏");
+                mMessageListAdapter.notifyDataSetChanged();
+                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+            }
+        }
+
         if (meetingMsgBean != null && meetingMsgBean.getType() == 2) {
             String userId = meetingMsgBean.getParam().getUserId();
             for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
@@ -978,11 +987,14 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
                 for (ChannelMemberStatusBean bean : statusBeanList) {
                     if (bean.getMember().equals(info.id)) {
-                        info.netOnLine = false;
-                        if (!mShowDialogUserMap.containsKey(info)) {
-                            mShowDialogUserMap.put(info, "0");
-                        }
+                        if (!mChannelUserList.contains(info)) {
+                            info.netOnLine = false;
+                            mChannelUserList.add(info);
+                            if (!mShowDialogUserMap.containsKey(info)) {
+                                mShowDialogUserMap.put(info, "0");
+                            }
 
+                        }
                     }
                 }
             }
@@ -1008,6 +1020,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 }
             }
             mMessageListAdapter.notifyDataSetChanged();
+            mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -1077,8 +1090,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
         mMessageData.add(userName + "离开了会议");
         mMessageListAdapter.notifyDataSetChanged();
-        mAdapter.notifyDataSetChanged();
         mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -1100,8 +1113,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         }
         mMessageData.add(userName + "已加入会议");
         mMessageListAdapter.notifyDataSetChanged();
-        mAdapter.notifyDataSetChanged();
         mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

@@ -61,7 +61,7 @@ public class MessageListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         String s = mData.get(position);
-        if (s.endsWith("解除全员静音") || s.endsWith("开启全员静音")) {
+        if (s.endsWith("解除全员静音") || s.endsWith("开启全员静音")||s.endsWith("请把握好会议节奏")) {
             holder.tvMessage.setTextColor(Color.RED);
         }else{
             holder.tvMessage.setTextColor(mContext.getResources().getColor(R.color.gray_aaaaaa));

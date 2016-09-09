@@ -1,6 +1,7 @@
 package com.dachen.teleconference.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,7 +18,6 @@ import com.dachen.common.media.SoundPlayer;
 import com.dachen.common.utils.ToastUtil;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
-import com.dachen.teleconference.MediaMessage;
 import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.R;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
@@ -51,6 +51,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
     private String mUserId;
     private int reckonTime = 60;
     private static MeetingBusinessCallBack meetingBusinessCallBack;
+    private ProgressDialog mMeetingDialog;
 
     private Handler mReckonHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -112,6 +113,10 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         }
         ImageLoader.getInstance().displayImage(mCreatePic, mHeadImageIv, ImageLoaderConfig.mCircleImageOptions);
 
+        mMeetingDialog = new ProgressDialog(this, R.style.IMDialog);
+        mMeetingDialog.setMessage("正在加入会议");
+        mMeetingDialog.setCanceledOnTouchOutside(false);
+
     }
 
     private void initSound() {
@@ -154,15 +159,15 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
         if (id == R.id.refuse_tele_call) {
             mSoundPlayer.stop();
             AgoraManager.getInstance(TeleIncomingActivity.this).channelInviteRefuse(mChannelID, mCreateID);
-            AgoraManager.getInstance(TeleIncomingActivity.this).messageChannelSend(mChannelID, MediaMessage.INVITE_REFUSE,
-                    mUserId);
             finish();
         } else if (id == R.id.response_tele_call) {
             mSoundPlayer.stop();
+            mMeetingDialog.show();
             MeetingOpenHelper.getInstance(TeleIncomingActivity.this).joinMeeting(mToken, mUserId, mGroupId,mChannelID,
                     new CreateOrJoinMeetingCallBack() {
                         @Override
                         public void createOrJoinMeetingSuccess(String channelId) {
+                            mMeetingDialog.dismiss();
                             MeetingActivity.openUI(TeleIncomingActivity.this, mToken, mUserId, mCreateID, mGroupId, mChannelID,
                                     false, meetingBusinessCallBack);
                             finish();
@@ -170,6 +175,7 @@ public class TeleIncomingActivity extends Activity implements View.OnClickListen
 
                         @Override
                         public void createOrJoinMeetingFailed(String failMessage) {
+                            mMeetingDialog.dismiss();
                             ToastUtil.showToast(TeleIncomingActivity.this, failMessage);
                             finish();
                         }
