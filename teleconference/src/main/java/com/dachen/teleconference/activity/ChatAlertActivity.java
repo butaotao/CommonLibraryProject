@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.dachen.common.utils.ToastUtil;
 import com.dachen.imsdk.db.po.ChatGroupPo;
+import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
 import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.views.OtherMeetingIncomingDialog;
@@ -65,6 +66,7 @@ public class ChatAlertActivity extends Activity {
 
             @Override
             public void onIgnore() {
+                AgoraManager.getInstance(ChatAlertActivity.this).channelInviteRefuse(mChannelID, mCreaterID);
                 finish();
             }
         });

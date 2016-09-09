@@ -808,30 +808,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onMessageInstantReceive(String account, int uid, String msg) {
-            //            if (msg.equals(MediaMessage.ALL_MUT_ON)) {
-            //                if (!isSponsor) {
-            //                    isMutOn = true;
-            //                    mMutIv.setImageResource(R.drawable.mut_on);
-            //                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
-            //                }
-            //                mMessageData.add(mCreateName + "开启全员静音");
-            //                mMessageListAdapter.notifyDataSetChanged();
-            //                mMessageListView.setSelection(mMessageData.size() - 1);
-            //                mMessageListView.setSelected(true);
-            //            } else if (msg.equals(MediaMessage.ALL_MUT_CANCEL)) {
-            //                if (!isSponsor) {
-            //                    isMutOn = false;
-            //                    mMutIv.setImageResource(R.drawable.mut_close);
-            //                    AgoraManager.getInstance(mContext).muteLocalAudioStream(isMutOn);
-            //                }
-            //                mMessageData.add(mCreateName + "解除全员静音");
-            //                mMessageListAdapter.notifyDataSetChanged();
-            //                mMessageListView.setSelection(mMessageData.size() - 1);
-            //                mMessageListView.setSelected(true);
-            //            } else {
-            //                mMessageData.add(msg);
-            //                mMessageListAdapter.notifyDataSetChanged();
-            //            }
+
         }
 
         @Override
@@ -935,10 +912,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             customDialog.show();
         }
 
-        if (meetingMsgBean != null && meetingMsgBean.getType() == 1){
+        if (meetingMsgBean != null && meetingMsgBean.getType() == 1) {
             String leftTime = meetingMsgBean.getParam().getLeftTime();
-            if (!TextUtils.isEmpty(leftTime)){
-                mMessageData.add("会议将在"+leftTime+"分钟后自动结束，请把握好会议节奏");
+            if (!TextUtils.isEmpty(leftTime)) {
+                mMessageData.add("会议将在" + leftTime + "分钟后自动结束，请把握好会议节奏");
                 mMessageListAdapter.notifyDataSetChanged();
                 mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
             }
