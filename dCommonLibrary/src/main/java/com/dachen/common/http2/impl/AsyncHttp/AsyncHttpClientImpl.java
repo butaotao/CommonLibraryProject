@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.dachen.common.http.HttpsSupportCompat;
 import com.dachen.common.http2.handle.AbsHandle;
-import com.dachen.common.http2.interfaces.AbsHttpClient;
 import com.dachen.common.http2.handle.AbsRequestHandle;
+import com.dachen.common.http2.interfaces.AbsHttpClient;
 import com.dachen.common.http2.request.AbsRequst;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestHandle;
@@ -54,7 +54,7 @@ public class AsyncHttpClientImpl implements AbsHttpClient {
 
     @Override
     public void cancelAll() {
-
+        mRealClient.cancelAllRequests(true);
     }
 
     @Override
