@@ -9,6 +9,13 @@
         tools:replace="android:label"
         android:theme="@android:style/Theme.Light.NoTitleBar"
         >
+
+        <activity
+            android:name="com.dachen.community.activity.PublishActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+
     </application>
 
 </manifest>
