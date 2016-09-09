@@ -45,4 +45,8 @@ public final class HttpRequestWrap {
     public static void get(String URL, AbsRequst request, AbsHandle handle) {
         getClient().get(URL, request, handle);
     }
+
+    public static void cancel(String URL, AbsRequst request, AbsHandle handle) {
+        getClient().cancel(URL, request, handle);
+    }
 }

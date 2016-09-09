@@ -50,6 +50,11 @@ public class AsyncHttpClientImpl implements AbsHttpClient {
     }
 
     @Override
+    public void cancel(String URL, AbsRequst request, AbsHandle handle) {
+
+    }
+
+    @Override
     public void resetRealClient() {
         mRealClient = null;//置空对象，防止内存泄漏
     }

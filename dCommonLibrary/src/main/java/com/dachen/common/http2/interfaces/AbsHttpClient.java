@@ -16,5 +16,7 @@ public interface AbsHttpClient {
 
     void get(String URL, AbsRequst request, AbsHandle handle);
 
+    void cancel(String URL, AbsRequst request, AbsHandle handle);
+
     void resetRealClient();//重置内部的对象,防止切换实现类以后内存泄漏
 }
