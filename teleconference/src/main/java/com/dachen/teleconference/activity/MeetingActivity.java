@@ -118,6 +118,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         leaveChannel();
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
+                        if ("会议不存在".equals((String) msg.obj)) {
+                            finish();
+                        }
                     }
                     break;
 
@@ -322,6 +325,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 final GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
                 //重新邀请未加入人员;
                 if (isSponsor) {
+                    if (userInfo.id == mCreateId) {
+                        return;
+                    }
                     boolean flag = false;
                     if (userInfo.phoneOnline) {
                         flag = true;
