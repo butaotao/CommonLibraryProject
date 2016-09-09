@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dachen.teleconference.R;
@@ -24,18 +25,22 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
     private final String mName;
     private final String mHeadImageUrl;
     private final CallMeetingListener mListener;
+    private final boolean mFlag;
     private ImageView mCloseIv;
     private ImageView mHeadImageIv;
     private TextView mNameTv;
-    private TextView mPhoneCallTv;
-    private TextView mNetCallTv;
+    private RelativeLayout mPhoneCallLayout;
+    private RelativeLayout mNetCallLayout;
+    private View mDividerLineView;
 
-    public CallMeetingMemberDialog(Context context, String name, String headImageUrl, CallMeetingListener listener) {
+    public CallMeetingMemberDialog(Context context, String name, String headImageUrl, CallMeetingListener listener,
+                                   boolean flag) {
         super(context, R.style.dialog);
         mContext = context;
         mName = name;
         mHeadImageUrl = headImageUrl;
         mListener = listener;
+        mFlag = flag;
     }
 
 
@@ -54,12 +59,19 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         mCloseIv = (ImageView) findViewById(R.id.close_iv);
         mHeadImageIv = (ImageView) findViewById(R.id.head_image_iv);
         mNameTv = (TextView) findViewById(R.id.name_tv);
-        mPhoneCallTv = (TextView) findViewById(R.id.phone_call_tv);
-        mNetCallTv = (TextView) findViewById(R.id.net_call_tv);
+
+
+        mPhoneCallLayout = (RelativeLayout) findViewById(R.id.phone_call_layout);
+        mNetCallLayout = (RelativeLayout) findViewById(R.id.net_call_layout);
+        mDividerLineView = findViewById(R.id.divider_line);
+        if (mFlag) {
+            mNetCallLayout.setVisibility(View.GONE);
+            mDividerLineView.setVisibility(View.GONE);
+        }
 
         mCloseIv.setOnClickListener(this);
-        mPhoneCallTv.setOnClickListener(this);
-        mNetCallTv.setOnClickListener(this);
+        mPhoneCallLayout.setOnClickListener(this);
+        mNetCallLayout.setOnClickListener(this);
         mNameTv.setText(mName);
         ImageLoader.getInstance().displayImage(mHeadImageUrl, mHeadImageIv, ImageLoaderConfig.mCircleImageOptions);
         setCanceledOnTouchOutside(false);
@@ -70,10 +82,10 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
         int id = v.getId();
         if (id == R.id.close_iv) {
             dismiss();
-        } else if (id == R.id.phone_call_tv) {
+        } else if (id == R.id.phone_call_layout) {
             mListener.onPhoneCall();
             dismiss();
-        } else if (id == R.id.net_call_tv) {
+        } else if (id == R.id.net_call_layout) {
             mListener.onNetCall();
             dismiss();
         }
@@ -82,6 +94,7 @@ public class CallMeetingMemberDialog extends Dialog implements View.OnClickListe
 
     public interface CallMeetingListener {
         void onNetCall();
+
         void onPhoneCall();
     }
 }

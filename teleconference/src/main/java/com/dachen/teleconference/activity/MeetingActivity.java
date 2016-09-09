@@ -31,7 +31,7 @@ import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.ChannelMemberStatusBean;
-import com.dachen.teleconference.bean.DelayMeetingMsgBean;
+import com.dachen.teleconference.bean.MeetingMsgBean;
 import com.dachen.teleconference.bean.ImMeetingBean;
 import com.dachen.teleconference.bean.MeetingStatus;
 import com.dachen.teleconference.bean.event.ChatGroupEvent;
@@ -115,7 +115,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             switch (msg.what) {
                 case DISMISS_CONF:
                     if (msg.arg1 == 1) {
-//                        leaveChannel();
+                        leaveChannel();
                     } else {
                         UIHelper.ToastMessage(MeetingActivity.this, (String) msg.obj);
                     }
@@ -321,7 +321,15 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 }
                 final GroupInfo2Bean.Data.UserInfo userInfo = mUserInfos.get(position - 1);
                 //重新邀请未加入人员;
-                if (isSponsor && !userInfo.netOnLine) {
+                if (isSponsor) {
+                    boolean flag = false;
+                    if (userInfo.phoneOnline) {
+                        flag = true;
+                    } else {
+                        if (userInfo.netOnLine) {
+                            flag = true;
+                        }
+                    }
                     CallMeetingMemberDialog callMeetingMemberDialog = new CallMeetingMemberDialog(MeetingActivity.this,
                             userInfo.name, userInfo.pic, new CallMeetingMemberDialog.CallMeetingListener() {
                         @Override
@@ -335,9 +343,10 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                             HttpCommClient.getInstance().floorCall(mContext, mHandler, FLOOR_CALL, mToken, userInfo.id, mGroupId,
                                     mChannelId);
                         }
-                    });
+                    }, flag);
                     callMeetingMemberDialog.show();
                 }
+
 
             }
         });
@@ -375,8 +384,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         int i = v.getId();
         if (i == R.id.left_btn) {
             // hide();
-            finish();
-//            moveTaskToBack(true);
+            //            finish();
+            moveTaskToBack(true);
         } else if (i == R.id.right_btn) {
             if (isAllMut) {
                 mRightBtn.setText("全部静音");
@@ -598,12 +607,12 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onUserJoined(int uid, int elapsed) {
-
+            updateOnlineUser(uid + "");
         }
 
         @Override
         public void onUserOffline(int uid, int reason) {
-
+            updateOffLineUser(uid + "");
         }
 
         @Override
@@ -717,12 +726,12 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onChannelUserJoined(String account, int uid) {
-            updateOnlineUser(account);
+
         }
 
         @Override
         public void onChannelUserLeaved(String account, int uid) {
-            updateOffLineUser(account);
+
         }
 
         @Override
@@ -897,13 +906,13 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     };
 
     /**
-     * 通过server发送的频道信息,弹出延长时间对话框
+     * 通过server发送的频道信息,根据type值处理弹出延长时间对话框或改变落地电话值
      *
      * @param msg
      */
     private void setDelayConf(String msg) {
-        DelayMeetingMsgBean delayMeetingMsgBean = JSON.parseObject(msg, DelayMeetingMsgBean.class);
-        if (delayMeetingMsgBean != null) {
+        MeetingMsgBean meetingMsgBean = JSON.parseObject(msg, MeetingMsgBean.class);
+        if (isSponsor && meetingMsgBean != null && meetingMsgBean.getType() == 1) {
             final CustomDialog customDialog = new CustomDialog.Builder(mContext, new CustomDialog.CustomClickEvent() {
                 @Override
                 public void onClick(CustomDialog customDialog) {
@@ -915,10 +924,19 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 public void onDismiss(CustomDialog customDialog) {
                     customDialog.dismiss();
                 }
-            }).setTitle(delayMeetingMsgBean.getParam().getLeftTime() + "分钟后会议将自动结束，是否延时").setMessage("默认延时30分钟,到点继续提示")
+            }).setTitle(meetingMsgBean.getParam().getLeftTime() + "分钟后会议将自动结束，是否延时").setMessage("默认延时30分钟,到点继续提示")
                     .setPositive("好的").setNegative("不延时").create();
             customDialog.show();
+        }
 
+        if (meetingMsgBean != null && meetingMsgBean.getType() == 2) {
+            String userId = meetingMsgBean.getParam().getUserId();
+            for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                if (userId.equals(info.id)) {
+                    info.phoneOnline = true;
+                }
+            }
+            mAdapter.notifyDataSetChanged();
         }
 
     }
@@ -954,14 +972,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
                 for (ChannelMemberStatusBean bean : statusBeanList) {
                     if (bean.getMember().equals(info.id)) {
-                        if (!mChannelUserList.contains(info)) {
-                            info.netOnLine = false;
-                            mChannelUserList.add(info);
-                            if (!mShowDialogUserMap.containsKey(info)) {
-                                mShowDialogUserMap.put(info, "0");
-                            }
-
+                        info.netOnLine = false;
+                        if (!mShowDialogUserMap.containsKey(info)) {
+                            mShowDialogUserMap.put(info, "0");
                         }
+
                     }
                 }
             }
@@ -969,6 +984,24 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             if (isSponsor) {
                 showNetCallDialog();
             }
+            for (ChannelMemberStatusBean bean : statusBeanList) {
+                if (bean.getStatus() == 0 || bean.getStatus() == 1 || bean.getStatus() == 2) {
+                    for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                        if (info.id.equals(bean.getMember())) {
+                            mMessageData.add(info.name + "无法连接到网络");
+                        }
+                    }
+                }
+
+                if (bean.getStatus() == 3) {
+                    for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
+                        if (info.id.equals(bean.getMember())) {
+                            mMessageData.add(info.name + "正在响铃");
+                        }
+                    }
+                }
+            }
+            mMessageListAdapter.notifyDataSetChanged();
             mAdapter.notifyDataSetChanged();
         }
 
@@ -995,7 +1028,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                                 mChannelId);
                         showNetCallDialog();
                     }
-                });
+                }, false);
                 callMeetingMemberDialog.show();
                 entry.setValue("1");
                 break;
@@ -1092,9 +1125,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 for (GroupInfo2Bean.Data.UserInfo info : userInfos) {
                     HttpCommClient.getInstance().voipCall(MeetingActivity.this, mHandler, VOIP_CALL, info.id, mGroupId,
                             mChannelId);
-                    //                    for (GroupInfo2Bean.Data.UserInfo user : mUserInfos) {
-                    //                        AgoraManager.getInstance(mContext).messageInstantSend(user.id, 0, mName + "邀请" + info.name + "加入会议", "");
-                    //                    }
                     AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, mName + "邀请" + info.name + "加入会议", "");
 
                 }

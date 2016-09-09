@@ -68,6 +68,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
             } else {
                 holder.mHeadImage.setAlpha(0.5f);
             }
+            if (user.phoneOnline) {
+                holder.mPhoneOnlineIv.setVisibility(View.VISIBLE);
+            } else {
+                holder.mPhoneOnlineIv.setVisibility(View.GONE);
+            }
+
             ImageLoader.getInstance().displayImage(user.pic, holder.mHeadImage, ImageLoaderConfig.mCircleImageOptions);
             if (user.id.equals(mSponsorId)) {
                 holder.mSponsorIv.setVisibility(View.VISIBLE);
@@ -86,7 +92,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.GalleryViewHol
                 holder.mFirstBg.setVisibility(View.VISIBLE);
                 holder.mSecondBg.setVisibility(View.VISIBLE);
                 holder.mThirdBg.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.mFirstBg.setVisibility(View.GONE);
                 holder.mSecondBg.setVisibility(View.GONE);
                 holder.mThirdBg.setVisibility(View.GONE);
