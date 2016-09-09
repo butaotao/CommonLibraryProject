@@ -15,6 +15,12 @@ public final class HttpRequestWrap {
     private static AbsHttpClient mClient;
 
     public static void setAbsHttpClient(AbsHttpClient client) {
+        if (client == null) {
+            return;
+        }
+        if (mClient != null) {
+            mClient.resetRealClient();
+        }
         mClient = client;
     }
 
