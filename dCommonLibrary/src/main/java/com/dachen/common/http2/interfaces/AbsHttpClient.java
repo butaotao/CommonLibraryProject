@@ -3,6 +3,7 @@ package com.dachen.common.http2.interfaces;
 import android.content.Context;
 
 import com.dachen.common.http2.handle.AbsHandle;
+import com.dachen.common.http2.handle.AbsRequestHandle;
 import com.dachen.common.http2.request.AbsRequst;
 
 /**
@@ -12,11 +13,19 @@ import com.dachen.common.http2.request.AbsRequst;
 public interface AbsHttpClient {
     Context getContext();
 
-    void post(String URL, AbsRequst request, AbsHandle handle);
+    /**
+     * 请求数据，返回request的handle持有对象，可用来取消对应的任务
+     *
+     * @param URL
+     * @param request
+     * @param handle
+     * @return
+     */
+    AbsRequestHandle post(String URL, AbsRequst request, AbsHandle handle);
 
-    void get(String URL, AbsRequst request, AbsHandle handle);
+    AbsRequestHandle get(String URL, AbsRequst request, AbsHandle handle);
 
-    void cancel(String URL, AbsRequst request, AbsHandle handle);
+    void cancelAll();//取消所有请求的任务
 
     void resetRealClient();//重置内部的对象,防止切换实现类以后内存泄漏
 }

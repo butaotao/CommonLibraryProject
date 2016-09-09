@@ -2,8 +2,9 @@ package com.dachen.common.http2;
 
 
 import com.dachen.common.http2.handle.AbsHandle;
-import com.dachen.common.http2.impl.AsyncHttpClientImpl;
+import com.dachen.common.http2.impl.AsyncHttp.AsyncHttpClientImpl;
 import com.dachen.common.http2.interfaces.AbsHttpClient;
+import com.dachen.common.http2.handle.AbsRequestHandle;
 import com.dachen.common.http2.request.AbsRequst;
 
 /**
@@ -38,15 +39,17 @@ public final class HttpRequestWrap {
         return mClient;
     }
 
-    public static void post(String URL, AbsRequst request, AbsHandle handle) {
-        getClient().post(URL, request, handle);
+    public static AbsRequestHandle post(String URL, AbsRequst request, AbsHandle handle) {
+        return getClient().post(URL, request, handle);
     }
 
-    public static void get(String URL, AbsRequst request, AbsHandle handle) {
-        getClient().get(URL, request, handle);
+    public static AbsRequestHandle get(String URL, AbsRequst request, AbsHandle handle) {
+        return getClient().get(URL, request, handle);
     }
 
-    public static void cancel(String URL, AbsRequst request, AbsHandle handle) {
-        getClient().cancel(URL, request, handle);
+    public static void cancelAll() {
+        getClient().cancelAll();
     }
+
+    ;
 }

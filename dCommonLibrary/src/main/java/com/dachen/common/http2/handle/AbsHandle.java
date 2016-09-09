@@ -7,5 +7,6 @@ import com.dachen.common.http2.result.AbsResult;
  */
 public interface AbsHandle<T extends AbsResult> {
     void handleResponse(T absResult);
+
     Class<T> getResultClass();
 }

@@ -1,12 +1,14 @@
-package com.dachen.common.http2.impl;
+package com.dachen.common.http2.impl.AsyncHttp;
 
 import android.content.Context;
 
 import com.dachen.common.http.HttpsSupportCompat;
 import com.dachen.common.http2.handle.AbsHandle;
-import com.dachen.common.http2.request.AbsRequst;
 import com.dachen.common.http2.interfaces.AbsHttpClient;
+import com.dachen.common.http2.handle.AbsRequestHandle;
+import com.dachen.common.http2.request.AbsRequst;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
 import java.util.Map;
@@ -39,18 +41,19 @@ public class AsyncHttpClientImpl implements AbsHttpClient {
     }
 
     @Override
-    public void post(String URL, AbsRequst request, AbsHandle handle) {
-        mRealClient.post(URL, getRequestParams(request), new ResponseHandle(handle));
+    public AbsRequestHandle post(String URL, AbsRequst request, AbsHandle handle) {
+        RequestHandle post = mRealClient.post(URL, getRequestParams(request), new ResponseHandle(handle));
+        return new AsyncHttpRequestHandle(URL, request, handle, post);
     }
 
     @Override
-    public void get(String URL, AbsRequst request, AbsHandle handle) {
-
-        mRealClient.get(URL, getRequestParams(request), new ResponseHandle(handle));
+    public AbsRequestHandle get(String URL, AbsRequst request, AbsHandle handle) {
+        RequestHandle get = mRealClient.get(URL, getRequestParams(request), new ResponseHandle(handle));
+        return new AsyncHttpRequestHandle(URL, request, handle, get);
     }
 
     @Override
-    public void cancel(String URL, AbsRequst request, AbsHandle handle) {
+    public void cancelAll() {
 
     }
 
