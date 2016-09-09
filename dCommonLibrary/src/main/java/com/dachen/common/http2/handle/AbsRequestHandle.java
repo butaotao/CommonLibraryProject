@@ -1,6 +1,5 @@
 package com.dachen.common.http2.handle;
 
-import com.dachen.common.http2.handle.AbsHandle;
 import com.dachen.common.http2.request.AbsRequst;
 
 import java.lang.ref.WeakReference;
@@ -15,9 +14,12 @@ public abstract class AbsRequestHandle<T> {
     private WeakReference<AbsRequst> request = null;
     private WeakReference<AbsHandle> mResultHandle = null;
 
-    protected T mRealRequestHandle;
+    private WeakReference<T> mRealRequestHandle;
 
-    public abstract void cancel();//   取消任务
+    /**
+     * 取消任务
+     */
+    public abstract void cancel();
 
     public AbsRequestHandle() {
 
@@ -27,7 +29,7 @@ public abstract class AbsRequestHandle<T> {
         this.URL = URL;
         this.request = new WeakReference<AbsRequst>(requst);
         this.mResultHandle = new WeakReference<AbsHandle>(mResultHandle);
-        this.mRealRequestHandle = mRealRequestHandle;
+        this.mRealRequestHandle = new WeakReference<T>(mRealRequestHandle);
     }
 
     public String getURL() {
@@ -39,17 +41,15 @@ public abstract class AbsRequestHandle<T> {
     }
 
     public AbsRequst getRequest() {
-        if (request != null) {
+        if (request != null)
             return request.get();
-        }
         return null;
     }
 
 
     public AbsHandle getHandle() {
-        if (mResultHandle != null) {
+        if (mResultHandle != null)
             return mResultHandle.get();
-        }
         return null;
     }
 
@@ -61,11 +61,13 @@ public abstract class AbsRequestHandle<T> {
         this.mResultHandle = new WeakReference<AbsHandle>(handle);
     }
 
-    public T getmRealRequestHandle() {
-        return mRealRequestHandle;
+    public T getRealRequestHandle() {
+        if (mRealRequestHandle != null)
+            return mRealRequestHandle.get();
+        return null;
     }
 
-    public void setmRealRequestHandle(T mRealRequestHandle) {
-        this.mRealRequestHandle = mRealRequestHandle;
+    public void setRealRequestHandle(T mRealRequestHandle) {
+        this.mRealRequestHandle = new WeakReference<T>(mRealRequestHandle);
     }
 }

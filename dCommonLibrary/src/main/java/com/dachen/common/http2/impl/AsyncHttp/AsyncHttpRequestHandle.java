@@ -20,8 +20,9 @@ public class AsyncHttpRequestHandle extends AbsRequestHandle<RequestHandle> {
 
     @Override
     public void cancel() {
-        if (mRealRequestHandle != null) {
-            mRealRequestHandle.cancel(true);
+        RequestHandle requestHandle = getRealRequestHandle();
+        if (requestHandle != null) {
+            requestHandle.cancel(true);
         }
     }
 }
