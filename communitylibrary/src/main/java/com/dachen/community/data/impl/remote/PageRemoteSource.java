@@ -9,6 +9,5 @@ import com.dachen.community.data.PageSource;
 public class PageRemoteSource implements PageSource {
     @Override
     public void getPageDatas(int page) {
-
     }
 }
