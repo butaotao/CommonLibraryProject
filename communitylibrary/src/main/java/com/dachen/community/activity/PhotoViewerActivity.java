@@ -36,6 +36,8 @@ public class PhotoViewerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_viewer);
 
+        setHeadVisibility(View.GONE);
+
         String imageUrl = getIntent().getStringExtra(INTENT_EXTRA_IMAGE_URL);
         if(TextUtils.isEmpty(imageUrl)){
             return;

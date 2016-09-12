@@ -39,6 +39,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             }
         });
         btn_right = (TextView) super.findViewById(R.id.btn_right);
+        btn_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rightClick(view);
+            }
+        });
         tv_title = (TextView) super.findViewById(R.id.tv_title);
 
         initProgressDialog();
@@ -158,9 +164,15 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         btn_left.setVisibility(View.VISIBLE);
     }
 
+    protected void rightClick(View v) {
+
+    }
+
     @Override
     public void onClick(View view) {
 
     }
+
+
 
 }

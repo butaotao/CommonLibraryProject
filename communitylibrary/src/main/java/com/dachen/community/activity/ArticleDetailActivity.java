@@ -33,12 +33,15 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         webview = getViewById(R.id.webview);
         webview.setWebViewClient(new MyWebviewclient());
         //启用支持javascript
-        webview.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = webview.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         webview.setWebChromeClient(new WebChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         } else {
-            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         }
         webview.loadUrl("http://blog.csdn.net/knxw0001/article/details/39637273/");
     }
