@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by pqixi on 2016/9/12 0012.
+ * 多行多列radioGroups类
  */
 public class GridRadioGroup extends LinearLayout implements RadioGroup.OnCheckedChangeListener {
 
