@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.dachen.common.utils.Logger;
 import com.dachen.imsdk.db.dao.ChatGroupDao;
 import com.dachen.imsdk.db.po.ChatGroupPo;
 import com.dachen.imsdk.net.SessionGroup;
@@ -17,12 +18,13 @@ import com.dachen.teleconference.bean.GetMediaDynamicKeyResponse;
 import com.dachen.teleconference.bean.ImMeetingBean;
 import com.dachen.teleconference.bean.MeetingRole;
 import com.dachen.teleconference.bean.MeetingStatus;
+import com.dachen.teleconference.http.Constants;
 import com.dachen.teleconference.http.HttpCommClient;
 import com.dachen.teleconference.utils.MeetingInfo;
 
 /**
  * 会议开启帮助类
- * <p/>
+ * <p>
  * Created by TianWei on 2016/8/31.
  */
 public class MeetingOpenHelper {
@@ -81,6 +83,7 @@ public class MeetingOpenHelper {
     private MeetingOpenHelper(Context context) {
         mContext = context;
         AgoraManager.getInstance(context).getAgoraAPICallBack().addAgoraAPICallBack(mMyAgoraAPICallBack);
+        getHistoryIp();
     }
 
     public static MeetingOpenHelper getInstance(Context context) {
@@ -92,6 +95,21 @@ public class MeetingOpenHelper {
             }
         }
         return INSTANCE;
+    }
+
+    private void getHistoryIp() {
+        String keyNet = MeetingInfo.getInstance(mContext).getKeyNet();
+        if (!TextUtils.isEmpty(keyNet)) {
+            if (keyNet.equals("120.24.94.126")) {
+                Constants.changeIp("120.24.94.126");
+            } else if (keyNet.equals("112.74.208.140")) {
+                Constants.changeIp("112.74.208.140");
+            } else if (keyNet.equals("192.168.3.7")) {
+                Constants.changeIp("192.168.3.7");
+            } else if (keyNet.equals("xg.mediportal.com.cn")) {
+                Constants.changeIp("xg.mediportal.com.cn");
+            }
+        }
     }
 
     /**
@@ -139,7 +157,8 @@ public class MeetingOpenHelper {
      * @param groupId
      * @param callBack
      */
-    public void rejoinMeeting(String token, String userId, String groupId, String channelId, CreateOrJoinMeetingCallBack callBack) {
+    public void rejoinMeeting(String token, String userId, String groupId, String channelId,
+                              CreateOrJoinMeetingCallBack callBack) {
         isSponsor = true;
         mToken = token;
         mUserId = userId;
@@ -207,8 +226,9 @@ public class MeetingOpenHelper {
 
         @Override
         public void onChannelJoined(final String channelID) {
+            Logger.d("MeetingOpenHelper", "onChannelJoined" + "channelID---" + channelID);
             final ChatGroupDao dao = new ChatGroupDao();
-            AgoraManager.getInstance(mContext).channelInviteAccept(channelID, "server_37");
+            AgoraManager.getInstance(mContext).channelInviteAccept(channelID, Constants.SERVER_ACCOUNT);
             SessionGroup group = new SessionGroup(mContext);
             group.setCallbackNew(new SessionGroup.SessionGroupCallbackNew() {
                 @Override

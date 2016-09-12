@@ -31,8 +31,8 @@ import com.dachen.teleconference.R;
 import com.dachen.teleconference.adapter.MessageListAdapter;
 import com.dachen.teleconference.adapter.UserAdapter;
 import com.dachen.teleconference.bean.ChannelMemberStatusBean;
-import com.dachen.teleconference.bean.MeetingMsgBean;
 import com.dachen.teleconference.bean.ImMeetingBean;
+import com.dachen.teleconference.bean.MeetingMsgBean;
 import com.dachen.teleconference.bean.MeetingStatus;
 import com.dachen.teleconference.bean.event.ChatGroupEvent;
 import com.dachen.teleconference.common.BaseActivity;
@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.greenrobot1.event.EventBus;
+import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 
 /**
@@ -358,14 +359,12 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         });
         mRecyclerView.setAdapter(mAdapter);
 
-        if (getIntent().getBooleanExtra(INTENT_EXTRA_IS_CREATOR, false)) {//邀请者
+        if (getIntent().getBooleanExtra(INTENT_EXTRA_IS_CREATOR, false)) {//发起者
             mMessageData.add("呼叫中~");
             mMessageListAdapter.notifyDataSetChanged();
             isSponsor = true;
             mRightBtn.setVisibility(View.VISIBLE);
-            //            mLeftBtn.setVisibility(View.GONE);
         } else {//参会者
-            //            mLeftBtn.setVisibility(View.VISIBLE);
             isSponsor = false;
             mChannelId = getIntent().getStringExtra(INTENT_EXTRA_CHANNEL_ID);
             mRightBtn.setVisibility(View.GONE);
@@ -379,7 +378,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 初始化Agora设置
      */
     private void initAgoraConfigure() {
-        //        AgoraManager.getInstance(this).initAgora(vendorKey);
         AgoraManager.getInstance(this).getEventHandlerMgr().addRtcEngineEventHandler(mMyRtcEngineEventHandler);
         AgoraManager.getInstance(this).getAgoraAPICallBack().addAgoraAPICallBack(mMyAgoraAPICallBack);
     }
@@ -389,34 +387,17 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         int i = v.getId();
         if (i == R.id.left_btn) {
-            // hide();
+            hide();
             //            finish();
             moveTaskToBack(true);
         } else if (i == R.id.right_btn) {
             if (isAllMut) {
                 mRightBtn.setText("全部静音");
-                //                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-                //                    if (info.id != mCreateId) {
-                //                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_CANCEL, "");
-                //                    }
-                //                }
-
                 AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.ALL_MUT_CANCEL, "");
-                //                mMessageData.add(mCreateName + "解除全员静音");
-                //                mMessageListAdapter.notifyDataSetChanged();
-                //                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
                 isAllMut = false;
             } else {
                 mRightBtn.setText("取消静音");
-                //                for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-                //                    if (info.id != mCreateId) {
-                //                        AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, MediaMessage.ALL_MUT_ON, "");
-                //                    }
-                //                }
                 AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, MediaMessage.ALL_MUT_ON, "");
-                //                mMessageData.add(mCreateName + "开启全员静音");
-                //                mMessageListAdapter.notifyDataSetChanged();
-                //                mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
                 isAllMut = true;
             }
         } else if (i == R.id.speaker_iv) {
@@ -434,7 +415,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void hide() {
-        FloatingView floatingView = new FloatingView(this);
+        FloatingView floatingView = new FloatingView(this, mMeetingTime);
         floatingView.show();
 
     }
@@ -487,14 +468,14 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      * 设置会议进行的时间
      */
     private void setTime() {
-
         if (mTimeTv == null) {
             return;
         }
-
         mMinTime = (int) mMeetingTime / 60;
         mSecTime = (int) mMeetingTime % 60;
-        mTimeTv.setText("会议已进行" + mMinTime + ":" + mSecTime);
+        String minTime = mMinTime <= 9 ? "0" + mMinTime : "" + mMinTime;
+        String secTime = mSecTime <= 9 ? "0" + mSecTime : "" + mSecTime;
+        mTimeTv.setText("会议已进行" + minTime + ":" + secTime);
     }
 
 
@@ -618,7 +599,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onUserOffline(int uid, int reason) {
-            updateOffLineUser(uid + "");
+            updateOffLineUser(uid + "", reason);
         }
 
         @Override
@@ -819,7 +800,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             /**
              * 根据服务端返回的频道消息获取更改会议成员头像状态
              */
-            if ("server_37".equals(account)) {
+            if (com.dachen.teleconference.http.Constants.SERVER_ACCOUNT.equals(account)) {
                 if (msg != null) {
                     if (msg.startsWith("[")) {
                         setUserStatus(msg);
@@ -946,9 +927,6 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 name = info.name;
             }
         }
-        //        for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
-        //            AgoraManager.getInstance(mContext).messageInstantSend(info.id, 0, name + "在忙碌", "");
-        //        }
         AgoraManager.getInstance(mContext).messageChannelSend(mChannelId, name + "在忙碌", "");
     }
 
@@ -1053,7 +1031,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
      *
      * @param account
      */
-    private void updateOffLineUser(String account) {
+    private void updateOffLineUser(String account, int reason) {
         String userName = "";
         for (GroupInfo2Bean.Data.UserInfo info : mUserInfos) {
             if (account.equals(info.id)) {
@@ -1065,9 +1043,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         }
-        mMessageData.add(userName + "离开了会议");
-        mMessageListAdapter.notifyDataSetChanged();
-        mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+        if (!TextUtils.isEmpty(userName)) {
+            mMessageData.add(reason == Constants.USER_OFFLINE_QUIT ? userName + "离开了会议" : userName + "网络已离线");
+            mMessageListAdapter.notifyDataSetChanged();
+            mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
+        }
         mAdapter.notifyDataSetChanged();
     }
 

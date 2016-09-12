@@ -1,6 +1,5 @@
 package com.dachen.teleconference.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +19,7 @@ import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
 import com.dachen.teleconference.MeetingBusinessCallBack;
 import com.dachen.teleconference.R;
+import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.constants.ImageLoaderConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -28,7 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  * 接收到电话邀请界面
  * Created by TianWei on 2016/8/23.
  */
-public class TeleIncomingActivity extends Activity implements View.OnClickListener {
+public class TeleIncomingActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String INTENT_EXTRA_CREATE_ID = "creater_id";
     private static final String INTENT_EXTRA_GROUP_ID = "group_id";

@@ -11,6 +11,7 @@ public class MeetingInfo {
     private static final String KEY_MEETING_ROLE = "meeting_role";
     private static final String KEY_MEETING_CHANNEL = "meeting_channel";
     private static final String KEY_MEETING_TOKEN = "meeting_token";
+    private static final String KEY_NET = "key_net";
     private final Context mContext;
     private static final String SP_NAME = "teleconference_status_info";// FILE_NAME
     private static MeetingInfo INSTANCE;
@@ -65,5 +66,14 @@ public class MeetingInfo {
     public String getAgroToken() {
         return sp.getString(KEY_MEETING_TOKEN, "");
     }
+
+    public void setKeyNet(String keyNet) {
+        sp.edit().putString(KEY_NET, keyNet).commit();
+    }
+
+    public String getKeyNet() {
+        return sp.getString(KEY_NET, "");
+    }
+
 
 }
