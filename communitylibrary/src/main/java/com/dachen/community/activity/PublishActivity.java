@@ -40,9 +40,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private EditText edit_content;
     private EditText edit_title;
     private ImageView btn_face;
-    private TextView tv_title;
-    private Button btn_right;
-    private Button btn_left;
+//    private TextView tv_title;
+//    private Button btn_right;
+//    private Button btn_left;
     private ImageView btn_img;
     private String ADDPIC = "add";
     private ArrayList<PictureModel> selectedPicture = new ArrayList<PictureModel>();
@@ -59,14 +59,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initView() {
-        tv_title = getViewById(R.id.tv_title);
         tv_title.setText("发帖");
-        btn_right = getViewById(R.id.btn_right);
-        btn_right.setOnClickListener(this);
         btn_right.setText(getString(R.string.send));
         btn_right.setVisibility(View.VISIBLE);
-        btn_left = getViewById(R.id.btn_left);
-        btn_left.setOnClickListener(this);
         edit_title  = getViewById(R.id.edit_title);
         edit_content = getViewById(R.id.edit_content);
         btn_face = getViewById(R.id.btn_face);

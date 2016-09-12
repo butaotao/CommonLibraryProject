@@ -22,6 +22,12 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name="com.dachen.community.activity.ArticleDetailActivity"
+            android:screenOrientation="portrait"
+            />
+
+
     </application>
 
 </manifest>
