@@ -56,10 +56,7 @@ public class ReportActivityTest extends ActivityInstrumentationTestCase2<ReportA
 
 
     public void end() {
-        method++;
-        if (method == 2) {
-            SystemClock.sleep(30000);
-        }
+        SystemClock.sleep(15000);
     }
 
 
