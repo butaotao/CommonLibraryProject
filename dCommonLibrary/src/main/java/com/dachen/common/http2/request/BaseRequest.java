@@ -11,6 +11,26 @@ import java.util.Map;
  * Created by pqixi on 2016/9/8 0008.
  */
 public class BaseRequest implements AbsRequst, Serializable {
+    private String url;
+
+    private String access_token;
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     /**
      * 默认将该对象的字段转为map对象
      *
@@ -43,5 +63,12 @@ public class BaseRequest implements AbsRequst, Serializable {
             return map;
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseRequest{" +
+                "map='" + toMap() + '\'' +
+                '}';
     }
 }

@@ -26,6 +26,10 @@ public class BaseResult implements AbsResult, Serializable {
         this.resultMsg = resultMsg;
     }
 
+    public boolean isSuccess() {
+        return String.valueOf(SUCCESS).equals(resultCode);
+    }
+
     @Override
     public String toString() {
         return "BaseResult{" +
@@ -33,4 +37,5 @@ public class BaseResult implements AbsResult, Serializable {
                 ", resultMsg='" + resultMsg + '\'' +
                 '}';
     }
+
 }
