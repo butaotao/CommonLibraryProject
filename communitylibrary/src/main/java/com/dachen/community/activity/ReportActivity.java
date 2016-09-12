@@ -51,6 +51,12 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
 
     }
 
+    /**
+     * 设置举报的标题栏
+     *
+     * @param name
+     * @param topical
+     */
     public void setTitleText(String name, String topical) {
         String s = getString(R.string.report_title_text, name, topical);
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder(s);
