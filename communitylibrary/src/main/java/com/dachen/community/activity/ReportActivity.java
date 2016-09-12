@@ -2,13 +2,17 @@ package com.dachen.community.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dachen.common.utils.ToastUtil;
@@ -19,7 +23,7 @@ import com.dachen.community.views.GridRadioGroup;
  * Created by pqixi on 2016/9/12 0012.
  * 举报页面
  */
-public class ReportActivity extends BaseActivity implements View.OnClickListener {
+public class ReportActivity extends BaseActivity implements View.OnClickListener, GridRadioGroup.OnCheckChanged, TextWatcher {
 
     protected TextView tvReportTitle;
     protected GridRadioGroup rgRadiogroups;
@@ -45,7 +49,9 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
 
         tvReportTitle = (TextView) findViewById(R.id.tv_report_title);
         rgRadiogroups = (GridRadioGroup) findViewById(R.id.rg_radiogroups);
+        rgRadiogroups.setmListener(this);
         etDesription = (EditText) findViewById(R.id.et_desription);
+        etDesription.addTextChangedListener(this);
         btnReport = (Button) findViewById(R.id.btn_report);
         btnReport.setOnClickListener(ReportActivity.this);
 
@@ -67,6 +73,34 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         stringBuilder.setSpan(new Clickable(topical, stringBuilder), start, start + topical.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvReportTitle.setText(stringBuilder);
         tvReportTitle.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void onCheckedChanged(RadioButton checkButton, String text) {
+        handleButtonStatus();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        handleButtonStatus();
+    }
+
+    /**
+     * 控制按钮的点击状态
+     */
+    private void handleButtonStatus() {
+        boolean isEnable = TextUtils.isEmpty(rgRadiogroups.getCheckText()) || TextUtils.isEmpty(etDesription.getText());
+        btnReport.setEnabled(!isEnable);
     }
 
     /**
