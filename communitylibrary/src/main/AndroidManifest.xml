@@ -27,6 +27,11 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name="com.dachen.community.activity.ReportActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

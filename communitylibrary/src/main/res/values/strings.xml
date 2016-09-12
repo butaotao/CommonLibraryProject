@@ -4,5 +4,8 @@
 
     <string name="back_text">返回</string>
 
-
+    <!--ReportActivity-->
+    <string name="report_title_text">举报%1$s发布的帖子%2$s</string>
+    <string name="report_desription_hint">请输入举报理由</string>
+    <string name="report_button">举报</string>
 </resources>

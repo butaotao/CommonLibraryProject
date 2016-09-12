@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tv_report_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bbbbbb"
+        android:padding="15dp"
+        android:text="@string/report_title_text"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <com.dachen.community.views.GridRadioGroup
+        android:id="@+id/rg_radiogroups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+    </com.dachen.community.views.GridRadioGroup>
+
+    <EditText
+        android:id="@+id/et_desription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_bg"
+        android:gravity="top|left"
+
+        android:hint="@string/report_desription_hint"
+        android:minLines="5"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/btn_report"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_report_button_bg"
+        android:text="@string/report_button"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>
