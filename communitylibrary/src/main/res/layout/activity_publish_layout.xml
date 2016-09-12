@@ -8,20 +8,20 @@
     <include layout="@layout/common_base" />
 
     <ScrollView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbars="none">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 android:orientation="vertical">
 
@@ -32,7 +32,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="请输入标题"
-                    android:maxLength="50"
+                    android:maxLength="40"
                     android:paddingLeft="10dip"
                     android:textColor="@color/title_color"
                     android:textColorHint="@color/support_color"
@@ -45,16 +45,14 @@
                 <EditText
                     android:id="@+id/edit_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:gravity="top"
                     android:hint="这一刻，想说点什么呢..."
-                    android:lines="8"
                     android:padding="10dip"
                     android:textColor="@color/title_color"
                     android:textColorHint="@color/support_color"
                     android:textSize="16sp" />
-
 
                 <com.dachen.common.widget.NoScrollerGridView
                     android:id="@+id/gridView"
@@ -62,64 +60,70 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dip"
                     android:cacheColorHint="#00000000"
-                    android:columnWidth="120dp"
+                    android:columnWidth="100dp"
                     android:dividerHeight="0px"
                     android:fadingEdge="none"
                     android:horizontalSpacing="5dip"
                     android:listSelector="#00000000"
-                    android:numColumns="4"
+                    android:numColumns="3"
                     android:scrollbars="none"
                     android:smoothScrollbar="true"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="5dip"
                     />
-
-                <View
-                    style="@style/line_style"
-                    android:layout_marginLeft="10dip" />
-
-                <LinearLayout
-                    android:id="@+id/layout_operation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dip">
-
-
-                    <ImageView
-                        android:id="@+id/btn_img"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="5dip"
-                        android:background="@drawable/im_input_more_nor"
-                         />
-
-                    <ImageView
-                        android:id="@+id/btn_face"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="5dip"
-                        android:background="@drawable/im_input_expression_press"
-                         />
-
-                </LinearLayout>
-
-                <View style="@style/line_style" />
-
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <com.dachen.community.views.ChatFaceView
-        xmlns:chatface="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/chat_face_view"
-        android:layout_width="wrap_content"
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        chatface:hasGif="true" />
+        android:orientation="vertical"
+        >
+
+
+        <View
+            style="@style/line_style"
+            android:layout_marginLeft="10dip" />
+
+        <LinearLayout
+            android:id="@+id/layout_operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dip">
+
+
+            <ImageView
+                android:id="@+id/btn_img"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/im_input_more_nor"
+                />
+
+            <ImageView
+                android:id="@+id/btn_face"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/im_input_expression_press"
+                />
+
+        </LinearLayout>
+
+        <View style="@style/line_style" />
+        <com.dachen.community.views.ChatFaceView
+            xmlns:chatface="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/chat_face_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            chatface:hasGif="true" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

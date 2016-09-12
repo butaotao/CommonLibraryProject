@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,8 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.dachen.common.utils.CommonUtils;
+import com.dachen.common.utils.StringUtils;
 import com.dachen.common.widget.NoScrollerGridView;
 import com.dachen.community.Adapter.GridImgAdapter;
 import com.dachen.community.R;
@@ -23,9 +24,7 @@ import com.dachen.community.model.PictureModel;
 import com.dachen.community.views.ChatFaceView;
 import com.dachen.gallery.CustomGalleryActivity;
 import com.dachen.gallery.GalleryAction;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * [发帖页面]
@@ -77,7 +76,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         gridView = getViewById(R.id.gridView);
         gridView.setOnItemClickListener(this);
         gridView.setOnItemLongClickListener(this);
-        mAdapter = new GridImgAdapter(this);
+        mAdapter = new GridImgAdapter(this,this);
         gridView.setAdapter(mAdapter);
         mChatFaceView = getViewById(R.id.chat_face_view);
         mChatFaceView.setEmotionClickListener(new ChatFaceView.EmotionClickListener() {
@@ -125,10 +124,12 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             imm.hideSoftInputFromWindow(edit_content.getWindowToken(), 0);
             changeChatFaceView(true);
         }else if(view.getId()== R.id.btn_right){
-
+            CommonUtils.hideKeyboard(PublishActivity.this);
         }else if(view.getId()== R.id.btn_left){
+            CommonUtils.hideKeyboard(PublishActivity.this);
             finish();
         }else if(view.getId()==R.id.btn_img){
+            CommonUtils.hideKeyboard(PublishActivity.this);
             CustomGalleryActivity.openUi(this, true, REQUEST_PICK, 8 - getPicNum());
         }
     }
@@ -199,7 +200,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             if(!inRangeOfView(event)){
                 mChatFaceView.setVisibility(View.GONE);
-                CommonUtils.hideKeyboard(PublishActivity.this);
             }
         }
         return super.dispatchTouchEvent(event);
@@ -217,12 +217,48 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        String temp = "";
+        String netUrl = selectedPicture.get(position).getNetImg();
+        String localUrl = selectedPicture.get(position).getLocalImg();
+        if(TextUtils.isEmpty(netUrl)){
+            temp = localUrl;
+        }else{
+            temp = netUrl;
+        }
+        if (temp.equals(ADDPIC)) {
+            CustomGalleryActivity.openUi(this, true, REQUEST_PICK, 8 - getPicNum());
+        } else {
+            Intent intent = new Intent(PublishActivity.this, PhotoViewerActivity.class);
+            if(temp.startsWith("http")){
+                intent.putExtra(PhotoViewerActivity.INTENT_EXTRA_IMAGE_URL, StringUtils.thumbnailUrl2originalUrl(temp));
+            }else {
+                intent.putExtra(PhotoViewerActivity.INTENT_EXTRA_IMAGE_URL, "file://" + temp);
+            }
+            startActivity(intent);
+        }
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        return false;
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        String temp = selectedPicture.get(position).getLocalImg();
+        if (!temp.equals(ADDPIC)) {
+            for(int i =0 ;i<selectedPicture.size();i++){
+                if(selectedPicture.get(i).getLocalImg().equals(ADDPIC)){
+                    selectedPicture.get(i).setShowDel(false);
+                }else{
+                    selectedPicture.get(i).setShowDel(true);
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+        return true;
+    }
+
+    public void delPic(int position){
+        selectedPicture.remove(position);
+        mAdapter.removeAll();
+        mAdapter.addData(selectedPicture);
+        mAdapter.notifyDataSetChanged();
     }
 }

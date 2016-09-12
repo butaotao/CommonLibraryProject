@@ -13,8 +13,14 @@
         <activity
             android:name="com.dachen.community.activity.PublishActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
-        </activity>
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+
+
+        <activity
+            android:name="com.dachen.community.activity.PhotoViewerActivity"
+            android:screenOrientation="portrait"
+            />
 
     </application>
 
