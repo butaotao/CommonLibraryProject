@@ -3,20 +3,26 @@ package com.dachen.teleconference.views;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dachen.teleconference.R;
+import com.dachen.teleconference.activity.MeetingActivity;
 
 
 /**
@@ -42,22 +48,62 @@ public class FloatingView extends LinearLayout {
     private int mScreenHeight;
     private final int mStatusBarHeight = getStatusBarHeight();
     private Point[] mPoints;//屏幕上6个点的位置(4顶点+2腰)
+    private Context mContext;
+    private int mMeetingTime;
+    private int mMinTime;
+    private int mSecTime;
+    private int timeCount;
+    private TextView mTimeTv;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0x1:
+                    if (timeCount != 0) {
+                        timeCount++;
+                        mMeetingTime += 1;
+                        setTimeView();
+                        mHandler.sendEmptyMessageDelayed(0x1, 1000);
+                    }
+                    break;
+            }
+        }
+    };
 
 
-    public FloatingView(Context context) {
-        this(context, null);
+    public FloatingView(Context context, int meetingTime) {
+        this(context, null, meetingTime);
     }
 
-    public FloatingView(Context context, AttributeSet attrs) {
+    public FloatingView(Context context, AttributeSet attrs, int meetingTime) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.floating_window, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.floating_window, this);
+        mTimeTv = (TextView) view.findViewById(R.id.time_tv);
         mWindowManager = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
+        mContext = context;
+        mMeetingTime = meetingTime;
         mWindowManager.getDefaultDisplay().getSize(point);
         mScreenWidth = point.x;
         mScreenHeight = point.y;
         mLayoutParams = buildParams();
         mGestureDetector = new GestureDetectorCompat(context, new MyGestureListener());
+        setTimeView();
+        timeCount++;
+        mHandler.sendEmptyMessageDelayed(0x1, 1000);
+    }
+
+    private void setTimeView() {
+        if (mTimeTv == null) {
+            return;
+        }
+        mMinTime = (int) mMeetingTime / 60;
+        mSecTime = (int) mMeetingTime % 60;
+        String minTime = mMinTime <= 9 ? "0" + mMinTime : "" + mMinTime;
+        String secTime = mSecTime <= 9 ? "0" + mSecTime : "" + mSecTime;
+        mTimeTv.setText(minTime + ":" + secTime);
+
     }
 
     private void initPoints() {
@@ -253,6 +299,9 @@ public class FloatingView extends LinearLayout {
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            Intent intent = new Intent(mContext, MeetingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.getApplicationContext().startActivity(intent);
             dismiss();
             return super.onSingleTapConfirmed(e);
         }

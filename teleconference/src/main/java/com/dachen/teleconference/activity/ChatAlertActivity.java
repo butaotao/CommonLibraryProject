@@ -1,6 +1,5 @@
 package com.dachen.teleconference.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +9,10 @@ import com.dachen.imsdk.db.po.ChatGroupPo;
 import com.dachen.teleconference.AgoraManager;
 import com.dachen.teleconference.CreateOrJoinMeetingCallBack;
 import com.dachen.teleconference.MeetingBusinessCallBack;
+import com.dachen.teleconference.common.BaseActivity;
 import com.dachen.teleconference.views.OtherMeetingIncomingDialog;
 
-public class ChatAlertActivity extends Activity {
+public class ChatAlertActivity extends BaseActivity {
     private static final String INTENT_EXTRA_CREATER_NAME = "creater_name";
     private static final String INTENT_EXTRA_CREATERPIC = "creater_pic";
     private static final String INTENT_EXTRA_CHANNEL_ID = "channel_id";
