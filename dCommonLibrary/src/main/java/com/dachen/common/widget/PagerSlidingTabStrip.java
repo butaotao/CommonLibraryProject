@@ -45,9 +45,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	// @formatter:off
 	private static final int[] ATTRS = new int[] {
-		android.R.attr.textSize,
-		android.R.attr.textColor
-    };
+			android.R.attr.textSize,
+			android.R.attr.textColor
+	};
 	// @formatter:on
 
 	private LinearLayout.LayoutParams defaultTabLayoutParams;
@@ -78,7 +78,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int indicatorHeight = 8;
 	private int underlineHeight = 2;
 	private int dividerPadding = 12;
-	private int tabPadding = 10;
+	private int tabPadding = 15;
 	private int dividerWidth = 1;
 
 	private int tabTextSize = 16;
@@ -90,7 +90,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int lastScrollX = 0;
 
 	private int tabSelectBackgroundResId = 0;
-	private int tabBackgroundResId = R.color.white;
+	private int tabBackgroundResId = R.drawable.slidingtab_background_tab;
 
 	private Locale locale;
 
@@ -268,7 +268,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				TextView tab = (TextView) v;
 				tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
 				tab.setTypeface(tabTypeface, tabTypefaceStyle);
-				
+
 				if(position == i){
 					if(tabSelectBackgroundResId > 0){
 						tab.setBackgroundResource(tabSelectBackgroundResId);
@@ -583,5 +583,4 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			}
 		};
 	}
-
 }
