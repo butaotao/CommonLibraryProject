@@ -26,6 +26,8 @@ public class Constants {
         if (IP.equals("192.168.3.7")) {
             API_BASE_URL = "http://" + IP + ":8087/";
             SERVER_ACCOUNT = "server_37";
+            //            API_BASE_URL = "http://192.168.4.200:8089/";
+            //            SERVER_ACCOUNT = "server";
         } else if (IP.equals("120.24.94.126")) {
             API_BASE_URL = "http://" + IP + ":8087/";
             SERVER_ACCOUNT = "server_126";

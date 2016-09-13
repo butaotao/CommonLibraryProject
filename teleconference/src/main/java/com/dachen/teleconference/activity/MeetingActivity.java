@@ -161,6 +161,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             }
         }
     };
+    private FloatingView mFloatingView;
 
 
     @Override
@@ -181,6 +182,9 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
+        if (mFloatingView != null) {
+            mFloatingView.dismiss();
+        }
     }
 
     @Override
@@ -415,8 +419,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void hide() {
-        FloatingView floatingView = new FloatingView(this, mMeetingTime);
-        floatingView.show();
+        mFloatingView = new FloatingView(this, mMeetingTime);
+        mFloatingView.show();
 
     }
 
