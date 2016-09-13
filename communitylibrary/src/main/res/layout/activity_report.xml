@@ -23,6 +23,17 @@
 
     </com.dachen.community.views.GridRadioGroup>
 
+    <TextView
+        android:id="@+id/v_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="获取举报类型失败，点击重新获取"
+        android:textColor="@color/white" />
+
     <EditText
         android:id="@+id/et_desription"
         android:layout_width="match_parent"
@@ -42,8 +53,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@drawable/selector_report_button_bg"
-        android:text="@string/report_button"
         android:enabled="false"
+        android:text="@string/report_button"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

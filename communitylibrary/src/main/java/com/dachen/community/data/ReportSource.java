@@ -1,7 +1,7 @@
 package com.dachen.community.data;
 
-import com.dachen.common.http2.result.BaseResult;
-import com.dachen.community.data.bean.ReportRequest;
+import com.dachen.community.data.requests.ReportRequest;
+import com.dachen.community.data.results.ReportResult;
 
 /**
  * Created by pqixi on 2016/9/12 0012.
@@ -9,8 +9,10 @@ import com.dachen.community.data.bean.ReportRequest;
 public interface ReportSource {
 
     interface CallBack {
-        void onCallBack(BaseResult result);
+        void onCallBack(ReportResult result);
     }
 
     void report(ReportRequest request, CallBack callBack);
+
+    void getReportType(ReportRequest request, CallBack callBack);
 }

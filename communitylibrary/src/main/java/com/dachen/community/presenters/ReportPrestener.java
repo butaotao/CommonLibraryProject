@@ -1,6 +1,7 @@
 package com.dachen.community.presenters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -8,35 +9,65 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dachen.common.http2.result.BaseResult;
 import com.dachen.common.utils.ToastUtil;
 import com.dachen.community.R;
 import com.dachen.community.contract.ReportContract;
 import com.dachen.community.data.ReportSource;
-import com.dachen.community.data.bean.ReportRequest;
+import com.dachen.community.data.requests.ReportRequest;
+import com.dachen.community.data.results.ReportResult;
+
+import java.util.List;
 
 /**
  * Created by pqixi on 2016/9/12 0012.
  */
-public class ReportPrestener implements ReportContract.ReportPresenter, ReportSource.CallBack {
+public class ReportPrestener implements ReportContract.ReportPresenter {
     private ReportContract.ReportView mView;
-
     private ReportSource mSource;
+    private List<ReportResult.Type> mReportTypes;
 
-    public ReportPrestener(ReportContract.ReportView mView, ReportSource mSource) {
+    private Context context;
+    private String topicId;
+    private Integer userId;
+
+    private String userName;
+    private String topicTitle;
+
+    public ReportPrestener(Context context, ReportContract.ReportView mView, ReportSource mSource) {
+        this.context = context;
         this.mView = mView;
         this.mSource = mSource;
+
+        this.mView.setPresenter(this);
     }
 
     @Override
     public void report(int type, String desc) {
         ReportRequest request = new ReportRequest();
-        mSource.report(request, this);
+        request.setDesc(desc);
+        request.setTopicId(topicId);
+        request.setUserId(userId);
+        request.setType(type);
+
+        mView.showLoadingDialog();
+        mSource.report(request, new ReportSource.CallBack() {
+            @Override
+            public void onCallBack(ReportResult result) {
+
+                mView.hideLoadingDialog();
+                if (result == null) {
+                    mView.onReport(false, "net is not vailue");
+                    return;
+                }
+                mView.onReport(result.isSuccess(), result.getResultMsg());
+            }
+        });
+
     }
 
     @Override
-    public void handleButtonStatus(String mSelectText, String desc) {
-        boolean isEnable = !TextUtils.isEmpty(mSelectText) && !TextUtils.isEmpty(desc);
+    public void handleButtonStatus(String mSelectText) {
+        boolean isEnable = !TextUtils.isEmpty(mSelectText);
         mView.refreshButtonStatus(isEnable);
     }
 
@@ -55,19 +86,38 @@ public class ReportPrestener implements ReportContract.ReportPresenter, ReportSo
     }
 
     @Override
-    public void start() {
+    public void initData(Intent intent) {
+        if (intent != null) {
+            userName = intent.getStringExtra("userName");
+            topicTitle = intent.getStringExtra("topicTitle");
+            setMulitClickText(context, userName, topicTitle);
 
+            topicId = intent.getStringExtra("topicId");
+            userId = intent.getIntExtra("userId", 0);
+        }
     }
 
     @Override
-    public void onCallBack(BaseResult result) {
-        if (result == null) {
-            mView.onReport(false, "net is not vailue");
-            return;
-        }
-        mView.onReport(result.isSuccess(), result.getResultMsg());
-    }
+    public void start() {
+        if (mReportTypes == null) {//请求网络数据
+            final ReportRequest request = new ReportRequest();
 
+            mView.showLoadingDialog();
+            mSource.getReportType(request, new ReportSource.CallBack() {
+                @Override
+                public void onCallBack(ReportResult result) {
+                    mView.hideLoadingDialog();
+
+                    if (result != null && result.isSuccess()) {
+                        mReportTypes = result.getTypes();
+                        mView.onReportType(true, result.getTypeStringList());
+                        return;
+                    }
+                    mView.onReportType(false, null);
+                }
+            });
+        }
+    }
 
     /**
      * textView分节点击事件

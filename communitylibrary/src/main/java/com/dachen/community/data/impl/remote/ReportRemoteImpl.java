@@ -4,12 +4,12 @@ import com.dachen.common.http2.HttpRequestWrap;
 import com.dachen.common.http2.handle.AbsHandle;
 import com.dachen.common.http2.result.BaseResult;
 import com.dachen.community.data.ReportSource;
-import com.dachen.community.data.bean.ReportRequest;
+import com.dachen.community.data.requests.ReportRequest;
 
 /**
  * Created by pqixi on 2016/9/12 0012.
  */
-public class ReportRemoteSource implements ReportSource {
+public class ReportRemoteImpl implements ReportSource {
     @Override
     public void report(ReportRequest request, final CallBack callBack) {
         if (request == null) {
