@@ -1,12 +1,10 @@
 package com.dachen.common.http2.result;
 
-import java.io.Serializable;
-
 /**
  * 网络请求结果的基础类，默认包含code和msg字段，其他字段继承按接口定义添加
  * Created by pqixi on 2016/9/8 0008.
  */
-public class BaseResult implements AbsResult, Serializable {
+public class BaseResult implements AbsResult {
     private String resultCode;
     private String resultMsg;
 
@@ -27,7 +25,7 @@ public class BaseResult implements AbsResult, Serializable {
     }
 
     public boolean isSuccess() {
-        return String.valueOf(SUCCESS).equals(resultCode);
+        return String.valueOf(CODE_SUCCESS).equals(resultCode);
     }
 
     @Override
