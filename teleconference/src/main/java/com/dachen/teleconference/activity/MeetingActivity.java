@@ -111,6 +111,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     private ProgressDialog mEndMeetingDialog;
     private TextView mNumberTv;
     private String mName;
+    public static boolean isMeetingOn;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -177,6 +178,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         EventBus.getDefault().register(this);
 
+        isMeetingOn = true;
+
     }
 
     @Override
@@ -196,6 +199,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         timeCount = 0;
+        isMeetingOn = false;
         EventBus.getDefault().unregister(this);
         AgoraManager.getInstance(this).getEventHandlerMgr().removeRtcEngineEventHandler(mMyRtcEngineEventHandler);
         AgoraManager.getInstance(this).getAgoraAPICallBack().removeAgoraAPICallBack(mMyAgoraAPICallBack);
@@ -1024,6 +1028,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         mMessageListView.smoothScrollToPosition(mMessageData.size() - 1);
         AgoraManager.getInstance(mContext).leaveChannel(mChannelId);
         MeetingInfo.getInstance(mContext).setMeetingStatus(MeetingStatus.End);
+        MeetingInfo.getInstance(mContext).setMeetingChannel("");
         if (mEndMeetingDialog != null && mEndMeetingDialog.isShowing()) {
             mEndMeetingDialog.dismiss();
         }
